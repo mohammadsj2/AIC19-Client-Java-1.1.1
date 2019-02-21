@@ -3,6 +3,8 @@ package client;
 import client.model.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 public class AI {
@@ -49,47 +51,46 @@ public class AI {
     public void preProcess(World world) {
         System.out.println("pre process started");
     }
-
+    static int cnt=0;
     public void pickTurn(World world) {
         System.out.println("pick started");
-        world.pickHero(HeroName.GUARDIAN);
+        switch (cnt) {
+            case 0:
+                world.pickHero(HeroName.GUARDIAN);
+                break;
+            case 1:
+                world.pickHero(HeroName.GUARDIAN);
+                break;
+            case 2:
+                world.pickHero(HeroName.BLASTER);
+                break;
+            case 3:
+                world.pickHero(HeroName.HEALER);
+                break;
+        }
+        cnt++;
     }
 
     public void moveTurn(World world) {
         System.out.println("move started");
-        Hero[] heroes = world.getMyHeroes();
         Integer Mod = 7,
                 turn = 4;
         ArrayList<Cell> targetCells = getHeroTargetCells(world);
         Hero myHeros[] = world.getMyHeroes();
-        for(int i = 0; i < 4; i++) {
-            System.out.print(targetCells.get(i).getRow());
-            System.out.print(" ");
-            System.out.println(targetCells.get(i).getColumn());
-        }
         if ((world.getCurrentTurn() % Mod) < turn) {
             System.out.println(world.getCurrentTurn());
             for (int i = 0; i < 4; i++) {
-                Direction dir[] = world.getPathMoveDirections(myHeros[i].getCurrentCell().getRow(),
-                        myHeros[i].getCurrentCell().getColumn(),
-                        targetCells.get(i).getRow(),
-                        targetCells.get(i).getColumn());
+                Direction dir[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), targetCells.get(i));
                 if (dir.length == 0)
                     continue;
                 world.moveHero(myHeros[i], dir[0]);
             }
         } else {
-            Direction dir[] = world.getPathMoveDirections(myHeros[0].getCurrentCell().getRow(),
-                    myHeros[0].getCurrentCell().getColumn(),
-                    targetCells.get(0).getRow(),
-                    targetCells.get(0).getColumn());
+            Direction dir[] = world.getPathMoveDirections(myHeros[0].getCurrentCell(), targetCells.get(0));
             if (dir.length != 0)
                 world.moveHero(myHeros[0], dir[0]);
             for(int i = 1; i < 4; i++){
-                Direction dirs[] = world.getPathMoveDirections(myHeros[i].getCurrentCell().getRow(),
-                        myHeros[i].getCurrentCell().getColumn(),
-                        targetCells.get(i + 3).getRow(),
-                        targetCells.get(i + 3).getColumn());
+                Direction dirs[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), targetCells.get(i + 3));
                 if (dirs.length == 0)
                     continue;
                 world.moveHero(myHeros[i], dirs[0]);
@@ -97,16 +98,65 @@ public class AI {
 
         }
     }
+    private Cell getNextCellByDirection(World world,Cell cell,Direction direction){
+        int r=cell.getRow();
+        int c=cell.getColumn();
+        if(direction.equals(Direction.LEFT)){
+            c--;
+        }else if(direction.equals(Direction.RIGHT)){
+            c++;
+        }else if(direction.equals(Direction.UP)){
+            r--;
+        }else {
+            r++;
+        }
+        return world.getMap().getCell(r,c);
+    }
 
     public void actionTurn(World world) {
         System.out.println("action started");
+
+        dodge(world);
+    }
+
+    private void dodge(World world) {
         Hero[] heroes = world.getMyHeroes();
-        Map map = world.getMap();
-        for (Hero hero : heroes) {
-            int row = random.nextInt(map.getRowNum());
-            int column = random.nextInt(map.getColumnNum());
-            world.castAbility(hero, hero.getAbilities()[random.nextInt(3)], row, column);
+        ArrayList<Hero> heroArrayList=new ArrayList<>();
+        for(int i=0;i<4;i++){
+            heroArrayList.add(heroes[i]);
         }
+        ArrayList<Cell> targetCells=getHeroTargetCells(world);
+        for(int i=0;i<4;i++){
+            Hero hero=heroes[i];
+            Direction dir[] = world.getPathMoveDirections(heroes[i].getCurrentCell(), targetCells.get(i));
+            AbilityName dodgeAbility;
+            if(i<2){
+                dodgeAbility=AbilityName.GUARDIAN_DODGE;
+            }else if(i==2){
+                dodgeAbility=AbilityName.BLASTER_DODGE;
+            }else{
+                dodgeAbility=AbilityName.HEALER_DODGE;
+            }
+            if(dir.length>=getAbilityConstants(world,dodgeAbility).getRange()){
+                Cell targetCell=hero.getCurrentCell();
+                for(int j=0;j<getAbilityConstants(world,dodgeAbility).getRange();j++){
+                    targetCell=getNextCellByDirection(world,targetCell,dir[j]);
+                }
+                System.out.println(hero);
+                System.out.println(hero.getCurrentCell());
+                System.out.println(targetCell);
+                world.castAbility(hero,dodgeAbility,targetCell);
+            }
+        }
+    }
+
+    private AbilityConstants getAbilityConstants(World world,AbilityName abilityName){
+        for (AbilityConstants abilityConstants : world.getAbilityConstants()) {
+            if (abilityConstants.getName() == abilityName) {
+                return abilityConstants;
+            }
+        }
+        return null;
     }
 
 }
