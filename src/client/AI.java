@@ -5,56 +5,54 @@ import client.model.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class AI
-{
-    private World world;
+public class AI {
+    private Random random = new Random();
+
     private ArrayList<Cell> getHeroTargetCells(World world) {
         Cell[] objectiveZone = world.getMap().getObjectiveZone();
         ArrayList<Cell> answer = new ArrayList<>();
-        int dr[]={0,2,2,4,2,2,5};
-        int dc[]={0,-2,2,0,-3,3,0};
+        int dr[] = {0, 2, 2, 4, 2, 2, 5};
+        int dc[] = {0, -2, 2, 0, -3, 3, 0};
 
-        Cell bestCell=objectiveZone[0];
-        int bestAns=-100;
+        Cell bestCell = objectiveZone[0];
+        int bestAns = -100;
 
-        for (Cell cell:objectiveZone) {
+        for (Cell cell : objectiveZone) {
             int r = cell.getRow();
             int c = cell.getColumn();
-            int ans=0;
-            for(int i=0;i<7;i++){
-                int nr=r+dr[i];
-                int nc=c+dc[i];
-                Cell cell1=world.getMap().getCell(nr,nc);
-                if(cell1.isWall()){
+            int ans = 0;
+            for (int i = 0; i < 7; i++) {
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+                Cell cell1 = world.getMap().getCell(nr, nc);
+                if (cell1.isWall()) {
                     ans--;
-                }else if(cell1.isInObjectiveZone()){
+                } else if (cell1.isInObjectiveZone()) {
                     ans++;
                 }
             }
-            if(ans>bestAns){
-                bestCell=cell;
-                bestAns=ans;
+            if (ans > bestAns) {
+                bestCell = cell;
+                bestAns = ans;
             }
         }
-        for(int i=0;i<7;i++){
-            int nr=bestCell.getRow()+dr[i];
-            int nc=bestCell.getColumn()+dc[i];
-            Cell cell1=world.getMap().getCell(nr,nc);
+        for (int i = 0; i < 7; i++) {
+            int nr = bestCell.getRow() + dr[i];
+            int nc = bestCell.getColumn() + dc[i];
+            Cell cell1 = world.getMap().getCell(nr, nc);
             answer.add(cell1);
         }
         return answer;
     }
-    private Random random = new Random();
 
-    public void preProcess(World world)
-    {
-        this.world=world;
+
+    public void preProcess(World world) {
         System.out.println("pre process started");
     }
 
     public void pickTurn(World world) {
         System.out.println("pick started");
-        world.pickHero(HeroName.values()[world.getCurrentTurn()]);
+        world.pickHero(HeroName.GUARDIAN);
     }
 
     public void moveTurn(World world) {
