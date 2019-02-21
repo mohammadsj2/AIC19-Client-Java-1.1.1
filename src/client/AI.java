@@ -3,6 +3,8 @@ package client;
 import client.model.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 public class AI {
@@ -62,7 +64,7 @@ public class AI {
                 turn = 4;
         ArrayList<Cell> targetCells = getHeroTargetCells(world);
         Hero myHeros[] = world.getMyHeroes();
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             System.out.print(targetCells.get(i).getRow());
             System.out.print(" ");
             System.out.println(targetCells.get(i).getColumn());
@@ -85,7 +87,7 @@ public class AI {
                     targetCells.get(0).getColumn());
             if (dir.length != 0)
                 world.moveHero(myHeros[0], dir[0]);
-            for(int i = 1; i < 4; i++){
+            for (int i = 1; i < 4; i++) {
                 Direction dirs[] = world.getPathMoveDirections(myHeros[i].getCurrentCell().getRow(),
                         myHeros[i].getCurrentCell().getColumn(),
                         targetCells.get(i + 3).getRow(),
@@ -96,6 +98,31 @@ public class AI {
             }
 
         }
+    }
+
+    public void healerAction(World world) {
+        Hero myHeros[] = world.getMyHeroes();
+
+        AbilityConstants abilityHealer = getAbilityConstants(world, AbilityName.HEALER_HEAL);
+        int range = abilityHealer.getRange(),
+                power = abilityHealer.getPower();
+
+        Hero healer = world.getHero(3); // HEALER ID = 3
+        ArrayList<Hero> inArea = new ArrayList<>();
+        for (Hero hero : myHeros) {
+            int distance = world.manhattanDistance(hero.getCurrentCell(), healer.getCurrentCell());
+            if (distance <= range)
+                inArea.add(hero);
+        }
+        Collections.sort(inArea, Comparator.comparingInt(Hero::getCurrentHP));
+        for (Hero hero : inArea){
+            if(hero.getCurrentHP() + power <= hero.getMaxHP()){
+                world.castAbility(healer, AbilityName.HEALER_HEAL, hero.getCurrentCell());
+                return;
+            }
+        }
+        if(inArea.size() != 0)
+            world.castAbility(healer, AbilityName.HEALER_HEAL, inArea.get(0).getCurrentCell());
     }
 
     public void actionTurn(World world) {
