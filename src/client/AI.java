@@ -57,11 +57,18 @@ public class AI {
 
     public void moveTurn(World world) {
         System.out.println("move started");
-        int Mod = 7, turn = 4;
+        Hero[] heroes = world.getMyHeroes();
+        Integer Mod = 7,
+                turn = 4;
         ArrayList<Cell> targetCells = getHeroTargetCells(world);
         Hero myHeros[] = world.getMyHeroes();
+        for(int i = 0; i < 4; i++) {
+            System.out.print(targetCells.get(i).getRow());
+            System.out.print(" ");
+            System.out.println(targetCells.get(i).getColumn());
+        }
         if ((world.getCurrentTurn() % Mod) < turn) {
-
+            System.out.println(world.getCurrentTurn());
             for (int i = 0; i < 4; i++) {
                 Direction dir[] = world.getPathMoveDirections(myHeros[i].getCurrentCell().getRow(),
                         myHeros[i].getCurrentCell().getColumn(),
@@ -72,12 +79,17 @@ public class AI {
                 world.moveHero(myHeros[i], dir[0]);
             }
         } else {
-
-            Direction dir[] = world.getPathMoveDirections(myHeros[0].getCurrentCell(), targetCells.get(0));
+            Direction dir[] = world.getPathMoveDirections(myHeros[0].getCurrentCell().getRow(),
+                    myHeros[0].getCurrentCell().getColumn(),
+                    targetCells.get(0).getRow(),
+                    targetCells.get(0).getColumn());
             if (dir.length != 0)
                 world.moveHero(myHeros[0], dir[0]);
-            for (int i = 1; i < 4; i++) {
-                Direction dirs[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), targetCells.get(i + 3));
+            for(int i = 1; i < 4; i++){
+                Direction dirs[] = world.getPathMoveDirections(myHeros[i].getCurrentCell().getRow(),
+                        myHeros[i].getCurrentCell().getColumn(),
+                        targetCells.get(i + 3).getRow(),
+                        targetCells.get(i + 3).getColumn());
                 if (dirs.length == 0)
                     continue;
                 world.moveHero(myHeros[i], dirs[0]);
