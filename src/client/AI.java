@@ -137,26 +137,14 @@ public class AI {
             }else{
                 dodgeAbility=AbilityName.HEALER_DODGE;
             }
-            if(dir.length>=getAbilityConstants(world,dodgeAbility).getRange()){
+            if(dir.length>=world.getAbilityConstants(dodgeAbility).getRange()){
                 Cell targetCell=hero.getCurrentCell();
-                for(int j=0;j<getAbilityConstants(world,dodgeAbility).getRange();j++){
+                for(int j=0;j<world.getAbilityConstants(dodgeAbility).getRange();j++){
                     targetCell=getNextCellByDirection(world,targetCell,dir[j]);
                 }
-                System.out.println(hero);
-                System.out.println(hero.getCurrentCell());
-                System.out.println(targetCell);
                 world.castAbility(hero,dodgeAbility,targetCell);
             }
         }
-    }
-
-    private AbilityConstants getAbilityConstants(World world,AbilityName abilityName){
-        for (AbilityConstants abilityConstants : world.getAbilityConstants()) {
-            if (abilityConstants.getName() == abilityName) {
-                return abilityConstants;
-            }
-        }
-        return null;
     }
 
 }

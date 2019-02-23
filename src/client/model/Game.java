@@ -46,7 +46,7 @@ public class Game implements World {
         this.sender = game.sender;
     }
 
-    private AbilityConstants getAbilityConstants(AbilityName abilityName) {
+    public AbilityConstants getAbilityConstants(AbilityName abilityName) {
         for (AbilityConstants abilityConstants : abilityConstants) {
             if (abilityConstants.getName() == abilityName) {
                 return abilityConstants;
@@ -55,7 +55,7 @@ public class Game implements World {
         return null;
     }
 
-    private HeroConstants getHeroConstants(HeroName heroName) {
+    public HeroConstants getHeroConstants(HeroName heroName) {
         for (HeroConstants heroConstants : heroConstants) {
             if (heroConstants.getName() == heroName) {
                 return heroConstants;
