@@ -1,12 +1,14 @@
 package client;
 
-import client.Strategy.GGBHStrategy;
+
+import client.Strategy.BBBBStrategy;
+import client.Strategy.GGHBStrategy;
 import client.Strategy.RandomStrategy;
 import client.Strategy.Strategy;
 import client.model.*;
 
 public class AI {
-    public static Strategy strategy=new GGBHStrategy();
+    public static Strategy strategy=new BBBBStrategy();
 
     public void preProcess(World world) {
         System.out.println("pre process started");
