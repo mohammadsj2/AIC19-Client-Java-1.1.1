@@ -6,9 +6,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BBBBStrategy extends Strategy {
+
     private ArrayList<Integer> heroIds = new ArrayList<>();
 
     ArrayList<Cell> targetCells = new ArrayList<>();
+    Random random = new Random();
+
+    private Integer makeRandom(Integer n){
+        return ((random.nextInt() % n) + n) % n;
+    }
 
     private ArrayList<Cell> getHeroTargetCellsZone(World world) {
 
@@ -20,9 +26,9 @@ public class BBBBStrategy extends Strategy {
         for (int i = 0; i < objectiveZone.length; i++)
             mark[i] = false;
 
-        Random random = new Random();
+
         for (int i = 0; i < 4; i++) {
-            Integer x = random.nextInt() % objectiveZone.length;
+            Integer x = makeRandom(objectiveZone.length);
             while (mark[x] == true) {
                 x = random.nextInt() % objectiveZone.length;
             }
