@@ -1,14 +1,11 @@
 package client;
 
+
 import client.Strategy.BBBBStrategy;
 import client.Strategy.GGHBStrategy;
+import client.Strategy.RandomStrategy;
 import client.Strategy.Strategy;
 import client.model.*;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Random;
 
 public class AI {
     public static Strategy strategy=new BBBBStrategy();
