@@ -3,47 +3,32 @@ package client.Strategy;
 import client.model.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Random;
 
 public class BBBBStrategy extends Strategy {
     private ArrayList<Integer> heroIds = new ArrayList<>();
 
-    private ArrayList<Cell> getHeroTargetCells(World world) {
+    ArrayList<Cell> targetCells = new ArrayList<>();
+
+    private ArrayList<Cell> getHeroTargetCellsZone(World world) {
+
+        if (targetCells.size() != 0)
+            return targetCells;
+
         Cell[] objectiveZone = world.getMap().getObjectiveZone();
-        ArrayList<Cell> answer = new ArrayList<>();
-        int dr[] = {0, 2, 2, 4, 2, 2, 5, 2};
-        int dc[] = {0, -2, 2, 0, -3, 3, 0, 0};
+        Boolean[] mark = new Boolean[objectiveZone.length];
+        for (int i = 0; i < objectiveZone.length; i++)
+            mark[i] = false;
 
-        Cell bestCell = objectiveZone[0];
-        int bestAns = -100;
-
-        for (Cell cell : objectiveZone) {
-            int r = cell.getRow();
-            int c = cell.getColumn();
-            int ans = 0;
-            for (int i = 0; i < 7; i++) {
-                int nr = r + dr[i];
-                int nc = c + dc[i];
-                Cell cell1 = world.getMap().getCell(nr, nc);
-                if (cell1.isWall()) {
-                    ans--;
-                } else if (cell1.isInObjectiveZone()) {
-                    ans++;
-                }
+        Random random = new Random();
+        for (int i = 0; i < 4; i++) {
+            Integer x = random.nextInt() % objectiveZone.length;
+            while (mark[x] == true) {
+                x = random.nextInt() % objectiveZone.length;
             }
-            if (ans > bestAns) {
-                bestCell = cell;
-                bestAns = ans;
-            }
+            targetCells.add(objectiveZone[x]);
         }
-        for (int i = 0; i < 8; i++) {
-            int nr = bestCell.getRow() + dr[i];
-            int nc = bestCell.getColumn() + dc[i];
-            Cell cell1 = world.getMap().getCell(nr, nc);
-            answer.add(cell1);
-        }
-        return answer;
+        return targetCells;
     }
 
     @Override
@@ -85,35 +70,27 @@ public class BBBBStrategy extends Strategy {
     @Override
     public void moveTurn(World world) {
         System.out.println("move started");
-        Integer Mod = 7,
-                turn = 4;
-        ArrayList<Cell> targetCells = getHeroTargetCells(world);
+        ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         Hero myHeros[] = world.getMyHeroes();
+        Hero oppHeros[] = world.getOppHeroes();
+        Integer cnt[] = {0, 0, 0, 0};
+
         for (int i = 0; i < 4; i++) {
-            System.out.print(targetCells.get(i).getRow());
-            System.out.print(" ");
-            System.out.println(targetCells.get(i).getColumn());
-        }
-        if ((world.getCurrentTurn() % Mod) < turn) {
-            System.out.println(world.getCurrentTurn());
-            for (int i = 0; i < 4; i++) {
+            Boolean goAfter = false;
+            for (int j = 0; j < 4; j++)
+                if (oppHeros[j].getCurrentCell().getRow() >= 0 && cnt[j] < 2) {
+                    goAfter = true;
+                    cnt[j]++;
+                    Direction dir[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), oppHeros[j].getCurrentCell());
+                    if (dir.length != 0)
+                        world.moveHero(myHeros[i], dir[0]);
+                    break;
+                }
+            if(goAfter == false) {
                 Direction dir[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), targetCells.get(i));
-                if (dir.length == 0)
-                    continue;
-                world.moveHero(myHeros[i], dir[0]);
+                if (dir.length != 0)
+                    world.moveHero(myHeros[i], dir[0]);
             }
-        } else {
-            Direction dir[] = world.getPathMoveDirections(myHeros[0].getCurrentCell(), targetCells.get(0));
-            if (dir.length != 0)
-                world.moveHero(myHeros[0], dir[0]);
-
-            for (int i = 1; i < 4; i++) {
-                Direction dirs[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), targetCells.get(i + 3));
-                if (dirs.length == 0)
-                    continue;
-                world.moveHero(myHeros[i], dirs[0]);
-            }
-
         }
     }
 
@@ -121,12 +98,19 @@ public class BBBBStrategy extends Strategy {
     public void actionTurn(World world) {
         System.out.println("action started");
 
-        
+        blasterActions(world);
+        blasterAttacks(world);
         dodge(world);
     }
 
-    private void blasterActions(World world) {
+    private void blasterAttacks(World world) {
+        // TODO
+    }
 
+    private void blasterActions(World world) {
+        Hero[] oppHeros = world.getOppHeroes();
+        Cell[][] cells = world.getMap().getCells();
+        // TODO
     }
 
     private void dodge(World world) {
@@ -135,7 +119,7 @@ public class BBBBStrategy extends Strategy {
         for (int i = 0; i < 4; i++) {
             heroArrayList.add(heroes[i]);
         }
-        ArrayList<Cell> targetCells = getHeroTargetCells(world);
+        ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
             Hero hero = heroes[i];
             Direction dir[] = world.getPathMoveDirections(heroes[i].getCurrentCell(), targetCells.get(i));
