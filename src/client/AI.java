@@ -2,7 +2,7 @@ package client;
 
 
 import client.Strategy.BBBBStrategy;
-import client.Strategy.GGHBStrategy;
+import client.Strategy.GGBHStrategy;
 import client.Strategy.RandomStrategy;
 import client.Strategy.Strategy;
 import client.model.*;
