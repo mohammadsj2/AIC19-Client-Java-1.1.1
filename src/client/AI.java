@@ -1,5 +1,6 @@
 package client;
 
+import client.Strategy.BBBBStrategy;
 import client.Strategy.GGHBStrategy;
 import client.Strategy.Strategy;
 import client.model.*;
@@ -10,7 +11,7 @@ import java.util.Comparator;
 import java.util.Random;
 
 public class AI {
-    public static Strategy strategy=new GGHBStrategy();
+    public static Strategy strategy=new BBBBStrategy();
 
     public void preProcess(World world) {
         System.out.println("pre process started");

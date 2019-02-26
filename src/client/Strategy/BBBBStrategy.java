@@ -87,9 +87,9 @@ public class BBBBStrategy extends Strategy {
                     break;
                 }
             if(goAfter == false) {
-                Direction dir[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), targetCells.get(i));
-                if (dir.length != 0)
-                    world.moveHero(myHeros[i], dir[0]);
+                Direction dirs[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), targetCells.get(i));
+                if (dirs.length != 0)
+                    world.moveHero(myHeros[i], dirs[0]);
             }
         }
     }
