@@ -222,4 +222,8 @@ public interface World {
 
     int getMovePhaseNum();
 
+    AbilityConstants getAbilityConstants(AbilityName abilityName);
+
+    HeroConstants getHeroConstants(HeroName heroName);
+
 }
