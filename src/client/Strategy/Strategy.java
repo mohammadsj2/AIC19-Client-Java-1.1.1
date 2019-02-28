@@ -32,12 +32,23 @@ public abstract class Strategy {
     void dodgeAHero(World world, Hero hero, Cell targetCell) {
         Direction dir[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
         AbilityName dodgeAbility=hero.getDodgeAbilities()[0].getName();
-        if (dir.length >= world.getAbilityConstants(dodgeAbility).getRange()) {
+        int range = world.getAbilityConstants(dodgeAbility).getRange();
+
+        if (dir.length >= range) {
+            ArrayList<Cell> cellsOfPath=new ArrayList<>();
+            cellsOfPath.add(hero.getCurrentCell());
             Cell targetCell2 = hero.getCurrentCell();
-            for (int j = 0; j < world.getAbilityConstants(dodgeAbility).getRange(); j++) {
-                targetCell2 = getNextCellByDirection(world, targetCell2, dir[j]);
+            for (Direction direction:dir) {
+                targetCell2 = getNextCellByDirection(world, targetCell2, direction);
+                cellsOfPath.add(targetCell2);
             }
-            world.castAbility(hero, dodgeAbility, targetCell2);
+            for(int i=cellsOfPath.size()-1;i>=0;i--){
+                Cell cell=cellsOfPath.get(i);
+                if(world.manhattanDistance(hero.getCurrentCell(),cell)<=range){
+                    world.castAbility(hero, dodgeAbility, targetCell2);
+                    break;
+                }
+            }
         }
     }
 
@@ -105,7 +116,7 @@ public abstract class Strategy {
         }
     }
 
-    int getRandomIntegerLessThan(int n) {
-        return ((random.nextInt() % n) + n) % n;
+    int getRandomIntegerLessThan(int x) {
+        return ((random.nextInt() % x) + x) % x;
     }
 }
