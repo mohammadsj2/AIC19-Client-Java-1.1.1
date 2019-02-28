@@ -29,7 +29,7 @@ public abstract class Strategy {
         return world.getMap().getCell(r, c);
     }
 
-    void dodgeAHero(World world, Hero hero, Cell targetCell) {
+    int dodgeAHero(World world, Hero hero, Cell targetCell, boolean action) {
         Direction dir[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
         AbilityName dodgeAbility=hero.getDodgeAbilities()[0].getName();
         int range = world.getAbilityConstants(dodgeAbility).getRange();
@@ -45,11 +45,15 @@ public abstract class Strategy {
             for(int i=cellsOfPath.size()-1;i>=0;i--){
                 Cell cell=cellsOfPath.get(i);
                 if(world.manhattanDistance(hero.getCurrentCell(),cell)<=range){
-                    world.castAbility(hero, dodgeAbility, targetCell2);
-                    break;
+                    if(action)world.castAbility(hero, dodgeAbility, targetCell2);
+                    return i;
                 }
             }
         }
+        return 0;
+    }
+    int dodgeAHero(World world, Hero hero, Cell targetCell){
+        return dodgeAHero(world,hero,targetCell,true);
     }
 
     ArrayList<Cell> getARangeOfCellsThatIsNotWall(World world, Cell cell, int range) {
