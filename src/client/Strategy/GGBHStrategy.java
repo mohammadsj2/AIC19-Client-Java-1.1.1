@@ -77,7 +77,8 @@ public class GGBHStrategy extends Strategy {
         }
         heroIdsSetted=true;
     }
-    public boolean heroIdsSetted=false;
+    private boolean heroIdsSetted=false;
+
     @Override
     public void moveTurn(World world) {
         if(!heroIdsSetted)setHeroIds(world);
@@ -85,11 +86,6 @@ public class GGBHStrategy extends Strategy {
                 turn = 4;
         ArrayList<Cell> targetCells = getHeroTargetCells(world);
         Hero myHeros[] = world.getMyHeroes();
-        for (int i = 0; i < 4; i++) {
-            System.out.print(targetCells.get(i).getRow());
-            System.out.print(" ");
-            System.out.println(targetCells.get(i).getColumn());
-        }
         if ((world.getCurrentTurn() % Mod) < turn) {
             System.out.println(world.getCurrentTurn());
             for (int i = 0; i < 4; i++) {
@@ -115,8 +111,6 @@ public class GGBHStrategy extends Strategy {
 
     @Override
     public void actionTurn(World world) {
-        System.out.println("action started");
-
         guardianActions(world);
         healerAction(world);
         attackActions(world);
@@ -146,7 +140,7 @@ public class GGBHStrategy extends Strategy {
     }
 
     private void heroUseAbilityToAEnemy(World world, Hero blaster, AbilityName abilityName) {
-        for (Cell cell : getARangeOfCells(world, blaster.getCurrentCell(),
+        for (Cell cell : getARangeOfCellsThatIsNotWall(world, blaster.getCurrentCell(),
                 world.getAbilityConstants(abilityName).getRange())) {
             if (world.getOppHero(cell) != null) {
                 world.castAbility(blaster, abilityName, cell);
@@ -154,55 +148,6 @@ public class GGBHStrategy extends Strategy {
             }
         }
     }
-
-    private void blastersBombAttack(World world, Hero blaster) {
-        ArrayList<Hero> heroArrayList = new ArrayList<>();
-        for (Hero hero : world.getOppHeroes()) {
-            if (hero.getCurrentCell().getRow() != -1) {
-                heroArrayList.add(hero);
-            }
-        }
-        Cell bestCell = getBestCellForBomb(world, blaster);
-        if (bestCell != null) {
-            world.castAbility(blaster, AbilityName.BLASTER_BOMB, bestCell);
-        }
-    }
-
-    private Cell getBestCellForBomb(World world, Hero blaster) {
-        Cell bestCell = blaster.getCurrentCell();
-        int best = 0;
-
-        for (Cell cell : getARangeOfCells(world, blaster.getCurrentCell(), world.getAbilityConstants(AbilityName.BLASTER_BOMB).getRange())) {
-            int ans = 0;
-            for (Cell cell2 : getARangeOfCells(world, cell, world.getAbilityConstants(AbilityName.BLASTER_BOMB).getAreaOfEffect())) {
-                if (world.getOppHero(cell2) != null) {
-                    ans++;
-                }
-            }
-            if (ans > best) {
-                best = ans;
-                bestCell = cell;
-            }
-        }
-        if (best == 0) {
-            return null;
-        }
-        return bestCell;
-    }
-
-    private ArrayList<Cell> getARangeOfCells(World world, Cell cell, int range) {
-        ArrayList<Cell> answer = new ArrayList<>();
-        Cell[][] cells = world.getMap().getCells();
-        for (int r = Math.max(0, cell.getRow() - range - 2); r < Math.min(cells.length, cell.getRow() + range + 2); r++) {
-            for (int c = Math.max(0, cell.getColumn() - range - 2); c < Math.min(cells.length, cell.getColumn() + range + 2); c++) {
-                if (world.manhattanDistance(cell, world.getMap().getCell(r, c)) <= range) {
-                    answer.add(world.getMap().getCell(r, c));
-                }
-            }
-        }
-        return answer;
-    }
-
     private void guardianActions(World world) {
         int cooldownTurns = world.getAbilityConstants(AbilityName.GUARDIAN_FORTIFY).getCooldown();
         int turn = world.getCurrentTurn();
@@ -215,71 +160,21 @@ public class GGBHStrategy extends Strategy {
     }
 
     private void healerAction(World world) {
-        Hero myHeros[] = world.getMyHeroes();
-
-        AbilityConstants abilityHealer = world.getAbilityConstants(AbilityName.HEALER_HEAL);
-        int range = abilityHealer.getRange(),
-                power = abilityHealer.getPower();
-
-        Hero healer = world.getHero(heroIds.get(3)); // HEALER ID = 3
-        ArrayList<Hero> inArea = new ArrayList<>();
-        for (Hero hero : myHeros) {
-            int distance = world.manhattanDistance(hero.getCurrentCell(), healer.getCurrentCell());
-            if (distance <= range)
-                inArea.add(hero);
-        }
-        Collections.sort(inArea, Comparator.comparingInt(Hero::getCurrentHP));
-        for (Hero hero : inArea) {
-            if (hero.getCurrentHP() + power <= hero.getMaxHP()) {
-                world.castAbility(healer, AbilityName.HEALER_HEAL, hero.getCurrentCell());
-                return;
-            }
-        }
-        if (inArea.size() != 0)
-            world.castAbility(healer, AbilityName.HEALER_HEAL, inArea.get(0).getCurrentCell());
+        Hero healer = world.getHero(heroIds.get(3));
+        healTheBestHero(world, healer);
     }
+
+
 
     private void dodge(World world) {
         Hero[] heroes = world.getMyHeroes();
-        ArrayList<Hero> heroArrayList = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            heroArrayList.add(heroes[i]);
-        }
         ArrayList<Cell> targetCells = getHeroTargetCells(world);
         for (int i = 0; i < 4; i++) {
-            Hero hero = heroes[i];
-            Direction dir[] = world.getPathMoveDirections(heroes[i].getCurrentCell(), targetCells.get(i));
-            AbilityName dodgeAbility;
-            if (i < 2) {
-                dodgeAbility = AbilityName.GUARDIAN_DODGE;
-            } else if (i == 2) {
-                dodgeAbility = AbilityName.BLASTER_DODGE;
-            } else {
-                dodgeAbility = AbilityName.HEALER_DODGE;
-            }
-            if (dir.length >= world.getAbilityConstants(dodgeAbility).getRange()) {
-                Cell targetCell = hero.getCurrentCell();
-                for (int j = 0; j < world.getAbilityConstants(dodgeAbility).getRange(); j++) {
-                    targetCell = getNextCellByDirection(world, targetCell, dir[j]);
-                }
-                world.castAbility(hero, dodgeAbility, targetCell);
-            }
+            dodgeAHero(world, heroes[i], targetCells.get(i));
         }
     }
 
-    private Cell getNextCellByDirection(World world, Cell cell, Direction direction) {
-        int r = cell.getRow();
-        int c = cell.getColumn();
-        if (direction.equals(Direction.LEFT)) {
-            c--;
-        } else if (direction.equals(Direction.RIGHT)) {
-            c++;
-        } else if (direction.equals(Direction.UP)) {
-            r--;
-        } else {
-            r++;
-        }
-        return world.getMap().getCell(r, c);
-    }
+
+
 
 }
