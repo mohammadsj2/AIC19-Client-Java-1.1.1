@@ -1,6 +1,7 @@
 package client.Strategy;
 
 import client.model.*;
+import org.omg.PortableInterceptor.INACTIVE;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -12,7 +13,7 @@ public class BBBBStrategy extends Strategy {
     ArrayList<Cell> targetCells = new ArrayList<>();
     Random random = new Random();
 
-    private Integer makeRandom(Integer n){
+    private Integer makeRandom(Integer n) {
         return ((random.nextInt() % n) + n) % n;
     }
 
@@ -92,7 +93,7 @@ public class BBBBStrategy extends Strategy {
                         world.moveHero(myHeros[i], dir[0]);
                     break;
                 }
-            if(goAfter == false) {
+            if (goAfter == false) {
                 Direction dirs[] = world.getPathMoveDirections(myHeros[i].getCurrentCell(), targetCells.get(i));
                 if (dirs.length != 0)
                     world.moveHero(myHeros[i], dirs[0]);
@@ -110,7 +111,36 @@ public class BBBBStrategy extends Strategy {
     }
 
     private void blasterAttacks(World world) {
-        // TODO
+        int dr[] = {-1, 0, +1, 0};
+        int dc[] = {0, +1, 0, -1};
+        ArrayList<Pair<Cell, Integer>> cells = new ArrayList<>();
+        for (int i = 0; i < world.getMap().getRowNum(); i++)
+            for (int j = 0; j < world.getMap().getColumnNum(); j++) {
+                Cell cell = world.getMap().getCell(i, j);
+                Integer score = 0;
+                for (int k = 0; k < 4; k++) {
+                    Integer nr = i + dr[k];
+                    Integer nc = j + dc[k];
+                    if (world.getMap().isInMap(nr, nc) && world.getOppHero(nr, nc) != null)
+                        score++;
+                }
+                Pair<Cell, Integer> target = new Pair<>(cell, score);
+                cells.add(target);
+            }
+
+        // TODO sort cells using score!
+
+        Integer range = world.getAbilityConstants(AbilityName.BLASTER_ATTACK).getRange();
+        Hero[] myHeros = world.getMyHeroes();
+        for (Hero hero : myHeros) {
+            for (Pair<Cell, Integer> target : cells) {
+                Cell cell = target.getFirst();
+                if (world.manhattanDistance(hero.getCurrentCell(), cell) <= range) {
+                    world.castAbility(hero, AbilityName.BLASTER_ATTACK, cell);
+                    break;
+                }
+            }
+        }
     }
 
     private void blasterActions(World world) {
