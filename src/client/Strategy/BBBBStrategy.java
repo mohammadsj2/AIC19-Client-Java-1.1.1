@@ -20,11 +20,20 @@ public class BBBBStrategy extends Strategy {
         for (int i = 0; i < objectiveZone.length; i++)
             mark[i] = false;
 
-
+        int minimumDistance = 3;
+        if (objectiveZone.length < 25) {
+            minimumDistance = 2;
+        }
         for (int i = 0; i < 4; i++) {
-            Integer x = getRandomIntegerLessThan(objectiveZone.length);
+            int x = getRandomIntegerLessThan(objectiveZone.length);
             while (mark[x]) {
                 x = random.nextInt() % objectiveZone.length;
+            }
+            mark[x] = true;
+            for (int k = 0; k < objectiveZone.length; k++) {
+                if (world.manhattanDistance(objectiveZone[x], objectiveZone[k]) < minimumDistance) {
+                    mark[k] = true;
+                }
             }
             targetZoneCells.add(objectiveZone[x]);
         }
@@ -34,6 +43,7 @@ public class BBBBStrategy extends Strategy {
     @Override
     public void preProcess(World world) {
         System.out.println("pre process started");
+        getHeroTargetCellsZone(world);
     }
 
     private static int cnt = 0;
