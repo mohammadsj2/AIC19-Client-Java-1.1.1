@@ -75,7 +75,6 @@ public class BBBBStrategy extends Strategy {
 
     @Override
     public void moveTurn(World world) {
-        System.out.println("move started");
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         Hero myHeros[] = world.getMyHeroes();
         Hero oppHeros[] = world.getOppHeroes();
@@ -102,8 +101,6 @@ public class BBBBStrategy extends Strategy {
 
     @Override
     public void actionTurn(World world) {
-        System.out.println("action started");
-
         blasterActions(world);
         blasterAttacks(world);
         dodge(world);

@@ -85,11 +85,6 @@ public class GGBHStrategy extends Strategy {
                 turn = 4;
         ArrayList<Cell> targetCells = getHeroTargetCells(world);
         Hero myHeros[] = world.getMyHeroes();
-        for (int i = 0; i < 4; i++) {
-            System.out.print(targetCells.get(i).getRow());
-            System.out.print(" ");
-            System.out.println(targetCells.get(i).getColumn());
-        }
         if ((world.getCurrentTurn() % Mod) < turn) {
             System.out.println(world.getCurrentTurn());
             for (int i = 0; i < 4; i++) {
@@ -115,8 +110,6 @@ public class GGBHStrategy extends Strategy {
 
     @Override
     public void actionTurn(World world) {
-        System.out.println("action started");
-
         guardianActions(world);
         healerAction(world);
         attackActions(world);
