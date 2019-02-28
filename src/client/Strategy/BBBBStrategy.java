@@ -79,18 +79,6 @@ public class BBBBStrategy extends Strategy {
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
             Cell targetCell = targetCells.get(i);
-           /* boolean goAfter = false;
-            for (int j = 0; j < 4; j++)
-                if (oppHeros[j].getCurrentCell().getRow() >= 0 && cnt[j] < 2) {
-                    goAfter = true;
-                    cnt[j]++;
-                    Direction dir[] = world.getPathMoveDirections(hero.getCurrentCell(),
-                            oppHeros[j].getCurrentCell());
-                    if (dir.length != 0)
-                        world.moveHero(hero, dir[0]);
-                    break;
-                }
-            if (!goAfter) {*/
             Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
             if (dirs.length != 0) {
                 Cell nextCell=getNextCellByDirection(world,hero.getCurrentCell(),dirs[0]);
@@ -109,10 +97,21 @@ public class BBBBStrategy extends Strategy {
                     dirs=world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
                     if(dirs.length!=0){
                         world.moveHero(hero,dirs[0]);
+                        heroMoved.put(hero.getId(),true);
                     }
                 }
             }
-            //}
+        }
+        for (int i = 0; i < 4; i++) {
+            Hero hero = myHeros[i];
+            if(heroMoved.get(hero.getId())){
+                continue;
+            }
+            Cell targetCell = targetCells.get(i);
+            Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
+            if (dirs.length != 0) {
+                world.moveHero(hero, dirs[0]);
+            }
         }
     }
 
