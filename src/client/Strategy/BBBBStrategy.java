@@ -4,6 +4,8 @@ import client.model.*;
 import org.omg.PortableInterceptor.INACTIVE;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 public class BBBBStrategy extends Strategy {
@@ -128,11 +130,15 @@ public class BBBBStrategy extends Strategy {
                 cells.add(target);
             }
 
-        // TODO sort cells using score!
+        Collections.sort(cells, (t1, t2) -> {
+            if (t1.getSecond() < t2.getSecond())
+                return 1;
+            return -1;
+        });
 
         Integer range = world.getAbilityConstants(AbilityName.BLASTER_ATTACK).getRange();
-        Hero[] myHeros = world.getMyHeroes();
-        for (Hero hero : myHeros) {
+        Hero[] myHeroes = world.getMyHeroes();
+        for (Hero hero : myHeroes) {
             for (Pair<Cell, Integer> target : cells) {
                 Cell cell = target.getFirst();
                 if (world.manhattanDistance(hero.getCurrentCell(), cell) <= range) {
