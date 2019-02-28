@@ -70,8 +70,7 @@ public class BBBBStrategy extends Strategy {
     public void moveTurn(World world) {
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         Hero myHeros[] = world.getMyHeroes();
-        Hero oppHeros[] = world.getOppHeroes();
-        int cnt[] = {0, 0, 0, 0};
+
         HashMap<Integer,Boolean> heroMoved=new HashMap<>();
         for(Hero hero:world.getMyHeroes()){
             heroMoved.put(hero.getId(),false);
@@ -79,6 +78,10 @@ public class BBBBStrategy extends Strategy {
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
             Cell targetCell = targetCells.get(i);
+            if(betterToWait(world, hero, targetCell)){
+                System.out.println(i);
+                continue;
+            }
             Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
             if (dirs.length != 0) {
                 Cell nextCell=getNextCellByDirection(world,hero.getCurrentCell(),dirs[0]);
@@ -105,14 +108,23 @@ public class BBBBStrategy extends Strategy {
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
             if(heroMoved.get(hero.getId())){
+                System.out.println(i);
                 continue;
             }
             Cell targetCell = targetCells.get(i);
+            if(betterToWait(world, hero, targetCell)){
+                continue;
+            }
             Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
             if (dirs.length != 0) {
                 world.moveHero(hero, dirs[0]);
             }
         }
+    }
+
+    private boolean betterToWait(World world, Hero hero, Cell targetCell) {
+        return false;
+        //return world.getCurrentTurn()<3 && dodgeAHero(world,hero,targetCell,false)>5;
     }
 
     private void swapTargetCells(int i, int j) {
