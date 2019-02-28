@@ -7,11 +7,15 @@ import java.util.Comparator;
 import java.util.Random;
 
 public abstract class Strategy {
+    public static final int INF_DISTANCE = 1000;
     Random random = new Random();
 
     public abstract void preProcess(World world);
+
     public abstract void pickTurn(World world);
+
     public abstract void moveTurn(World world);
+
     public abstract void actionTurn(World world);
 
     Cell getNextCellByDirection(World world, Cell cell, Direction direction) {
@@ -29,31 +33,31 @@ public abstract class Strategy {
         return world.getMap().getCell(r, c);
     }
 
-    int dodgeAHero(World world, Hero hero, Cell targetCell, boolean action) {
+    int dodgeAHero(World world, Hero hero, Cell targetCell, boolean action, boolean force) {
         Direction dir[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
-        AbilityName dodgeAbility=hero.getDodgeAbilities()[0].getName();
+        AbilityName dodgeAbility = hero.getDodgeAbilities()[0].getName();
         int range = world.getAbilityConstants(dodgeAbility).getRange();
+        if (dir.length >= range || force) {
 
-        if (dir.length >= range) {
-            ArrayList<Cell> cellsOfPath=new ArrayList<>();
-            cellsOfPath.add(hero.getCurrentCell());
-            Cell targetCell2 = hero.getCurrentCell();
-            for (Direction direction:dir) {
-                targetCell2 = getNextCellByDirection(world, targetCell2, direction);
-                cellsOfPath.add(targetCell2);
-            }
-            for(int i=cellsOfPath.size()-1;i>=0;i--){
-                Cell cell=cellsOfPath.get(i);
-                if(world.manhattanDistance(hero.getCurrentCell(),cell)<=range){
-                    if(action)world.castAbility(hero, dodgeAbility, targetCell2);
-                    return i;
+            Cell bestCell = null;
+            int bestDistance = INF_DISTANCE;
+            for (Cell dodgeCell : getARangeOfCellsThatIsNotWall(world, hero.getCurrentCell(), world.getAbilityConstants(dodgeAbility).getRange())) {
+                int length = world.getPathMoveDirections(dodgeCell, targetCell).length;
+                if (length <= bestDistance) {
+                    bestDistance = length;
+                    bestCell = dodgeCell;
                 }
             }
+            if (action)
+                world.castAbility(hero, dodgeAbility, bestCell);
+            return dir.length - world.getPathMoveDirections(bestCell, targetCell).length;
         }
+
         return 0;
     }
-    int dodgeAHero(World world, Hero hero, Cell targetCell){
-        return dodgeAHero(world,hero,targetCell,true);
+
+    int dodgeAHero(World world, Hero hero, Cell targetCell) {
+        return dodgeAHero(world, hero, targetCell, true, false);
     }
 
     ArrayList<Cell> getARangeOfCellsThatIsNotWall(World world, Cell cell, int range) {

@@ -71,48 +71,48 @@ public class BBBBStrategy extends Strategy {
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         Hero myHeros[] = world.getMyHeroes();
 
-        HashMap<Integer,Boolean> heroMoved=new HashMap<>();
-        for(Hero hero:world.getMyHeroes()){
-            heroMoved.put(hero.getId(),false);
+        HashMap<Integer, Boolean> heroMoved = new HashMap<>();
+        for (Hero hero : world.getMyHeroes()) {
+            heroMoved.put(hero.getId(), false);
         }
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
             Cell targetCell = targetCells.get(i);
-            if(betterToWait(world, hero, targetCell)){
+            if (betterToWait(world, hero, targetCell)) {
                 System.out.println(i);
                 continue;
             }
             Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
             if (dirs.length != 0) {
-                Cell nextCell=getNextCellByDirection(world,hero.getCurrentCell(),dirs[0]);
-                if(world.getMyHero(nextCell)==null || heroMoved.get(world.getMyHero(nextCell).getId())) {
+                Cell nextCell = getNextCellByDirection(world, hero.getCurrentCell(), dirs[0]);
+                if (world.getMyHero(nextCell) == null || heroMoved.get(world.getMyHero(nextCell).getId())) {
                     world.moveHero(hero, dirs[0]);
-                    heroMoved.put(hero.getId(),true);
-                }else{
+                    heroMoved.put(hero.getId(), true);
+                } else {
                     Hero mozahem = world.getMyHero(nextCell);
-                    int index=0;
-                    for(;index<world.getMyHeroes().length;index++){
-                        if(world.getMyHeroes()[index].getId()==mozahem.getId()){
+                    int index = 0;
+                    for (; index < world.getMyHeroes().length; index++) {
+                        if (world.getMyHeroes()[index].getId() == mozahem.getId()) {
                             break;
                         }
                     }
                     swapTargetCells(i, index);
-                    dirs=world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
-                    if(dirs.length!=0){
-                        world.moveHero(hero,dirs[0]);
-                        heroMoved.put(hero.getId(),true);
+                    dirs = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
+                    if (dirs.length != 0) {
+                        world.moveHero(hero, dirs[0]);
+                        heroMoved.put(hero.getId(), true);
                     }
                 }
             }
         }
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
-            if(heroMoved.get(hero.getId())){
+            if (heroMoved.get(hero.getId())) {
                 System.out.println(i);
                 continue;
             }
             Cell targetCell = targetCells.get(i);
-            if(betterToWait(world, hero, targetCell)){
+            if (betterToWait(world, hero, targetCell)) {
                 continue;
             }
             Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
@@ -123,14 +123,13 @@ public class BBBBStrategy extends Strategy {
     }
 
     private boolean betterToWait(World world, Hero hero, Cell targetCell) {
-        return false;
-        //return world.getCurrentTurn()<3 && dodgeAHero(world,hero,targetCell,false)>5;
+        return world.getCurrentTurn() <= 2;
     }
 
     private void swapTargetCells(int i, int j) {
-        Cell c=targetZoneCells.get(i);
-        targetZoneCells.set(i,targetZoneCells.get(j));
-        targetZoneCells.set(j,c);
+        Cell c = targetZoneCells.get(i);
+        targetZoneCells.set(i, targetZoneCells.get(j));
+        targetZoneCells.set(j, c);
     }
 
     @Override
@@ -172,7 +171,7 @@ public class BBBBStrategy extends Strategy {
             for (Pair<Cell, Integer> target : cells) {
                 Cell targetCell = target.getFirst();
                 if (target.getSecond() > 0 && world.manhattanDistance(hero.getCurrentCell(), targetCell) <= range) {
-                    if(world.isInVision(hero.getCurrentCell(),targetCell)) {
+                    if (world.isInVision(hero.getCurrentCell(), targetCell)) {
                         world.castAbility(hero, AbilityName.BLASTER_ATTACK, targetCell);
                         break;
                     }
@@ -188,6 +187,8 @@ public class BBBBStrategy extends Strategy {
         for (int i = 0; i < 4; i++) {
             dodgeAHero(world, heroes[i], targetCells.get(i));
         }
+        for (int i = 0; i < 4; i++)
+            dodgeAHero(world, heroes[i], targetCells.get(i), true, true);
     }
 
 }
