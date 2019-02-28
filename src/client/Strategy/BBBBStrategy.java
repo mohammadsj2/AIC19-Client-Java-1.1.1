@@ -131,10 +131,12 @@ public class BBBBStrategy extends Strategy {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
             for (Pair<Cell, Integer> target : cells) {
-                Cell cell = target.getFirst();
-                if (target.getSecond() > 0 && world.manhattanDistance(hero.getCurrentCell(), cell) <= range) {
-                    world.castAbility(hero, AbilityName.BLASTER_ATTACK, cell);
-                    break;
+                Cell targetCell = target.getFirst();
+                if (target.getSecond() > 0 && world.manhattanDistance(hero.getCurrentCell(), targetCell) <= range) {
+                    if(world.isInVision(hero.getCurrentCell(),targetCell)) {
+                        world.castAbility(hero, AbilityName.BLASTER_ATTACK, targetCell);
+                        break;
+                    }
                 }
             }
         }
