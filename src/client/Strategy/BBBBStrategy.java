@@ -132,8 +132,8 @@ public class BBBBStrategy extends Strategy {
         System.out.println("moveTurn ended!"+world.getCurrentTurn());
     }
 
-    private boolean betterToWait(World world, Hero hero, Cell targetCell) {
-        return world.getCurrentTurn() <= 5;
+    boolean betterToWait(World world, Hero hero, Cell targetCell) {
+        return world.getCurrentTurn() <= 5 && hero.getDodgeAbilities()[0].isReady();
         // TODO: 3/1/2019 turn hashon az 4 shoroo mishe badan momkene avazesh konan :/ khodemoon bayad turn ro bezanim !!!!!
     }
 
@@ -151,13 +151,13 @@ public class BBBBStrategy extends Strategy {
         System.out.println("actionTurn ended!"+world.getCurrentTurn());
     }
 
-    private void blastersBombAttacks(World world) {
+    void blastersBombAttacks(World world) {
         for (Hero hero : world.getMyHeroes()) {
             blastersBombAttack(world, hero);
         }
     }
 
-    private void blasterAttacks(World world) {
+    void blasterAttacks(World world) {
         ArrayList<Pair<Cell, Integer>> cells = new ArrayList<>();
         ArrayList<Cell> importantCells = new ArrayList<>();
         for (Hero hero : world.getMyHeroes()) {
@@ -193,7 +193,7 @@ public class BBBBStrategy extends Strategy {
     }
 
 
-    private void dodge(World world) {
+    void dodge(World world) {
         Hero[] heroes = world.getMyHeroes();
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
