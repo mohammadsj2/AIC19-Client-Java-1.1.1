@@ -5,7 +5,7 @@ import client.Strategy.*;
 import client.model.*;
 
 public class AI {
-    public static Strategy strategy=new BBBBStrategy();
+    public static Strategy strategy=new BBBBBetterStrategy();
 
     public void preProcess(World world) {
         //System.out.println("pre process started");

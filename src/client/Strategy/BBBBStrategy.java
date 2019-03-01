@@ -74,7 +74,6 @@ public class BBBBStrategy extends Strategy {
 
     @Override
     public void moveTurn(World world) {
-        System.out.println("moveTurn ended!"+world.getCurrentTurn());
         if(!heroIdsSetted)setHeroIds(world);
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         Hero myHeros[] = world.getMyHeroes();
@@ -87,7 +86,6 @@ public class BBBBStrategy extends Strategy {
             Hero hero = myHeros[i];
             Cell targetCell = targetCells.get(i);
             if (betterToWait(world, hero, targetCell)) {
-                System.out.println(i);
                 continue;
             }
             Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
@@ -113,7 +111,6 @@ public class BBBBStrategy extends Strategy {
                 }
             }
         }
-        System.out.println("moveTurn ended!"+world.getCurrentTurn());
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
             if (heroMoved.get(hero.getId())) {
@@ -129,7 +126,6 @@ public class BBBBStrategy extends Strategy {
                 world.moveHero(hero, dirs[0]);
             }
         }
-        System.out.println("moveTurn ended!"+world.getCurrentTurn());
     }
 
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
@@ -148,7 +144,6 @@ public class BBBBStrategy extends Strategy {
         blastersBombAttacks(world);
         blasterAttacks(world);
         dodge(world);
-        System.out.println("actionTurn ended!"+world.getCurrentTurn());
     }
 
     void blastersBombAttacks(World world) {

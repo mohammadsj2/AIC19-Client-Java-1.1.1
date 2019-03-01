@@ -34,6 +34,9 @@ public abstract class Strategy {
     }
 
     int dodgeAHero(World world, Hero hero, Cell targetCell, boolean action, boolean force) {
+        if(hero.getCurrentCell().equals(targetCell)){
+            return 0;
+        }
         Direction dir[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
         AbilityName dodgeAbility = hero.getDodgeAbilities()[0].getName();
         int range = world.getAbilityConstants(dodgeAbility).getRange();
