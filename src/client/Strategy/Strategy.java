@@ -8,7 +8,7 @@ import java.util.Random;
 
 public abstract class Strategy {
     public static final int INF_DISTANCE = 1000;
-    Random random = new Random();
+    private Random random = new Random();
 
     public abstract void preProcess(World world);
 

@@ -3,11 +3,14 @@ package client.Strategy;
 import client.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class BBBBStrategy extends Strategy {
     private ArrayList<Integer> heroIds = new ArrayList<>();
     private ArrayList<Cell> targetZoneCells = new ArrayList<>();
+    private Boolean heroIdsSetted=false;
 
 
     private ArrayList<Cell> getHeroTargetCellsZone(World world) {
@@ -16,33 +19,27 @@ public class BBBBStrategy extends Strategy {
             return targetZoneCells;
 
         Cell[] objectiveZone = world.getMap().getObjectiveZone();
-        Boolean[] mark = new Boolean[objectiveZone.length];
-        for (int i = 0; i < objectiveZone.length; i++)
-            mark[i] = false;
+        ArrayList<Cell> choices = new ArrayList<>(Arrays.asList(objectiveZone));
 
         int minimumDistance = 3;
         if (objectiveZone.length < 25) {
             minimumDistance = 2;
         }
         for (int i = 0; i < 4; i++) {
-            int x = getRandomIntegerLessThan(objectiveZone.length);
-            while (mark[x]) {
-                x = random.nextInt() % objectiveZone.length;
-            }
-            mark[x] = true;
-            for (int k = 0; k < objectiveZone.length; k++) {
-                if (world.manhattanDistance(objectiveZone[x], objectiveZone[k]) < minimumDistance) {
-                    mark[k] = true;
+            int x = getRandomIntegerLessThan(choices.size());
+            Cell cell=choices.get(x);
+            for (Cell cell1 : objectiveZone) {
+                if (world.manhattanDistance(cell, cell1) < minimumDistance) {
+                    choices.remove(cell1);
                 }
             }
-            targetZoneCells.add(objectiveZone[x]);
+            targetZoneCells.add(cell);
         }
         return targetZoneCells;
     }
 
     @Override
     public void preProcess(World world) {
-        System.out.println("pre process started");
         getHeroTargetCellsZone(world);
     }
 
@@ -50,6 +47,7 @@ public class BBBBStrategy extends Strategy {
 
     @Override
     public void pickTurn(World world) {
+        System.out.println(world.getCurrentTurn());
         switch (cnt) {
             case 0:
                 world.pickHero(HeroName.BLASTER);
@@ -63,21 +61,21 @@ public class BBBBStrategy extends Strategy {
             case 3:
                 world.pickHero(HeroName.BLASTER);
                 break;
-            case 4:
-                preProcessAfterPickTurn(world);
-                break;
         }
         cnt++;
     }
 
-    private void preProcessAfterPickTurn(World world) {
+    private void setHeroIds(World world) {
         for (Hero hero : world.getMyHeroes()) {
             heroIds.add(hero.getId());
         }
+        heroIdsSetted=true;
     }
 
     @Override
     public void moveTurn(World world) {
+        System.out.println("moveTurn ended!"+world.getCurrentTurn());
+        if(!heroIdsSetted)setHeroIds(world);
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         Hero myHeros[] = world.getMyHeroes();
 
@@ -115,6 +113,7 @@ public class BBBBStrategy extends Strategy {
                 }
             }
         }
+        System.out.println("moveTurn ended!"+world.getCurrentTurn());
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
             if (heroMoved.get(hero.getId())) {
@@ -130,10 +129,12 @@ public class BBBBStrategy extends Strategy {
                 world.moveHero(hero, dirs[0]);
             }
         }
+        System.out.println("moveTurn ended!"+world.getCurrentTurn());
     }
 
     private boolean betterToWait(World world, Hero hero, Cell targetCell) {
-        return world.getCurrentTurn() <= 2;
+        return world.getCurrentTurn() <= 5;
+        // TODO: 3/1/2019 turn hashon az 4 shoroo mishe badan momkene avazesh konan :/ khodemoon bayad turn ro bezanim !!!!!
     }
 
     private void swapTargetCells(int i, int j) {
@@ -147,6 +148,7 @@ public class BBBBStrategy extends Strategy {
         blastersBombAttacks(world);
         blasterAttacks(world);
         dodge(world);
+        System.out.println("actionTurn ended!"+world.getCurrentTurn());
     }
 
     private void blastersBombAttacks(World world) {
@@ -199,6 +201,7 @@ public class BBBBStrategy extends Strategy {
         }
         for (int i = 0; i < 4; i++)
             dodgeAHero(world, heroes[i], targetCells.get(i), true, true);
+
     }
 
 }
