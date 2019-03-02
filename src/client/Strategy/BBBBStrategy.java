@@ -1,5 +1,6 @@
 package client.Strategy;
 
+import client.Exception.CantFindRandomTargetZone;
 import client.model.*;
 
 import java.util.ArrayList;
@@ -13,19 +14,34 @@ public class BBBBStrategy extends Strategy {
     private Boolean heroIdsSetted=false;
 
 
-    private ArrayList<Cell> getHeroTargetCellsZone(World world) {
+    ArrayList<Cell> getHeroTargetCellsZone(World world) {
 
         if (targetZoneCells.size() != 0)
             return targetZoneCells;
 
+
+        int rangeOfBomb = world.getAbilityConstants(AbilityName.BLASTER_BOMB).getAreaOfEffect();
+        for(int minimumDistance = rangeOfBomb*2+1; minimumDistance>=2; minimumDistance--) {
+            for(int t=0;t<20;t++) {
+                try {
+                    targetZoneCells = getRandomHeroTargetZonesByMinimumDistance(world,minimumDistance);
+                    return targetZoneCells;
+                } catch (CantFindRandomTargetZone ignored) {
+
+                }
+            }
+        }
+        return targetZoneCells;
+    }
+
+    private ArrayList<Cell> getRandomHeroTargetZonesByMinimumDistance(World world,int minimumDistance) throws CantFindRandomTargetZone {
         Cell[] objectiveZone = world.getMap().getObjectiveZone();
         ArrayList<Cell> choices = new ArrayList<>(Arrays.asList(objectiveZone));
-
-        int minimumDistance = 3;
-        if (objectiveZone.length < 25) {
-            minimumDistance = 2;
-        }
+        ArrayList<Cell> tmp=new ArrayList<>();
         for (int i = 0; i < 4; i++) {
+            if(choices.isEmpty()){
+                throw new CantFindRandomTargetZone();
+            }
             int x = getRandomIntegerLessThan(choices.size());
             Cell cell=choices.get(x);
             for (Cell cell1 : objectiveZone) {
@@ -33,9 +49,9 @@ public class BBBBStrategy extends Strategy {
                     choices.remove(cell1);
                 }
             }
-            targetZoneCells.add(cell);
+            tmp.add(cell);
         }
-        return targetZoneCells;
+        return tmp;
     }
 
     @Override
