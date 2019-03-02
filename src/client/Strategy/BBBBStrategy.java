@@ -1,45 +1,69 @@
 package client.Strategy;
 
+import client.Exception.CantFindRandomTargetZone;
 import client.model.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class BBBBStrategy extends Strategy {
     private ArrayList<Integer> heroIds = new ArrayList<>();
     private ArrayList<Cell> targetZoneCells = new ArrayList<>();
+    private Boolean heroIdsSetted=false;
 
 
-    private ArrayList<Cell> getHeroTargetCellsZone(World world) {
+    ArrayList<Cell> getHeroTargetCellsZone(World world) {
 
         if (targetZoneCells.size() != 0)
             return targetZoneCells;
 
-        Cell[] objectiveZone = world.getMap().getObjectiveZone();
-        Boolean[] mark = new Boolean[objectiveZone.length];
-        for (int i = 0; i < objectiveZone.length; i++)
-            mark[i] = false;
 
+        int rangeOfBomb = world.getAbilityConstants(AbilityName.BLASTER_BOMB).getAreaOfEffect();
+        for(int minimumDistance = rangeOfBomb*2+1; minimumDistance>=2; minimumDistance--) {
+            for(int t=0;t<20;t++) {
+                try {
+                    targetZoneCells = getRandomHeroTargetZonesByMinimumDistance(world,minimumDistance);
+                    return targetZoneCells;
+                } catch (CantFindRandomTargetZone ignored) {
 
-        for (int i = 0; i < 4; i++) {
-            Integer x = getRandomIntegerLessThan(objectiveZone.length);
-            while (mark[x]) {
-                x = random.nextInt() % objectiveZone.length;
+                }
             }
-            targetZoneCells.add(objectiveZone[x]);
         }
         return targetZoneCells;
     }
 
+    private ArrayList<Cell> getRandomHeroTargetZonesByMinimumDistance(World world,int minimumDistance) throws CantFindRandomTargetZone {
+        Cell[] objectiveZone = world.getMap().getObjectiveZone();
+        ArrayList<Cell> choices = new ArrayList<>(Arrays.asList(objectiveZone));
+        ArrayList<Cell> tmp=new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            if(choices.isEmpty()){
+                throw new CantFindRandomTargetZone();
+            }
+            int x = getRandomIntegerLessThan(choices.size());
+            Cell cell=choices.get(x);
+            for (Cell cell1 : objectiveZone) {
+                if (world.manhattanDistance(cell, cell1) < minimumDistance) {
+                    choices.remove(cell1);
+                }
+            }
+            tmp.add(cell);
+        }
+        return tmp;
+    }
+
     @Override
     public void preProcess(World world) {
-        System.out.println("pre process started");
+        getHeroTargetCellsZone(world);
     }
 
     private static int cnt = 0;
 
     @Override
     public void pickTurn(World world) {
+        System.out.println(world.getCurrentTurn());
         switch (cnt) {
             case 0:
                 world.pickHero(HeroName.BLASTER);
@@ -53,21 +77,20 @@ public class BBBBStrategy extends Strategy {
             case 3:
                 world.pickHero(HeroName.BLASTER);
                 break;
-            case 4:
-                preProcessAfterPickTurn(world);
-                break;
         }
         cnt++;
     }
 
-    private void preProcessAfterPickTurn(World world) {
+    private void setHeroIds(World world) {
         for (Hero hero : world.getMyHeroes()) {
             heroIds.add(hero.getId());
         }
+        heroIdsSetted=true;
     }
 
     @Override
     public void moveTurn(World world) {
+        if(!heroIdsSetted)setHeroIds(world);
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         Hero myHeros[] = world.getMyHeroes();
 
@@ -79,7 +102,6 @@ public class BBBBStrategy extends Strategy {
             Hero hero = myHeros[i];
             Cell targetCell = targetCells.get(i);
             if (betterToWait(world, hero, targetCell)) {
-                System.out.println(i);
                 continue;
             }
             Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
@@ -122,8 +144,9 @@ public class BBBBStrategy extends Strategy {
         }
     }
 
-    private boolean betterToWait(World world, Hero hero, Cell targetCell) {
-        return world.getCurrentTurn() <= 2;
+    boolean betterToWait(World world, Hero hero, Cell targetCell) {
+        return world.getCurrentTurn() <= 5 && hero.getDodgeAbilities()[0].isReady();
+        // TODO: 3/1/2019 turn hashon az 4 shoroo mishe badan momkene avazesh konan :/ khodemoon bayad turn ro bezanim !!!!!
     }
 
     private void swapTargetCells(int i, int j) {
@@ -139,13 +162,13 @@ public class BBBBStrategy extends Strategy {
         dodge(world);
     }
 
-    private void blastersBombAttacks(World world) {
+    void blastersBombAttacks(World world) {
         for (Hero hero : world.getMyHeroes()) {
             blastersBombAttack(world, hero);
         }
     }
 
-    private void blasterAttacks(World world) {
+    void blasterAttacks(World world) {
         ArrayList<Pair<Cell, Integer>> cells = new ArrayList<>();
         ArrayList<Cell> importantCells = new ArrayList<>();
         for (Hero hero : world.getMyHeroes()) {
@@ -181,7 +204,7 @@ public class BBBBStrategy extends Strategy {
     }
 
 
-    private void dodge(World world) {
+    void dodge(World world) {
         Hero[] heroes = world.getMyHeroes();
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
@@ -189,6 +212,7 @@ public class BBBBStrategy extends Strategy {
         }
         for (int i = 0; i < 4; i++)
             dodgeAHero(world, heroes[i], targetCells.get(i), true, true);
+
     }
 
 }

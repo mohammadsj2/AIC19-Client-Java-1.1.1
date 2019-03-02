@@ -8,7 +8,7 @@ import java.util.Random;
 
 public abstract class Strategy {
     public static final int INF_DISTANCE = 1000;
-    Random random = new Random();
+    private Random random = new Random();
 
     public abstract void preProcess(World world);
 
@@ -34,25 +34,26 @@ public abstract class Strategy {
     }
 
     int dodgeAHero(World world, Hero hero, Cell targetCell, boolean action, boolean force) {
+        if(hero.getCurrentCell().equals(targetCell)){
+            return 0;
+        }
         Direction dir[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
         AbilityName dodgeAbility = hero.getDodgeAbilities()[0].getName();
         int range = world.getAbilityConstants(dodgeAbility).getRange();
         if (dir.length >= range || force) {
-
-            Cell bestCell = null;
-            int bestDistance = INF_DISTANCE;
+            ArrayList<Pair<Cell,Integer>> toSortPairs=new ArrayList<>();
             for (Cell dodgeCell : getARangeOfCellsThatIsNotWall(world, hero.getCurrentCell(), world.getAbilityConstants(dodgeAbility).getRange())) {
                 int length = world.getPathMoveDirections(dodgeCell, targetCell).length;
-                if (length <= bestDistance) {
-                    bestDistance = length;
-                    bestCell = dodgeCell;
+                toSortPairs.add(new Pair<>(dodgeCell,length));
+            }
+            toSortPairs.sort(Comparator.comparingInt(Pair::getSecond));
+            if (action) {
+                for(int i=0;i<Math.min(8,toSortPairs.size());i++){
+                    world.castAbility(hero, dodgeAbility, toSortPairs.get(i).getFirst());
                 }
             }
-            if (action)
-                world.castAbility(hero, dodgeAbility, bestCell);
-            return dir.length - world.getPathMoveDirections(bestCell, targetCell).length;
+            return dir.length - world.getPathMoveDirections(toSortPairs.get(0).getFirst(), targetCell).length;
         }
-
         return 0;
     }
 
