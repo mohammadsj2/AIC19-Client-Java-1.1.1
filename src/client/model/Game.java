@@ -847,7 +847,7 @@ public class Game implements World {
         return map;
     }
 
-    void setMap(Map map) {
+    public void setMap(Map map) {
         this.map = map;
     }
 
