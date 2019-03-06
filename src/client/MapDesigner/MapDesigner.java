@@ -239,7 +239,7 @@ public class MapDesigner extends Application {
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"BLASTER_ATTACK\",\n" +
                 "\t\t\t\"type\": \"OFFENSIVE\",\n" +
-                "\t\t\t\"range\": 4,\n" +
+                "\t\t\t\"range\": 3,\n" +
                 "\t\t\t\"APCost\": 15,\n" +
                 "\t\t\t\"cooldown\": 0,\n" +
                 "\t\t\t\"areaOfEffect\": 1,\n" +
@@ -293,7 +293,7 @@ public class MapDesigner extends Application {
                 "\t\t\t\"APCost\": 25,\n" +
                 "\t\t\t\"cooldown\": 4,\n" +
                 "\t\t\t\"areaOfEffect\": 2,\n" +
-                "\t\t\t\"power\": 40,\n" +
+                "\t\t\t\"power\": 35,\n" +
                 "\t\t\t\"isLobbing\": true\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
