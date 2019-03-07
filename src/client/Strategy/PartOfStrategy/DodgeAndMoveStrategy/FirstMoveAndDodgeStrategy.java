@@ -15,7 +15,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
     public static final int NUMBER_OF_ACTION_PHASES = 6;
     private ArrayList<Cell> targetZoneCells = new ArrayList<>();
 
-    protected FirstMoveAndDodgeStrategy(int maxAp) {
+    public FirstMoveAndDodgeStrategy(int maxAp) {
         super(maxAp);
     }
 

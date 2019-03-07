@@ -1,11 +1,26 @@
 package client.Strategy;
 
+import client.Exception.NotEnoughApException;
+import client.Strategy.PartOfStrategy.AttackStrategy.FirstAttackStrategy;
+import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
+import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
+import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.*;
-
-import java.util.ArrayList;
 
 public class BBBBStrategy extends Strategy {
     private static int cnt = 0;
+    static Boolean partOfStrategiesInited = false;
+
+    public void initStrategy(World world) {
+        Hero[] myHeroes = world.getMyHeroes();
+        for (Hero hero : myHeroes) {
+            partOfStrategies.add(new FirstBombStrategy(world.getMaxAP(), hero));
+        }
+        for (Hero hero : myHeroes) {
+            partOfStrategies.add(new FirstAttackStrategy(world.getMaxAP(), hero));
+        }
+        partOfStrategiesInited = true;
+    }
 
     @Override
     public void pickTurn(World world) {
@@ -29,38 +44,35 @@ public class BBBBStrategy extends Strategy {
 
     @Override
     public void preProcess(World world) {
-
+        partOfStrategies.add(new FirstMoveAndDodgeStrategy(world.getMaxAP()));
+        for (PartOfStrategy partOfStrategy : partOfStrategies) {
+            partOfStrategy.preProcess(world);
+        }
     }
 
     @Override
     public void moveTurn(World world) {
+        if (!partOfStrategiesInited)
+            initStrategy(world);
+        for (PartOfStrategy partOfStrategy : partOfStrategies) {
+            try {
+                partOfStrategy.moveTurn(world);
+            } catch (NotEnoughApException ignored) {
 
+            }
+        }
     }
 
 
     @Override
     public void actionTurn(World world) {
-        dodge(world);
-        blastersBombAttacks(world);
-        blastersAttacks(world);
-    }
+        for (PartOfStrategy partOfStrategy : partOfStrategies) {
+            try {
+                partOfStrategy.actionTurn(world);
+            } catch (NotEnoughApException ignored) {
 
-    void blastersBombAttacks(World world) {
-        for (Hero hero : world.getMyHeroes()) {
-            blastersBombAttack(world, hero);
+            }
         }
     }
-
-    void blastersAttacks(World world) {
-        Hero[] myHeroes = world.getMyHeroes();
-        for (Hero hero : myHeroes) {
-            heroAttack(world,hero);
-        }
-    }
-
-    void heroAttack(World world, Hero hero) {
-
-    }
-
 
 }

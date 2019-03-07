@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class FirstAttackStrategy extends PartOfStrategy {
     Hero hero;
-    protected FirstAttackStrategy(int maxAp,Hero hero) {
+    public FirstAttackStrategy(int maxAp, Hero hero) {
         super(maxAp);
         this.hero=hero;
     }
