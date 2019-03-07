@@ -154,7 +154,7 @@ public class Controller
             moveTurn(newGame, endEvent);
         } else
         {
-            endEvent = new Event("action-end", new Object[]{newGame.getCurrentTurn()});
+            endEvent = new Event("actionTurn-end", new Object[]{newGame.getCurrentTurn()});
             actionTurn(newGame, endEvent);
         }
     }

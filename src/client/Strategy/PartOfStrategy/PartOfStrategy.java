@@ -1,16 +1,14 @@
 package client.Strategy.PartOfStrategy;
 
 import client.Exception.NotEnoughApException;
-import client.model.AbilityName;
-import client.model.Cell;
-import client.model.Direction;
-import client.model.World;
+import client.model.*;
 
 import java.util.ArrayList;
 
 public abstract class PartOfStrategy {
     protected int maxAp=100;
     protected int remainAp=100;
+
     protected PartOfStrategy(int maxAp){
         this.maxAp=maxAp;
         remainAp=maxAp;
@@ -23,8 +21,26 @@ public abstract class PartOfStrategy {
         remainAp-=x;
     }
 
-    public void run(World world) throws NotEnoughApException {
-        remainAp=maxAp;
+    public void actionTurn(World world) throws NotEnoughApException{
+
+    }
+    public void moveTurn(World world) throws NotEnoughApException{
+
+    }
+    public void preProcess(World world){
+
+    }
+
+    public void setMaxAp(int maxAp) {
+        this.maxAp = maxAp;
+    }
+
+    public int getMaxAp() {
+        return maxAp;
+    }
+
+    public void setRemainAp(int remainAp) {
+        this.remainAp = remainAp;
     }
 
     public int getRemainAp() {
@@ -79,5 +95,26 @@ public abstract class PartOfStrategy {
             return null;
         }
         return bestCell;
+    }
+
+    protected void heal(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+        decreaseAp(hero.getAbility(AbilityName.HEALER_HEAL).getAPCost());
+        world.castAbility(hero, AbilityName.HEALER_HEAL, targetCell);
+    }
+
+    protected void move(World world, Hero hero, Direction direction) throws NotEnoughApException {
+        decreaseAp(hero.getMoveAPCost());
+        world.moveHero(hero,direction);
+    }
+
+    protected void dodge(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+        Ability dodgeAbility=hero.getDodgeAbilities()[0];
+        decreaseAp(dodgeAbility.getAPCost());
+        world.castAbility(hero, dodgeAbility, targetCell);
+    }
+
+    protected void bombAttack(World world,Hero hero,Cell cell) throws NotEnoughApException {
+        decreaseAp(hero.getAbility(AbilityName.BLASTER_BOMB).getAPCost());
+        world.castAbility(hero, AbilityName.BLASTER_BOMB, cell);
     }
 }

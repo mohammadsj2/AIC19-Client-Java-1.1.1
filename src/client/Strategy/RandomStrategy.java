@@ -30,7 +30,7 @@ public class RandomStrategy extends Strategy{
     }
 
     public void actionTurn(World world) {
-        System.out.println("action started");
+        System.out.println("actionTurn started");
         Hero[] heroes = world.getMyHeroes();
         Map map = world.getMap();
         for (Hero hero : heroes)
