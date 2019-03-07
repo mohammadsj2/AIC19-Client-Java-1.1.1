@@ -8,8 +8,8 @@ import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.*;
 
 public class BBBBStrategy extends Strategy {
-    private static int cnt = 0;
-    static Boolean partOfStrategiesInited = false;
+    private int cnt = 0;
+    private Boolean partOfStrategiesInited = false;
 
     public void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
