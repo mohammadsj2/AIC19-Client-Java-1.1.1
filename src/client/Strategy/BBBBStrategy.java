@@ -1,6 +1,7 @@
 package client.Strategy;
 
 import client.Exception.CantFindRandomTargetZone;
+import client.MyMath;
 import client.model.*;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class BBBBStrategy extends Strategy {
             if(choices.isEmpty()){
                 throw new CantFindRandomTargetZone();
             }
-            int x = getRandomIntegerLessThan(choices.size());
+            int x = MyMath.getRandomIntegerLessThan(choices.size());
             Cell cell=choices.get(x);
             for (Cell cell1 : objectiveZone) {
                 if (world.manhattanDistance(cell, cell1) < minimumDistance) {
