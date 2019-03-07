@@ -2,6 +2,7 @@ package client.Strategy.PartOfStrategy.HealStrategy;
 
 
 import client.Exception.NotEnoughApException;
+import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.AbilityConstants;
 import client.model.AbilityName;
 import client.model.Hero;
@@ -13,7 +14,7 @@ import java.util.Comparator;
 /*
     ooni ke kamtarin joono dare va too range hast!
  */
-public class FirstHealStrategy extends HealStrategy{
+public class FirstHealStrategy extends PartOfStrategy {
     Hero healer;
 
     protected FirstHealStrategy(int maxAp,Hero healer) {
@@ -22,8 +23,7 @@ public class FirstHealStrategy extends HealStrategy{
     }
 
     @Override
-    public void run(World world) throws NotEnoughApException {
-        super.run(world);
+    public void actionTurn(World world) throws NotEnoughApException {
         AbilityConstants abilityHealer = world.getAbilityConstants(AbilityName.HEALER_HEAL);
         int range = abilityHealer.getRange(),
                 power = abilityHealer.getPower();

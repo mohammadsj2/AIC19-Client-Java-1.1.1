@@ -31,7 +31,7 @@ public class AI {
     }
 
     public void actionTurn(World world) {
-        //System.out.println("action started");
+        //System.out.println("actionTurn started");
         strategy.actionTurn(world);
     }
 }
