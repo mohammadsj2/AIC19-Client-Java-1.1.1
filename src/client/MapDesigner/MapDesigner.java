@@ -1,4 +1,4 @@
-package client.MapDesigner;
+/*package client.MapDesigner;
 
 
 import client.model.Cell;
@@ -373,3 +373,4 @@ public class MapDesigner extends Application {
         addNode(textField);
     }
 }
+*/

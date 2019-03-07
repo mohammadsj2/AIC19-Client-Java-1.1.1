@@ -3,17 +3,9 @@ package client;
 
 import client.Strategy.*;
 import client.model.*;
-import com.google.gson.Gson;
-import common.network.Json;
-
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Formatter;
 
 public class AI {
-    public static Strategy strategy=new BBBBBetterStrategy();
+    public static Strategy strategy=new BBBBStrategy();
 
     public void preProcess(World world) {
         //System.out.println("pre process started");

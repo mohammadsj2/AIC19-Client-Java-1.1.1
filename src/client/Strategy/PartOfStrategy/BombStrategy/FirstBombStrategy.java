@@ -14,7 +14,7 @@ import client.model.World;
  */
 public class FirstBombStrategy extends PartOfStrategy {
     Hero blaster;
-    FirstBombStrategy(int maxAp, Hero blaster) {
+    public FirstBombStrategy(int maxAp, Hero blaster) {
         super(maxAp);
         this.blaster=blaster;
     }
