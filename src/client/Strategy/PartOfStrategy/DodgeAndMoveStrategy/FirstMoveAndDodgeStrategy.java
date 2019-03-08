@@ -12,8 +12,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
-    public static final int NUMBER_OF_ACTION_PHASES = 6;
-    private ArrayList<Cell> targetZoneCells = new ArrayList<>();
+    private static final int NUMBER_OF_ACTION_PHASES = 6;
+    ArrayList<Cell> targetZoneCells = new ArrayList<>();
 
     public FirstMoveAndDodgeStrategy(int maxAp) {
         super(maxAp);
@@ -29,10 +29,10 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
             return targetZoneCells;
 
         int rangeOfBomb = world.getAbilityConstants(AbilityName.BLASTER_BOMB).getAreaOfEffect();
-        for(int minimumDistance = rangeOfBomb*2+1; minimumDistance>=2; minimumDistance--) {
-            for(int t=0;t<20;t++) {
+        for (int minimumDistance = rangeOfBomb * 2 + 1; minimumDistance >= 2; minimumDistance--) {
+            for (int t = 0; t < 20; t++) {
                 try {
-                    targetZoneCells = getRandomHeroTargetZonesByMinimumDistance(world,minimumDistance);
+                    targetZoneCells = getRandomHeroTargetZonesByMinimumDistance(world, minimumDistance);
                     return targetZoneCells;
                 } catch (CantFindRandomTargetZone ignored) {
 
@@ -42,16 +42,16 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
         return targetZoneCells;
     }
 
-    private ArrayList<Cell> getRandomHeroTargetZonesByMinimumDistance(World world,int minimumDistance) throws CantFindRandomTargetZone {
+    private ArrayList<Cell> getRandomHeroTargetZonesByMinimumDistance(World world, int minimumDistance) throws CantFindRandomTargetZone {
         Cell[] objectiveZone = world.getMap().getObjectiveZone();
         ArrayList<Cell> choices = new ArrayList<>(Arrays.asList(objectiveZone));
-        ArrayList<Cell> tmp=new ArrayList<>();
+        ArrayList<Cell> tmp = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            if(choices.isEmpty()){
+            if (choices.isEmpty()) {
                 throw new CantFindRandomTargetZone();
             }
             int x = MyMath.getRandomIntegerLessThan(choices.size());
-            Cell cell=choices.get(x);
+            Cell cell = choices.get(x);
             for (Cell cell1 : objectiveZone) {
                 if (world.manhattanDistance(cell, cell1) < minimumDistance) {
                     choices.remove(cell1);
@@ -70,7 +70,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
         for (Hero hero : world.getMyHeroes()) {
             heroMoved.put(hero.getId(), false);
         }
-        ArrayList<Cell> targetCells=getHeroTargetCellsZone(world);
+        ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
             Cell targetCell = targetCells.get(i);
@@ -81,7 +81,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
             if (dirs.length != 0) {
                 Cell nextCell = getNextCellByDirection(world, hero.getCurrentCell(), dirs[0]);
                 if (world.getMyHero(nextCell) == null || heroMoved.get(world.getMyHero(nextCell).getId())) {
-                    move(world,hero,dirs[0]);
+                    move(world, hero, dirs[0]);
                     heroMoved.put(hero.getId(), true);
                 } else {
                     Hero mozahem = world.getMyHero(nextCell);
@@ -94,7 +94,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
                     swapTargetCells(i, index);
                     dirs = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
                     if (dirs.length != 0) {
-                        move(world,hero,dirs[0]);
+                        move(world, hero, dirs[0]);
                         heroMoved.put(hero.getId(), true);
                     }
                 }
@@ -112,26 +112,27 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
             }
             Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
             if (dirs.length != 0) {
-                move(world,hero,dirs[0]);
+                move(world, hero, dirs[0]);
             }
         }
     }
-    private void swapTargetCells(int i, int j) {
+
+    protected void swapTargetCells(int i, int j) {
         Cell c = targetZoneCells.get(i);
         targetZoneCells.set(i, targetZoneCells.get(j));
         targetZoneCells.set(j, c);
     }
 
 
-
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
         try {
-            return hero.getDodgeAbilities()[0].isReady() && dodgeAHero(world,hero,targetCell,false,true)> NUMBER_OF_ACTION_PHASES;
+            return hero.getDodgeAbilities()[0].isReady() && dodgeAHero(world, hero, targetCell, false, true) > NUMBER_OF_ACTION_PHASES;
         } catch (NotEnoughApException e) {
             e.printStackTrace();
         }
         return false;
     }
+
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
         super.actionTurn(world);
@@ -143,23 +144,24 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
         for (int i = 0; i < 4; i++)
             dodgeAHero(world, heroes[i], targetCells.get(i), true, true);
     }
+
     int dodgeAHero(World world, Hero hero, Cell targetCell, boolean action, boolean force) throws NotEnoughApException {
-        if(hero.getCurrentCell().equals(targetCell)){
+        if (hero.getCurrentCell().equals(targetCell)) {
             return 0;
         }
         Direction dir[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
         AbilityName dodgeAbility = hero.getDodgeAbilities()[0].getName();
         int range = world.getAbilityConstants(dodgeAbility).getRange();
         if (dir.length >= range || force) {
-            ArrayList<Pair<Cell,Integer>> toSortPairs=new ArrayList<>();
+            ArrayList<Pair<Cell, Integer>> toSortPairs = new ArrayList<>();
             for (Cell dodgeCell : getARangeOfCellsThatIsNotWall(world, hero.getCurrentCell(), world.getAbilityConstants(dodgeAbility).getRange())) {
                 int length = world.getPathMoveDirections(dodgeCell, targetCell).length;
-                toSortPairs.add(new Pair<>(dodgeCell,length));
+                toSortPairs.add(new Pair<>(dodgeCell, length));
             }
             toSortPairs.sort(Comparator.comparingInt(Pair::getSecond));
             if (action) {
-                for(int i=0;i<Math.min(8,toSortPairs.size());i++){
-                    dodge(world,hero,toSortPairs.get(i).getFirst());
+                for (int i = 0; i < Math.min(8, toSortPairs.size()); i++) {
+                    dodge(world, hero, toSortPairs.get(i).getFirst());
                 }
             }
             return dir.length - world.getPathMoveDirections(toSortPairs.get(0).getFirst(), targetCell).length;

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public abstract class Strategy {
     public static final int INF_DISTANCE = 1000;
 
-    protected ArrayList<PartOfStrategy> partOfStrategies =new ArrayList<>();
+
     public abstract void preProcess(World world);
 
     public abstract void pickTurn(World world);

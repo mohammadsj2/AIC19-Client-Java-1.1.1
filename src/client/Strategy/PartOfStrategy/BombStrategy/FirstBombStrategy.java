@@ -21,8 +21,7 @@ public class FirstBombStrategy extends PartOfStrategy {
 
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
-
-        Cell bestCell = getBestCellForNotLinearStrategies(world, blaster.getCurrentCell() , AbilityName.BLASTER_BOMB);
+        Cell bestCell = getCellWithMostOppHeroesForNotLinearAbilities(world, blaster.getCurrentCell() , AbilityName.BLASTER_BOMB);
         if (bestCell != null) {
             bombAttack(world,blaster,bestCell);
         }
