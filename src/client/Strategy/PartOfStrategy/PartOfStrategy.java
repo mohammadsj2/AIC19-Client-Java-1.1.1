@@ -6,28 +6,31 @@ import client.model.*;
 import java.util.ArrayList;
 
 public abstract class PartOfStrategy {
-    protected int maxAp=100;
-    protected int remainAp=100;
+    public static final int INFINIT_AP = 1000000000;
+    protected int maxAp = INFINIT_AP;
+    protected int remainAp = INFINIT_AP;
 
-    protected PartOfStrategy(int maxAp){
-        this.maxAp=maxAp;
-        remainAp=maxAp;
+    protected PartOfStrategy(int maxAp) {
+        this.maxAp = maxAp;
+        remainAp = maxAp;
     }
 
     public void decreaseAp(int x) throws NotEnoughApException {
-        if(x>remainAp){
+        if (x > remainAp) {
             throw new NotEnoughApException();
         }
-        remainAp-=x;
+        remainAp -= x;
     }
 
-    public void actionTurn(World world) throws NotEnoughApException{
+    public void actionTurn(World world) throws NotEnoughApException {
 
     }
-    public void moveTurn(World world) throws NotEnoughApException{
+
+    public void moveTurn(World world) throws NotEnoughApException {
 
     }
-    public void preProcess(World world){
+
+    public void preProcess(World world) {
 
     }
 
@@ -60,6 +63,7 @@ public abstract class PartOfStrategy {
         }
         return answer;
     }
+
     protected Cell getNextCellByDirection(World world, Cell cell, Direction direction) {
         int r = cell.getRow();
         int c = cell.getColumn();
@@ -75,17 +79,13 @@ public abstract class PartOfStrategy {
         return world.getMap().getCell(r, c);
     }
 
-    protected Cell getBestCellForNotLinearStrategies(World world, Cell currentCell, AbilityName abilityName) {
+    protected Cell getCellWithMostOppHeroesForNotLinearAbilities(World world, Cell currentCell, AbilityName abilityName) {
         Cell bestCell = currentCell;
         int best = 0;
 
-        for (Cell cell : getARangeOfCellsThatIsNotWall(world,currentCell, world.getAbilityConstants(abilityName).getRange())) {
-            int ans = 0;
-            for (Cell cell2 : getARangeOfCellsThatIsNotWall(world, cell, world.getAbilityConstants(abilityName).getAreaOfEffect())) {
-                if (world.getOppHero(cell2) != null) {
-                    ans++;
-                }
-            }
+        for (Cell cell : getARangeOfCellsThatIsNotWall(world, currentCell,
+                world.getAbilityConstants(abilityName).getRange())) {
+            int ans = getNumberOfOppHeroesInRange(world, cell, world.getAbilityConstants(abilityName).getAreaOfEffect());
             if (ans > best) {
                 best = ans;
                 bestCell = cell;
@@ -97,24 +97,69 @@ public abstract class PartOfStrategy {
         return bestCell;
     }
 
+    private int getNumberOfOppHeroesInRange(World world, Cell cell, int range) {
+        int ans = 0;
+        for (Cell cell2 : getARangeOfCellsThatIsNotWall(world, cell, range)) {
+            if (world.getOppHero(cell2) != null) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    protected Cell getCellWithMostOwnHeroesForNotLinearAbilities(World world, Cell currentCell, AbilityName abilityName) {
+        Cell bestCell = currentCell;
+        int best = 0;
+
+        for (Cell cell : getARangeOfCellsThatIsNotWall(world, currentCell,
+                world.getAbilityConstants(abilityName).getRange())) {
+            int ans = getNumberOfOwnHeroesInRange(world, cell, world.getAbilityConstants(abilityName).getAreaOfEffect());
+            if (ans > best) {
+                best = ans;
+                bestCell = cell;
+            }
+        }
+        if (best == 0) {
+            return null;
+        }
+        return bestCell;
+    }
+
+    private int getNumberOfOwnHeroesInRange(World world, Cell cell, int range) {
+        int ans = 0;
+        for (Cell cell2 : getARangeOfCellsThatIsNotWall(world, cell, range)) {
+            if (world.getMyHero(cell2) != null) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
     protected void heal(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
-        decreaseAp(hero.getAbility(AbilityName.HEALER_HEAL).getAPCost());
-        world.castAbility(hero, AbilityName.HEALER_HEAL, targetCell);
+        castAbility(world, hero, targetCell, AbilityName.HEALER_HEAL);
     }
 
     protected void move(World world, Hero hero, Direction direction) throws NotEnoughApException {
         decreaseAp(hero.getMoveAPCost());
-        world.moveHero(hero,direction);
+        world.moveHero(hero, direction);
     }
 
     protected void dodge(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
-        Ability dodgeAbility=hero.getDodgeAbilities()[0];
-        decreaseAp(dodgeAbility.getAPCost());
-        world.castAbility(hero, dodgeAbility, targetCell);
+        Ability dodgeAbility = hero.getDodgeAbilities()[0];
+        castAbility(world, hero, targetCell, dodgeAbility.getName());
     }
 
-    protected void bombAttack(World world,Hero hero,Cell cell) throws NotEnoughApException {
-        decreaseAp(hero.getAbility(AbilityName.BLASTER_BOMB).getAPCost());
-        world.castAbility(hero, AbilityName.BLASTER_BOMB, cell);
+    protected void bombAttack(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+        castAbility(world, hero, targetCell, AbilityName.BLASTER_BOMB);
     }
+
+    protected void guard(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+        castAbility(world, hero, targetCell, AbilityName.GUARDIAN_FORTIFY);
+    }
+
+    private void castAbility(World world, Hero hero, Cell targetCell, AbilityName blasterBomb) throws NotEnoughApException {
+        decreaseAp(hero.getAbility(blasterBomb).getAPCost());
+        world.castAbility(hero, blasterBomb, targetCell);
+    }
+
 }

@@ -6,11 +6,12 @@ import client.model.*;
 
 import java.util.ArrayList;
 
-public class FirstAttackStrategy extends PartOfStrategy {
-    Hero hero;
-    public FirstAttackStrategy(int maxAp, Hero hero) {
+public class FirstNotLinearAttackStrategy extends PartOfStrategy {
+    private Hero hero;
+
+    public FirstNotLinearAttackStrategy(int maxAp, Hero hero) {
         super(maxAp);
-        this.hero=hero;
+        this.hero = hero;
     }
 
     @Override
@@ -18,8 +19,7 @@ public class FirstAttackStrategy extends PartOfStrategy {
         super.actionTurn(world);
         Ability attackAbility = hero.getOffensiveAbilities()[0];
         ArrayList<Pair<Cell, Integer>> cells = new ArrayList<>();
-        ArrayList<Cell> importantCells = new ArrayList<>();
-        importantCells.addAll(getARangeOfCellsThatIsNotWall(world, hero.getCurrentCell()
+        ArrayList<Cell> importantCells = new ArrayList<>(getARangeOfCellsThatIsNotWall(world, hero.getCurrentCell()
                 , world.getAbilityConstants(attackAbility.getName()).getRange()));
         for (Cell cell : importantCells) {
             int score = 0;
