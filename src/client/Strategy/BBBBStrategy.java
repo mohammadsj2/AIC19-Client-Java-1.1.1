@@ -3,6 +3,7 @@ package client.Strategy;
 import client.Exception.NotEnoughApException;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstAttackStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
+import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategyIncludedWalls;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.*;
@@ -14,7 +15,7 @@ public class BBBBStrategy extends Strategy {
     public void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new FirstBombStrategy(world.getMaxAP(), hero));
+            partOfStrategies.add(new FirstBombStrategyIncludedWalls(world.getMaxAP(), hero));
         }
         for (Hero hero : myHeroes) {
             partOfStrategies.add(new FirstAttackStrategy(world.getMaxAP(), hero));

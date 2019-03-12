@@ -60,6 +60,20 @@ public abstract class PartOfStrategy {
         }
         return answer;
     }
+
+    protected ArrayList<Cell> getARangeOfCells(World world, Cell cell, int range) {
+        ArrayList<Cell> answer = new ArrayList<>();
+        Cell[][] cells = world.getMap().getCells();
+        for (int r = Math.max(0, cell.getRow() - range - 2); r < Math.min(cells.length, cell.getRow() + range + 2); r++) {
+            for (int c = Math.max(0, cell.getColumn() - range - 2); c < Math.min(cells.length, cell.getColumn() + range + 2); c++) {
+                Cell secondCell = world.getMap().getCell(r, c);
+                if (world.manhattanDistance(cell, secondCell) <= range) {
+                    answer.add(secondCell);
+                }
+            }
+        }
+        return answer;
+    }
     protected Cell getNextCellByDirection(World world, Cell cell, Direction direction) {
         int r = cell.getRow();
         int c = cell.getColumn();
@@ -82,6 +96,28 @@ public abstract class PartOfStrategy {
         for (Cell cell : getARangeOfCellsThatIsNotWall(world,currentCell, world.getAbilityConstants(abilityName).getRange())) {
             int ans = 0;
             for (Cell cell2 : getARangeOfCellsThatIsNotWall(world, cell, world.getAbilityConstants(abilityName).getAreaOfEffect())) {
+                if (world.getOppHero(cell2) != null) {
+                    ans++;
+                }
+            }
+            if (ans > best) {
+                best = ans;
+                bestCell = cell;
+            }
+        }
+        if (best == 0) {
+            return null;
+        }
+        return bestCell;
+    }
+
+    protected Cell getBestCellIncludeWallsForNotLinearStrategies(World world, Cell currentCell, AbilityName abilityName) {
+        Cell bestCell = currentCell;
+        int best = 0;
+
+        for (Cell cell : getARangeOfCells(world,currentCell, world.getAbilityConstants(abilityName).getRange())) {
+            int ans = 0;
+            for (Cell cell2 : getARangeOfCells(world, cell, world.getAbilityConstants(abilityName).getAreaOfEffect())) {
                 if (world.getOppHero(cell2) != null) {
                     ans++;
                 }

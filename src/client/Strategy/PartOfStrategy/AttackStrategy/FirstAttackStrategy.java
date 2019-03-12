@@ -8,9 +8,10 @@ import java.util.ArrayList;
 
 public class FirstAttackStrategy extends PartOfStrategy {
     Hero hero;
+
     public FirstAttackStrategy(int maxAp, Hero hero) {
         super(maxAp);
-        this.hero=hero;
+        this.hero = hero;
     }
 
     @Override
