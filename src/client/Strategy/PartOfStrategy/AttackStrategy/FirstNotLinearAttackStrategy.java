@@ -19,6 +19,7 @@ public class FirstNotLinearAttackStrategy extends PartOfStrategy {
         super.actionTurn(world);
         Ability attackAbility = hero.getOffensiveAbilities()[0];
         Cell targetCell1 = getCellWithMostOppHeroesForNotLinearAbilities(world, hero.getCurrentCell(), attackAbility.getName());
-        castAbility(world, hero, targetCell1, attackAbility.getName());
+        if(targetCell1!=null)
+            castAbility(world, hero, targetCell1, attackAbility.getName());
     }
 }
