@@ -13,17 +13,20 @@ import client.model.World;
 
  */
 public class FirstBombStrategy extends PartOfStrategy {
-    Hero blaster;
-    public FirstBombStrategy(int maxAp, Hero blaster) {
+    int blasterId;
+
+    public FirstBombStrategy(int maxAp, int blaster) {
         super(maxAp);
-        this.blaster=blaster;
+        this.blasterId = blaster;
     }
 
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
-        Cell bestCell = getCellWithMostOppHeroesForNotLinearAbilities(world, blaster.getCurrentCell() , AbilityName.BLASTER_BOMB);
+        Hero blaster = world.getHero(blasterId);
+        Cell bestCell = getCellWithMostOppHeroesForNotLinearAbilities(world, blaster.getCurrentCell(), AbilityName.BLASTER_BOMB);
+        System.out.println(bestCell);
         if (bestCell != null) {
-            bombAttack(world,blaster,bestCell);
+            bombAttack(world, blaster, bestCell);
         }
     }
 

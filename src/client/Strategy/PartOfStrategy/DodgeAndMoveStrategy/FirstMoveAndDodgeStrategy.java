@@ -103,7 +103,6 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
             if (heroMoved.get(hero.getId())) {
-                System.out.println(i);
                 continue;
             }
             Cell targetCell = targetCells.get(i);

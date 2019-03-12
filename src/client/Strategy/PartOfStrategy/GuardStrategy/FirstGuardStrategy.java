@@ -8,12 +8,12 @@ import client.model.Hero;
 import client.model.World;
 
 public class FirstGuardStrategy extends PartOfStrategy {
-    private Hero[] guardians = new Hero[2];
+    private int[] guardiansId = new int[2];
 
-    public FirstGuardStrategy(int maxAp, Hero firstGuardian, Hero secondGuardian) {
+    public FirstGuardStrategy(int maxAp, int firstGuardian, int secondGuardian) {
         super(maxAp);
-        guardians[0] = firstGuardian;
-        guardians[1] = secondGuardian;
+        guardiansId[0] = firstGuardian;
+        guardiansId[1] = secondGuardian;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class FirstGuardStrategy extends PartOfStrategy {
         if (turn > 1) {
             return;
         }
-        Hero guardian = guardians[turn];
+        Hero guardian = world.getHero(guardiansId[turn]);
         Cell targetCell = getCellWithMostOwnHeroesForNotLinearAbilities(world, guardian.getCurrentCell(), fortify);
         guard(world, guardian, targetCell);
     }
