@@ -51,15 +51,16 @@ public abstract class PartOfStrategy {
     }
 
     protected ArrayList<Cell> getARangeOfCellsThatIsNotWall(World world, Cell cell, int range) {
-        ArrayList<Cell> tmp = getARangeOfCells(world,cell,range);
-        ArrayList<Cell> answer=new ArrayList<>();
-        for(Cell cell1:tmp){
-            if(!cell1.isWall()){
+        ArrayList<Cell> tmp = getARangeOfCells(world, cell, range);
+        ArrayList<Cell> answer = new ArrayList<>();
+        for (Cell cell1 : tmp) {
+            if (!cell1.isWall()) {
                 answer.add(cell1);
             }
         }
         return answer;
     }
+
     protected ArrayList<Cell> getARangeOfCells(World world, Cell cell, int range) {
         ArrayList<Cell> answer = new ArrayList<>();
         Cell[][] cells = world.getMap().getCells();
@@ -93,9 +94,10 @@ public abstract class PartOfStrategy {
         Cell bestCell = currentCell;
         int best = 0;
 
-        for (Cell cell : getARangeOfCells(world, currentCell,
-                world.getAbilityConstants(abilityName).getRange())) {
-            int ans = getNumberOfOppHeroesInRange(world, cell, world.getAbilityConstants(abilityName).getAreaOfEffect());
+        int range = world.getAbilityConstants(abilityName).getRange();
+        for (Cell cell : getARangeOfCells(world, currentCell, range)) {
+            int areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
+            int ans = getNumberOfOppHeroesInRange(world, cell, areaOfEffect);
             if (ans > best) {
                 best = ans;
                 bestCell = cell;
@@ -168,8 +170,10 @@ public abstract class PartOfStrategy {
     }
 
     protected void castAbility(World world, Hero hero, Cell targetCell, AbilityName blasterBomb) throws NotEnoughApException {
+        System.out.println("NOOOOOO pokhte :" + blasterBomb);
         decreaseAp(hero.getAbility(blasterBomb).getAPCost());
-        world.castAbility(hero, blasterBomb, targetCell);
+        System.out.println("shalghame pokhte :" + blasterBomb);
+        world.castAbility(hero.getId(), blasterBomb, targetCell);
     }
 
 }

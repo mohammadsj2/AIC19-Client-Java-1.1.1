@@ -15,15 +15,16 @@ import java.util.Comparator;
     ooni ke kamtarin joono dare va too range hast!
  */
 public class FirstHealStrategy extends PartOfStrategy {
-    private Hero healer;
+    private int healerId;
 
-    public FirstHealStrategy(int maxAp, Hero healer) {
+    public FirstHealStrategy(int maxAp, int healer) {
         super(maxAp);
-        this.healer = healer;
+        this.healerId = healer;
     }
 
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
+        Hero healer = world.getHero(healerId);
         AbilityConstants abilityHealer = world.getAbilityConstants(AbilityName.HEALER_HEAL);
         int range = abilityHealer.getRange(),
                 power = abilityHealer.getPower();

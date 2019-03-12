@@ -17,17 +17,16 @@ public class BBBBStrategy extends Strategy {
     private void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero));
+            partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero));
+            partOfStrategies.add(new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         partOfStrategiesInited = true;
     }
 
     @Override
     public void pickTurn(World world) {
-        System.out.println(world.getCurrentTurn());
         switch (cnt) {
             case 0:
                 world.pickHero(HeroName.BLASTER);
@@ -72,8 +71,8 @@ public class BBBBStrategy extends Strategy {
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             try {
                 partOfStrategy.actionTurn(world);
-            } catch (NotEnoughApException ignored) {
-
+            } catch (NotEnoughApException e) {
+                e.printStackTrace();
             }
         }
     }

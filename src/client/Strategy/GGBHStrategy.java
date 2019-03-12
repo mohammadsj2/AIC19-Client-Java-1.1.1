@@ -24,10 +24,10 @@ public class GGBHStrategy extends Strategy {
 
     public void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
-        firstGuardStrategy = new FirstGuardStrategy(PartOfStrategy.INFINIT_AP, myHeroes[0], myHeroes[1]);
-        firstHealStrategy = new FirstHealStrategy(PartOfStrategy.INFINIT_AP, myHeroes[3]);
+        firstGuardStrategy = new FirstGuardStrategy(PartOfStrategy.INFINIT_AP, myHeroes[0].getId(), myHeroes[1].getId());
+        firstHealStrategy = new FirstHealStrategy(PartOfStrategy.INFINIT_AP, myHeroes[3].getId());
         for (int i = 0; i < 4; i++) {
-            firstNotLinearAttackStrategies[i] = new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, myHeroes[i]);
+            firstNotLinearAttackStrategies[i] = new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, myHeroes[i].getId());
         }
         partOfStrategiesInited = true;
     }
