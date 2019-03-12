@@ -167,7 +167,7 @@ public abstract class PartOfStrategy {
         castAbility(world, hero, targetCell, AbilityName.GUARDIAN_FORTIFY);
     }
 
-    private void castAbility(World world, Hero hero, Cell targetCell, AbilityName blasterBomb) throws NotEnoughApException {
+    protected void castAbility(World world, Hero hero, Cell targetCell, AbilityName blasterBomb) throws NotEnoughApException {
         decreaseAp(hero.getAbility(blasterBomb).getAPCost());
         world.castAbility(hero, blasterBomb, targetCell);
     }
