@@ -24,9 +24,7 @@ public class BFS {
     //Notebayad too avalin moveTurn seda zade beshe ha !!
     // TODO: 3/10/2019 farz shode ke oon turn i ke ability ro mizanim ham yek turn mahsoob mishe tooye cool down
     public void setDistance(Cell targetCell, Ability ability) {
-
         int queueHead = 0;
-
         int coolDownDuration = ability.getCooldown();
         int range = ability.getRange();
 
