@@ -1,24 +1,26 @@
 package client.Strategy;
 
 import client.Exception.NotEnoughApException;
-import client.Strategy.PartOfStrategy.AttackStrategy.FirstAttackStrategy;
+import client.Strategy.PartOfStrategy.AttackStrategy.FirstNotLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
-import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategyIncludedWalls;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.*;
 
+import java.util.ArrayList;
+
 public class BBBBStrategy extends Strategy {
     private int cnt = 0;
+    private ArrayList<PartOfStrategy> partOfStrategies = new ArrayList<>();
     private Boolean partOfStrategiesInited = false;
 
-    public void initStrategy(World world) {
+    private void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new FirstBombStrategyIncludedWalls(world.getMaxAP(), hero));
+            partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero));
         }
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new FirstAttackStrategy(world.getMaxAP(), hero));
+            partOfStrategies.add(new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero));
         }
         partOfStrategiesInited = true;
     }
@@ -45,7 +47,7 @@ public class BBBBStrategy extends Strategy {
 
     @Override
     public void preProcess(World world) {
-        partOfStrategies.add(new FirstMoveAndDodgeStrategy(world.getMaxAP()));
+        partOfStrategies.add(new FirstMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP));
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             partOfStrategy.preProcess(world);
         }

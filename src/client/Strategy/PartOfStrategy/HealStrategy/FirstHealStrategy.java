@@ -15,11 +15,11 @@ import java.util.Comparator;
     ooni ke kamtarin joono dare va too range hast!
  */
 public class FirstHealStrategy extends PartOfStrategy {
-    Hero healer;
+    private Hero healer;
 
-    protected FirstHealStrategy(int maxAp,Hero healer) {
+    public FirstHealStrategy(int maxAp, Hero healer) {
         super(maxAp);
-        this.healer =healer;
+        this.healer = healer;
     }
 
     @Override
@@ -36,11 +36,11 @@ public class FirstHealStrategy extends PartOfStrategy {
         inArea.sort(Comparator.comparingInt(Hero::getCurrentHP));
         for (Hero hero : inArea) {
             if (hero.getCurrentHP() + power <= hero.getMaxHP()) {
-                heal(world,healer,hero.getCurrentCell());
+                heal(world, healer, hero.getCurrentCell());
                 return;
             }
         }
         if (inArea.size() != 0)
-            heal(world,healer,inArea.get(0).getCurrentCell());
+            heal(world, healer, inArea.get(0).getCurrentCell());
     }
 }

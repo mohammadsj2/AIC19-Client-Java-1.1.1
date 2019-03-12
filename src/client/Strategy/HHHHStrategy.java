@@ -3,30 +3,27 @@ package client.Strategy;
 
 import client.Exception.NotEnoughApException;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstNotLinearAttackStrategy;
-import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.GGBHMoveAndDodgeStrategy;
-import client.Strategy.PartOfStrategy.GuardStrategy.FirstGuardStrategy;
+import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.HealStrategy.FirstHealStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.*;
 
-public class GGBHStrategy extends Strategy {
-    private GGBHMoveAndDodgeStrategy ggbhMoveAndDodgeStrategy = new GGBHMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP);
-    private FirstGuardStrategy firstGuardStrategy;
-    private FirstHealStrategy firstHealStrategy;
+public class HHHHStrategy extends Strategy {
+    private FirstHealStrategy[] firstHealStrategies = new FirstHealStrategy[4];
     private FirstNotLinearAttackStrategy[] firstNotLinearAttackStrategies = new FirstNotLinearAttackStrategy[4];
+    private FirstMoveAndDodgeStrategy firstMoveAndDodgeStrategy = new FirstMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP);
 
     @Override
     public void preProcess(World world) {
-        ggbhMoveAndDodgeStrategy.preProcess(world);
+        firstMoveAndDodgeStrategy.preProcess(world);
     }
 
     private Boolean partOfStrategiesInited = false;
 
     public void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
-        firstGuardStrategy = new FirstGuardStrategy(PartOfStrategy.INFINIT_AP, myHeroes[0], myHeroes[1]);
-        firstHealStrategy = new FirstHealStrategy(PartOfStrategy.INFINIT_AP, myHeroes[3]);
         for (int i = 0; i < 4; i++) {
+            firstHealStrategies[i] = new FirstHealStrategy(PartOfStrategy.INFINIT_AP, myHeroes[i]);
             firstNotLinearAttackStrategies[i] = new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, myHeroes[i]);
         }
         partOfStrategiesInited = true;
@@ -38,13 +35,13 @@ public class GGBHStrategy extends Strategy {
     public void pickTurn(World world) {
         switch (cnt) {
             case 0:
-                world.pickHero(HeroName.GUARDIAN);
+                world.pickHero(HeroName.HEALER);
                 break;
             case 1:
-                world.pickHero(HeroName.GUARDIAN);
+                world.pickHero(HeroName.HEALER);
                 break;
             case 2:
-                world.pickHero(HeroName.BLASTER);
+                world.pickHero(HeroName.HEALER);
                 break;
             case 3:
                 world.pickHero(HeroName.HEALER);
@@ -58,7 +55,7 @@ public class GGBHStrategy extends Strategy {
         if (!partOfStrategiesInited)
             initStrategy(world);
         try {
-            ggbhMoveAndDodgeStrategy.moveTurn(world);
+            firstMoveAndDodgeStrategy.moveTurn(world);
         } catch (NotEnoughApException ignored) {
 
         }
@@ -67,12 +64,12 @@ public class GGBHStrategy extends Strategy {
     @Override
     public void actionTurn(World world) {
         try {
-            firstGuardStrategy.actionTurn(world);
-            firstHealStrategy.actionTurn(world);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++)
+                firstMoveAndDodgeStrategy.actionTurn(world);
+            for (int i = 0; i < 4; i++)
+                firstHealStrategies[i].actionTurn(world);
+            for (int i = 0; i < 4; i++)
                 firstNotLinearAttackStrategies[i].actionTurn(world);
-            }
-            ggbhMoveAndDodgeStrategy.actionTurn(world);
         } catch (NotEnoughApException ignored) {
 
         }
