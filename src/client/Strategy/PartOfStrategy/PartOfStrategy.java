@@ -51,12 +51,22 @@ public abstract class PartOfStrategy {
     }
 
     protected ArrayList<Cell> getARangeOfCellsThatIsNotWall(World world, Cell cell, int range) {
+        ArrayList<Cell> tmp = getARangeOfCells(world,cell,range);
+        ArrayList<Cell> answer=new ArrayList<>();
+        for(Cell cell1:tmp){
+            if(!cell1.isWall()){
+                answer.add(cell1);
+            }
+        }
+        return answer;
+    }
+    protected ArrayList<Cell> getARangeOfCells(World world, Cell cell, int range) {
         ArrayList<Cell> answer = new ArrayList<>();
         Cell[][] cells = world.getMap().getCells();
         for (int r = Math.max(0, cell.getRow() - range - 2); r < Math.min(cells.length, cell.getRow() + range + 2); r++) {
             for (int c = Math.max(0, cell.getColumn() - range - 2); c < Math.min(cells.length, cell.getColumn() + range + 2); c++) {
                 Cell secondCell = world.getMap().getCell(r, c);
-                if (!secondCell.isWall() && world.manhattanDistance(cell, secondCell) <= range) {
+                if (world.manhattanDistance(cell, secondCell) <= range) {
                     answer.add(secondCell);
                 }
             }
@@ -83,7 +93,7 @@ public abstract class PartOfStrategy {
         Cell bestCell = currentCell;
         int best = 0;
 
-        for (Cell cell : getARangeOfCellsThatIsNotWall(world, currentCell,
+        for (Cell cell : getARangeOfCells(world, currentCell,
                 world.getAbilityConstants(abilityName).getRange())) {
             int ans = getNumberOfOppHeroesInRange(world, cell, world.getAbilityConstants(abilityName).getAreaOfEffect());
             if (ans > best) {
