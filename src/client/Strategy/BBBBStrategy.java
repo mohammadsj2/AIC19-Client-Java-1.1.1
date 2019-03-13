@@ -5,7 +5,9 @@ import client.Strategy.PartOfStrategy.AttackStrategy.FirstLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstNotLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
+import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.SecondMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
+import client.Strategy.Tools.BFS;
 import client.model.*;
 
 import java.util.ArrayList;
@@ -47,7 +49,8 @@ public class BBBBStrategy extends Strategy {
 
     @Override
     public void preProcess(World world) {
-        partOfStrategies.add(new FirstMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP));
+        BFS bfs = new BFS(world.getMap());
+        partOfStrategies.add(new SecondMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP, bfs));
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             partOfStrategy.preProcess(world);
         }
