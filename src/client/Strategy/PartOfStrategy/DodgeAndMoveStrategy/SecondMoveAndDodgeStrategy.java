@@ -10,6 +10,8 @@ import java.util.Comparator;
 
 public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     public static final int NUMBER_OF_MOVE_PHASES = 6;
+    private int movePhase = 0;
+    ArrayList<Pair<Cell, Boolean>>[] whatToDoArrayList = new ArrayList[8];
     BFS bfs;
 
     public SecondMoveAndDodgeStrategy(int maxAp, BFS bfs) {
@@ -19,12 +21,8 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
     @Override
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
-
-        ArrayList<Pair<Cell, Boolean>> moves = whatToDo(world, hero, targetCell);
-        Pair<Cell,Boolean> move=moves.get(0);
-        System.err.println("Turn is : " + world.getCurrentTurn() + "\n" + hero.getId() + "\n" +
-                move.getSecond());
-
+        ArrayList<Pair<Cell, Boolean>> moves = whatToDoArrayList[hero.getId()];
+        Pair<Cell, Boolean> move = moves.get(0);
         return move.getSecond();
     }
 
@@ -77,7 +75,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
     @Override
     int dodgeAHero(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
-        ArrayList<Pair<Cell, Boolean>> moves = whatToDo(world, hero, targetCell);
+        ArrayList<Pair<Cell, Boolean>> moves = whatToDoArrayList[hero.getId()];
         if (!moves.get(0).getSecond()) return 0;
         System.out.println("BetterToWait:" + moves.get(0).getFirst());
         boolean decreaseMoney = true;
@@ -99,6 +97,14 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
     @Override
     public void moveTurn(World world) throws NotEnoughApException {
+        if (movePhase == 0) {
+            for (int i = 0; i < 4; i++) {
+                whatToDoArrayList[world.getMyHeroes()[i].getId()] = whatToDo(world,
+                        world.getMyHeroes()[i], targetZoneCells.get(i));
+            }
+        }
         super.moveTurn(world);
+        movePhase++;
+        movePhase %= 6;
     }
 }
