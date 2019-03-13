@@ -94,7 +94,7 @@ public class BFS {
                             continue;
                         }
                         int nr = r + i, nc = c + j;
-                        if (!map.isInMap(nr, nc)) {
+                        if (!map.isInMap(nr, nc) || map.getCell(nr,nc).isWall()) {
                             continue;
                         }
                         Cell cell = map.getCell(nr, nc);
