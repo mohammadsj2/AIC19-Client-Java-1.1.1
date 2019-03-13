@@ -12,6 +12,9 @@ public class BFS {
     private static final int MAXIMUM_MEMORY_SIZE = 20;
     private static final int NUMBER_OF_NEIGHBOURS = 4;
     private static final int oo = MAX_DISTANCE;
+    public static final int ONE_TURN_IN_BFS = 10000;
+    public static final int BFS_DODGE_TOADD = 5;
+    public static final int BFS_INOBJECTIVE_ZONE_TOADD = -50;
 
     private Map map;
 
@@ -48,7 +51,7 @@ public class BFS {
 
         for (int i = 0; i < coolDownDuration; i++) {
             bfsQueue.add(new Pair<>(targetCell, i));
-            distance[targetCell.getRow()][targetCell.getColumn()][i] = 0;
+            distance[targetCell.getRow()][targetCell.getColumn()][i] = 5 * i;
         }
 
         while (queueHead != bfsQueue.size()) {
@@ -60,10 +63,12 @@ public class BFS {
             for (int i = -NUMBER_OF_MOVE_PHASES; i <= NUMBER_OF_MOVE_PHASES; i++) {
                 for (int j = -NUMBER_OF_MOVE_PHASES; j <= NUMBER_OF_MOVE_PHASES; j++) {
                     int nr = r + i, nc = c + j;
-                    if (Math.abs(i) + Math.abs(j) > NUMBER_OF_MOVE_PHASES) {
+                    int manhattanDistance = Math.abs(i) + Math.abs(j);
+                    if (manhattanDistance > NUMBER_OF_MOVE_PHASES) {
                         continue;
                     }
-                    if (!map.isInMap(nr, nc) || map.getCell(r, c).isWall() || normalDistance[r][c][nr][nc] > NUMBER_OF_MOVE_PHASES) {
+                    if (!map.isInMap(nr, nc) || map.getCell(r, c).isWall()
+                            || normalDistance[r][c][nr][nc] > NUMBER_OF_MOVE_PHASES) {
                         continue;
                     }
                     Cell cell = map.getCell(nr, nc);
@@ -73,15 +78,19 @@ public class BFS {
                         continue;
                     }
                     Pair<Cell, Integer> v = new Pair<>(cell, nv);
-                    if (distance[nr][nc][nv] > dis + 1) {
-                        distance[nr][nc][nv] = dis + 1;
+                    int turnDistance = dis + ONE_TURN_IN_BFS + manhattanDistance +
+                            (v.getFirst().isInObjectiveZone() ? BFS_INOBJECTIVE_ZONE_TOADD : 0);
+                    if (distance[nr][nc][nv] > turnDistance) {
+                        distance[nr][nc][nv] = turnDistance;
                         bfsQueue.add(v);
                     }
                     if (u.getSecond() == 0) {
                         nv = 0;
                         v = new Pair<>(cell, nv);
-                        if (distance[nr][nc][nv] > dis + 1) {
-                            distance[nr][nc][nv] = dis + 1;
+                        int turnDistance2 = dis + ONE_TURN_IN_BFS + manhattanDistance +
+                                (v.getFirst().isInObjectiveZone() ? BFS_INOBJECTIVE_ZONE_TOADD : 0);
+                        if (distance[nr][nc][nv] > turnDistance2) {
+                            distance[nr][nc][nv] = turnDistance2;
                             bfsQueue.add(v);
                         }
                     }
@@ -94,13 +103,13 @@ public class BFS {
                             continue;
                         }
                         int nr = r + i, nc = c + j;
-                        if (!map.isInMap(nr, nc) || map.getCell(nr,nc).isWall()) {
+                        if (!map.isInMap(nr, nc) || map.getCell(nr, nc).isWall()) {
                             continue;
                         }
                         Cell cell = map.getCell(nr, nc);
                         Pair<Cell, Integer> v = new Pair<>(cell, 0);
-                        if (distance[nr][nc][0] > dis + 1) {
-                            distance[nr][nc][0] = dis + 1;
+                        if (distance[nr][nc][0] > dis + ONE_TURN_IN_BFS + BFS_DODGE_TOADD) {
+                            distance[nr][nc][0] = dis + ONE_TURN_IN_BFS + BFS_DODGE_TOADD;
                             bfsQueue.add(v);
                         }
                     }
@@ -165,7 +174,7 @@ public class BFS {
             int row = p.getFirst(), col = p.getSecond();
             for (int i = 0; i < NUMBER_OF_NEIGHBOURS; i++) {
                 int nr = row + dx[i], nc = col + dy[i];
-                if (!map.isInMap(nr,nc)) continue;
+                if (!map.isInMap(nr, nc)) continue;
                 if (map.getCell(nr, nc).isWall()) continue;
                 if (distance[nr][nc] > distance[row][col] + 1) {
                     distance[nr][nc] = distance[row][col] + 1;
