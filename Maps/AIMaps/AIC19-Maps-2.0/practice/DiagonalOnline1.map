@@ -5,7 +5,10 @@
 		"timeout": 500,
 		"maxAP": 100,
 		"maxTurns": 100,
-		"maxScore": 300
+		"maxScore": 300,
+		"maxScoreDiff": 30,
+		"initOvertime": 5,
+		"totalMovePhases": 6
 	},
 	"map": {
 		"cells": [
@@ -374,7 +377,7 @@
 				"column": 14,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": true,
+				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
 			},
 			{
@@ -390,7 +393,7 @@
 				"column": 16,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": true,
+				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
 			},
 			{
@@ -516,102 +519,6 @@
 			{
 				"row": 2,
 				"column": 1,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 2,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 3,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 4,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 5,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 6,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 7,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 8,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 9,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 10,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 11,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 12,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 13,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": true,
@@ -619,7 +526,7 @@
 			},
 			{
 				"row": 2,
-				"column": 14,
+				"column": 2,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
@@ -627,7 +534,7 @@
 			},
 			{
 				"row": 2,
-				"column": 15,
+				"column": 3,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
@@ -635,15 +542,7 @@
 			},
 			{
 				"row": 2,
-				"column": 16,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 2,
-				"column": 17,
+				"column": 4,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": true,
@@ -651,6 +550,110 @@
 			},
 			{
 				"row": 2,
+				"column": 5,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 6,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 7,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 8,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 9,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 10,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 11,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 12,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 13,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 14,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 15,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 16,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
+				"column": 17,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 2,
 				"column": 18,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
@@ -782,7 +785,7 @@
 				"column": 3,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
+				"isInSecondRespawnZone": true,
 				"isInObjectiveZone": false
 			},
 			{
@@ -804,7 +807,7 @@
 			{
 				"row": 3,
 				"column": 6,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -852,7 +855,7 @@
 			{
 				"row": 3,
 				"column": 12,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -860,7 +863,7 @@
 			{
 				"row": 3,
 				"column": 13,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -868,7 +871,7 @@
 			{
 				"row": 3,
 				"column": 14,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -876,7 +879,7 @@
 			{
 				"row": 3,
 				"column": 15,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -884,7 +887,7 @@
 			{
 				"row": 3,
 				"column": 16,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -892,7 +895,7 @@
 			{
 				"row": 3,
 				"column": 17,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -908,7 +911,7 @@
 			{
 				"row": 3,
 				"column": 19,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -916,7 +919,7 @@
 			{
 				"row": 3,
 				"column": 20,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -924,7 +927,7 @@
 			{
 				"row": 3,
 				"column": 21,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1022,7 +1025,7 @@
 				"column": 2,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
+				"isInSecondRespawnZone": true,
 				"isInObjectiveZone": false
 			},
 			{
@@ -1036,7 +1039,7 @@
 			{
 				"row": 4,
 				"column": 4,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1044,7 +1047,7 @@
 			{
 				"row": 4,
 				"column": 5,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1140,7 +1143,7 @@
 			{
 				"row": 4,
 				"column": 17,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1212,7 +1215,7 @@
 			{
 				"row": 4,
 				"column": 26,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1260,7 +1263,7 @@
 			{
 				"row": 5,
 				"column": 1,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1268,7 +1271,7 @@
 			{
 				"row": 5,
 				"column": 2,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1276,7 +1279,7 @@
 			{
 				"row": 5,
 				"column": 3,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1284,7 +1287,7 @@
 			{
 				"row": 5,
 				"column": 4,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1292,7 +1295,7 @@
 			{
 				"row": 5,
 				"column": 5,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1340,7 +1343,7 @@
 			{
 				"row": 5,
 				"column": 11,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1380,7 +1383,7 @@
 			{
 				"row": 5,
 				"column": 16,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1452,7 +1455,7 @@
 			{
 				"row": 5,
 				"column": 25,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1548,7 +1551,7 @@
 			{
 				"row": 6,
 				"column": 6,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1580,7 +1583,7 @@
 			{
 				"row": 6,
 				"column": 10,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1596,7 +1599,7 @@
 			{
 				"row": 6,
 				"column": 12,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1604,7 +1607,7 @@
 			{
 				"row": 6,
 				"column": 13,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1612,7 +1615,7 @@
 			{
 				"row": 6,
 				"column": 14,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1628,7 +1631,7 @@
 			{
 				"row": 6,
 				"column": 16,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1636,7 +1639,7 @@
 			{
 				"row": 6,
 				"column": 17,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1644,7 +1647,7 @@
 			{
 				"row": 6,
 				"column": 18,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1692,7 +1695,7 @@
 			{
 				"row": 6,
 				"column": 24,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1820,7 +1823,7 @@
 			{
 				"row": 7,
 				"column": 9,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1828,7 +1831,7 @@
 			{
 				"row": 7,
 				"column": 10,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1836,7 +1839,7 @@
 			{
 				"row": 7,
 				"column": 11,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1900,7 +1903,7 @@
 			{
 				"row": 7,
 				"column": 19,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -1908,7 +1911,7 @@
 			{
 				"row": 7,
 				"column": 20,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2068,7 +2071,7 @@
 			{
 				"row": 8,
 				"column": 9,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2164,7 +2167,7 @@
 			{
 				"row": 8,
 				"column": 21,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2188,7 +2191,7 @@
 			{
 				"row": 8,
 				"column": 24,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2276,7 +2279,7 @@
 			{
 				"row": 9,
 				"column": 4,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2308,7 +2311,7 @@
 			{
 				"row": 9,
 				"column": 8,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2364,7 +2367,7 @@
 			{
 				"row": 9,
 				"column": 15,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2420,7 +2423,7 @@
 			{
 				"row": 9,
 				"column": 22,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2428,7 +2431,7 @@
 			{
 				"row": 9,
 				"column": 23,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2532,7 +2535,7 @@
 			{
 				"row": 10,
 				"column": 5,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2548,7 +2551,7 @@
 			{
 				"row": 10,
 				"column": 7,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2668,7 +2671,7 @@
 			{
 				"row": 10,
 				"column": 22,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2676,7 +2679,7 @@
 			{
 				"row": 10,
 				"column": 23,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2788,7 +2791,7 @@
 			{
 				"row": 11,
 				"column": 6,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2796,7 +2799,7 @@
 			{
 				"row": 11,
 				"column": 7,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2868,7 +2871,7 @@
 			{
 				"row": 11,
 				"column": 16,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2876,7 +2879,7 @@
 			{
 				"row": 11,
 				"column": 17,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -2924,7 +2927,7 @@
 			{
 				"row": 11,
 				"column": 23,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3036,7 +3039,7 @@
 			{
 				"row": 12,
 				"column": 6,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3084,10 +3087,10 @@
 			{
 				"row": 12,
 				"column": 12,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 12,
@@ -3095,7 +3098,7 @@
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 12,
@@ -3127,7 +3130,7 @@
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 12,
@@ -3164,7 +3167,7 @@
 			{
 				"row": 12,
 				"column": 22,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3180,7 +3183,7 @@
 			{
 				"row": 12,
 				"column": 24,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3284,7 +3287,7 @@
 			{
 				"row": 13,
 				"column": 6,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3324,7 +3327,7 @@
 			{
 				"row": 13,
 				"column": 11,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3335,7 +3338,7 @@
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 13,
@@ -3383,7 +3386,7 @@
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 13,
@@ -3420,7 +3423,7 @@
 			{
 				"row": 13,
 				"column": 23,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3428,7 +3431,7 @@
 			{
 				"row": 13,
 				"column": 24,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3572,7 +3575,7 @@
 			{
 				"row": 14,
 				"column": 11,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3676,7 +3679,7 @@
 			{
 				"row": 14,
 				"column": 24,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3812,7 +3815,7 @@
 			{
 				"row": 15,
 				"column": 10,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3820,7 +3823,7 @@
 			{
 				"row": 15,
 				"column": 11,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3852,10 +3855,10 @@
 			{
 				"row": 15,
 				"column": 15,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": true
+				"isInObjectiveZone": false
 			},
 			{
 				"row": 15,
@@ -3884,7 +3887,7 @@
 			{
 				"row": 15,
 				"column": 19,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -3892,7 +3895,7 @@
 			{
 				"row": 15,
 				"column": 20,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4028,7 +4031,7 @@
 			{
 				"row": 16,
 				"column": 6,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4132,7 +4135,7 @@
 			{
 				"row": 16,
 				"column": 19,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4276,7 +4279,7 @@
 			{
 				"row": 17,
 				"column": 6,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4284,7 +4287,7 @@
 			{
 				"row": 17,
 				"column": 7,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4327,7 +4330,7 @@
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 17,
@@ -4375,12 +4378,12 @@
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 17,
 				"column": 19,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4420,7 +4423,7 @@
 			{
 				"row": 17,
 				"column": 24,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4524,7 +4527,7 @@
 			{
 				"row": 18,
 				"column": 6,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4540,7 +4543,7 @@
 			{
 				"row": 18,
 				"column": 8,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4583,7 +4586,7 @@
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 18,
@@ -4615,15 +4618,15 @@
 				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 18,
 				"column": 18,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
+				"isInObjectiveZone": true
 			},
 			{
 				"row": 18,
@@ -4668,7 +4671,7 @@
 			{
 				"row": 18,
 				"column": 24,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4780,7 +4783,7 @@
 			{
 				"row": 19,
 				"column": 7,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4828,7 +4831,7 @@
 			{
 				"row": 19,
 				"column": 13,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4836,7 +4839,7 @@
 			{
 				"row": 19,
 				"column": 14,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4908,7 +4911,7 @@
 			{
 				"row": 19,
 				"column": 23,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -4916,7 +4919,7 @@
 			{
 				"row": 19,
 				"column": 24,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5028,7 +5031,7 @@
 			{
 				"row": 20,
 				"column": 7,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5036,7 +5039,7 @@
 			{
 				"row": 20,
 				"column": 8,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5156,7 +5159,7 @@
 			{
 				"row": 20,
 				"column": 23,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5172,7 +5175,7 @@
 			{
 				"row": 20,
 				"column": 25,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5276,7 +5279,7 @@
 			{
 				"row": 21,
 				"column": 7,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5284,7 +5287,7 @@
 			{
 				"row": 21,
 				"column": 8,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5340,7 +5343,7 @@
 			{
 				"row": 21,
 				"column": 15,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5396,7 +5399,7 @@
 			{
 				"row": 21,
 				"column": 22,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5428,7 +5431,7 @@
 			{
 				"row": 21,
 				"column": 26,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5516,7 +5519,7 @@
 			{
 				"row": 22,
 				"column": 6,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5540,7 +5543,7 @@
 			{
 				"row": 22,
 				"column": 9,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5636,7 +5639,7 @@
 			{
 				"row": 22,
 				"column": 21,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5796,7 +5799,7 @@
 			{
 				"row": 23,
 				"column": 10,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5804,7 +5807,7 @@
 			{
 				"row": 23,
 				"column": 11,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5868,7 +5871,7 @@
 			{
 				"row": 23,
 				"column": 19,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5876,7 +5879,7 @@
 			{
 				"row": 23,
 				"column": 20,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -5884,7 +5887,7 @@
 			{
 				"row": 23,
 				"column": 21,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6012,7 +6015,7 @@
 			{
 				"row": 24,
 				"column": 6,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6060,7 +6063,7 @@
 			{
 				"row": 24,
 				"column": 12,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6068,7 +6071,7 @@
 			{
 				"row": 24,
 				"column": 13,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6076,7 +6079,7 @@
 			{
 				"row": 24,
 				"column": 14,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6092,7 +6095,7 @@
 			{
 				"row": 24,
 				"column": 16,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6100,7 +6103,7 @@
 			{
 				"row": 24,
 				"column": 17,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6108,7 +6111,7 @@
 			{
 				"row": 24,
 				"column": 18,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6124,7 +6127,7 @@
 			{
 				"row": 24,
 				"column": 20,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6156,7 +6159,7 @@
 			{
 				"row": 24,
 				"column": 24,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6252,7 +6255,7 @@
 			{
 				"row": 25,
 				"column": 5,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6324,7 +6327,7 @@
 			{
 				"row": 25,
 				"column": 14,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6364,7 +6367,7 @@
 			{
 				"row": 25,
 				"column": 19,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6412,7 +6415,7 @@
 			{
 				"row": 25,
 				"column": 25,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6420,7 +6423,7 @@
 			{
 				"row": 25,
 				"column": 26,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6428,7 +6431,7 @@
 			{
 				"row": 25,
 				"column": 27,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6436,7 +6439,7 @@
 			{
 				"row": 25,
 				"column": 28,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6444,7 +6447,7 @@
 			{
 				"row": 25,
 				"column": 29,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6492,7 +6495,7 @@
 			{
 				"row": 26,
 				"column": 4,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6564,7 +6567,7 @@
 			{
 				"row": 26,
 				"column": 13,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6660,7 +6663,7 @@
 			{
 				"row": 26,
 				"column": 25,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6668,7 +6671,7 @@
 			{
 				"row": 26,
 				"column": 26,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6685,7 +6688,7 @@
 				"row": 26,
 				"column": 28,
 				"isWall": false,
-				"isInFirstRespawnZone": false,
+				"isInFirstRespawnZone": true,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
 			},
@@ -6780,7 +6783,7 @@
 			{
 				"row": 27,
 				"column": 9,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6788,7 +6791,7 @@
 			{
 				"row": 27,
 				"column": 10,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6796,7 +6799,7 @@
 			{
 				"row": 27,
 				"column": 11,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6812,7 +6815,7 @@
 			{
 				"row": 27,
 				"column": 13,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6820,7 +6823,7 @@
 			{
 				"row": 27,
 				"column": 14,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6828,7 +6831,7 @@
 			{
 				"row": 27,
 				"column": 15,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6836,7 +6839,7 @@
 			{
 				"row": 27,
 				"column": 16,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6844,7 +6847,7 @@
 			{
 				"row": 27,
 				"column": 17,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6852,7 +6855,7 @@
 			{
 				"row": 27,
 				"column": 18,
-				"isWall": true,
+				"isWall": false,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6900,7 +6903,7 @@
 			{
 				"row": 27,
 				"column": 24,
-				"isWall": false,
+				"isWall": true,
 				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
@@ -6925,7 +6928,7 @@
 				"row": 27,
 				"column": 27,
 				"isWall": false,
-				"isInFirstRespawnZone": false,
+				"isInFirstRespawnZone": true,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
 			},
@@ -7060,6 +7063,110 @@
 			{
 				"row": 28,
 				"column": 13,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 14,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 15,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 16,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 17,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 18,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 19,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 20,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 21,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 22,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 23,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 24,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 25,
+				"isWall": false,
+				"isInFirstRespawnZone": false,
+				"isInSecondRespawnZone": false,
+				"isInObjectiveZone": false
+			},
+			{
+				"row": 28,
+				"column": 26,
 				"isWall": false,
 				"isInFirstRespawnZone": true,
 				"isInSecondRespawnZone": false,
@@ -7067,110 +7174,6 @@
 			},
 			{
 				"row": 28,
-				"column": 14,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 15,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 16,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 17,
-				"isWall": false,
-				"isInFirstRespawnZone": true,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 18,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 19,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 20,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 21,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 22,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 23,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 24,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 25,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
-				"column": 26,
-				"isWall": false,
-				"isInFirstRespawnZone": false,
-				"isInSecondRespawnZone": false,
-				"isInObjectiveZone": false
-			},
-			{
-				"row": 28,
 				"column": 27,
 				"isWall": false,
 				"isInFirstRespawnZone": false,
@@ -7189,7 +7192,7 @@
 				"row": 28,
 				"column": 29,
 				"isWall": false,
-				"isInFirstRespawnZone": false,
+				"isInFirstRespawnZone": true,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
 			},
@@ -7317,7 +7320,7 @@
 				"row": 29,
 				"column": 14,
 				"isWall": false,
-				"isInFirstRespawnZone": true,
+				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
 			},
@@ -7333,7 +7336,7 @@
 				"row": 29,
 				"column": 16,
 				"isWall": false,
-				"isInFirstRespawnZone": true,
+				"isInFirstRespawnZone": false,
 				"isInSecondRespawnZone": false,
 				"isInObjectiveZone": false
 			},
@@ -7745,6 +7748,17 @@
 			"maxHP": 400,
 			"moveAPCost": 8,
 			"respawnTime": 5
+		},
+		{
+			"name": "SHADOW",
+			"abilityNames": [
+				"SHADOW_ATTACK",
+				"SHADOW_DODGE",
+				"SHADOW_SLASH"
+			],
+			"maxHP": 90,
+			"moveAPCost": 3,
+			"respawnTime": 5
 		}
 	],
 	"abilityConstants": [
@@ -7756,17 +7770,19 @@
 			"cooldown": 1,
 			"areaOfEffect": 0,
 			"power": 30,
-			"isLobbing": false
+			"isLobbing": false,
+			"isPiercing": false
 		},
 		{
 			"name": "SENTRY_DODGE",
 			"type": "DODGE",
 			"range": 3,
 			"APCost": 25,
-			"cooldown": 6,
+			"cooldown": 7,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "HEALER_ATTACK",
@@ -7776,7 +7792,8 @@
 			"cooldown": 1,
 			"areaOfEffect": 0,
 			"power": 25,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "BLASTER_ATTACK",
@@ -7786,7 +7803,8 @@
 			"cooldown": 1,
 			"areaOfEffect": 1,
 			"power": 20,
-			"isLobbing": false
+			"isLobbing": false,
+			"isPiercing": false
 		},
 		{
 			"name": "GUARDIAN_DODGE",
@@ -7796,7 +7814,8 @@
 			"cooldown": 8,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "GUARDIAN_FORTIFY",
@@ -7806,27 +7825,30 @@
 			"cooldown": 7,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "HEALER_DODGE",
 			"type": "DODGE",
 			"range": 4,
 			"APCost": 25,
-			"cooldown": 5,
+			"cooldown": 6,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "BLASTER_DODGE",
 			"type": "DODGE",
 			"range": 4,
 			"APCost": 25,
-			"cooldown": 5,
+			"cooldown": 6,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "BLASTER_BOMB",
@@ -7836,7 +7858,8 @@
 			"cooldown": 4,
 			"areaOfEffect": 2,
 			"power": 35,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "GUARDIAN_ATTACK",
@@ -7846,7 +7869,8 @@
 			"cooldown": 1,
 			"areaOfEffect": 1,
 			"power": 40,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "SENTRY_RAY",
@@ -7856,7 +7880,8 @@
 			"cooldown": 5,
 			"areaOfEffect": 0,
 			"power": 50,
-			"isLobbing": false
+			"isLobbing": false,
+			"isPiercing": false
 		},
 		{
 			"name": "HEALER_HEAL",
@@ -7866,7 +7891,41 @@
 			"cooldown": 2,
 			"areaOfEffect": 0,
 			"power": 30,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
+		},
+		{
+			"name": "SHADOW_ATTACK",
+			"type": "OFFENSIVE",
+			"range": 1,
+			"APCost": 15,
+			"cooldown": 1,
+			"areaOfEffect": 0,
+			"power": 40,
+			"isLobbing": true,
+			"isPiercing": false
+		},
+		{
+			"name": "SHADOW_DODGE",
+			"type": "DODGE",
+			"range": 4,
+			"APCost": 25,
+			"cooldown": 5,
+			"areaOfEffect": 0,
+			"power": 0,
+			"isLobbing": true,
+			"isPiercing": false
+		},
+		{
+			"name": "SHADOW_SLASH",
+			"type": "DODGE",
+			"range": 6,
+			"APCost": 20,
+			"cooldown": 2,
+			"areaOfEffect": 0,
+			"power": 25,
+			"isLobbing": false,
+			"isPiercing": true
 		}
 	]
 }

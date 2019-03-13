@@ -5,7 +5,10 @@
 		"timeout": 500,
 		"maxAP": 100,
 		"maxTurns": 100,
-		"maxScore": 300
+		"maxScore": 300,
+		"maxScoreDiff": 30,
+		"initOvertime": 5,
+		"totalMovePhases": 6
 	},
 	"map": {
 		"cells": [
@@ -7745,6 +7748,17 @@
 			"maxHP": 400,
 			"moveAPCost": 8,
 			"respawnTime": 5
+		},
+		{
+			"name": "SHADOW",
+			"abilityNames": [
+				"SHADOW_ATTACK",
+				"SHADOW_DODGE",
+				"SHADOW_SLASH"
+			],
+			"maxHP": 90,
+			"moveAPCost": 3,
+			"respawnTime": 5
 		}
 	],
 	"abilityConstants": [
@@ -7753,40 +7767,44 @@
 			"type": "OFFENSIVE",
 			"range": 7,
 			"APCost": 15,
-			"cooldown": 0,
+			"cooldown": 1,
 			"areaOfEffect": 0,
 			"power": 30,
-			"isLobbing": false
+			"isLobbing": false,
+			"isPiercing": false
 		},
 		{
 			"name": "SENTRY_DODGE",
 			"type": "DODGE",
 			"range": 3,
 			"APCost": 25,
-			"cooldown": 6,
+			"cooldown": 7,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "HEALER_ATTACK",
 			"type": "OFFENSIVE",
 			"range": 4,
 			"APCost": 15,
-			"cooldown": 0,
+			"cooldown": 1,
 			"areaOfEffect": 0,
 			"power": 25,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "BLASTER_ATTACK",
 			"type": "OFFENSIVE",
 			"range": 3,
 			"APCost": 15,
-			"cooldown": 0,
+			"cooldown": 1,
 			"areaOfEffect": 1,
 			"power": 20,
-			"isLobbing": false
+			"isLobbing": false,
+			"isPiercing": false
 		},
 		{
 			"name": "GUARDIAN_DODGE",
@@ -7796,7 +7814,8 @@
 			"cooldown": 8,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "GUARDIAN_FORTIFY",
@@ -7806,27 +7825,30 @@
 			"cooldown": 7,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "HEALER_DODGE",
 			"type": "DODGE",
 			"range": 4,
 			"APCost": 25,
-			"cooldown": 5,
+			"cooldown": 6,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "BLASTER_DODGE",
 			"type": "DODGE",
 			"range": 4,
 			"APCost": 25,
-			"cooldown": 5,
+			"cooldown": 6,
 			"areaOfEffect": 0,
 			"power": 0,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "BLASTER_BOMB",
@@ -7836,17 +7858,19 @@
 			"cooldown": 4,
 			"areaOfEffect": 2,
 			"power": 35,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "GUARDIAN_ATTACK",
 			"type": "OFFENSIVE",
 			"range": 1,
 			"APCost": 15,
-			"cooldown": 0,
+			"cooldown": 1,
 			"areaOfEffect": 1,
 			"power": 40,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
 		},
 		{
 			"name": "SENTRY_RAY",
@@ -7856,7 +7880,8 @@
 			"cooldown": 5,
 			"areaOfEffect": 0,
 			"power": 50,
-			"isLobbing": false
+			"isLobbing": false,
+			"isPiercing": false
 		},
 		{
 			"name": "HEALER_HEAL",
@@ -7866,7 +7891,41 @@
 			"cooldown": 2,
 			"areaOfEffect": 0,
 			"power": 30,
-			"isLobbing": true
+			"isLobbing": true,
+			"isPiercing": false
+		},
+		{
+			"name": "SHADOW_ATTACK",
+			"type": "OFFENSIVE",
+			"range": 1,
+			"APCost": 15,
+			"cooldown": 1,
+			"areaOfEffect": 0,
+			"power": 40,
+			"isLobbing": true,
+			"isPiercing": false
+		},
+		{
+			"name": "SHADOW_DODGE",
+			"type": "DODGE",
+			"range": 4,
+			"APCost": 25,
+			"cooldown": 5,
+			"areaOfEffect": 0,
+			"power": 0,
+			"isLobbing": true,
+			"isPiercing": false
+		},
+		{
+			"name": "SHADOW_SLASH",
+			"type": "DODGE",
+			"range": 6,
+			"APCost": 20,
+			"cooldown": 2,
+			"areaOfEffect": 0,
+			"power": 25,
+			"isLobbing": false,
+			"isPiercing": true
 		}
 	]
 }
