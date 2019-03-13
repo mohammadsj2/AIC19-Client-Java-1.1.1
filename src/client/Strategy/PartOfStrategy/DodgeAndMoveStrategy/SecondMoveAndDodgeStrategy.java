@@ -23,9 +23,19 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     private Pair<Cell, Boolean> whatToDo(World world, Hero hero, Cell targetCell) {
         Ability dodgeAbility = hero.getDodgeAbilities()[0];
         int[][][] distance = bfs.getDistance(targetCell, dodgeAbility);
-        int range=Math.max(dodgeAbility.getRange(), NUMBER_OF_MOVE_PHASES);
-        ArrayList<Cell> cells=getARangeOfCellsThatIsNotWall(world,hero.getCurrentCell(),range);
+        int range = Math.max(dodgeAbility.getRange(), NUMBER_OF_MOVE_PHASES);
+        ArrayList<Cell> cells = getARangeOfCellsThatIsNotWall(world, hero.getCurrentCell(), range);
+        ArrayList<Pair<Integer, Pair<Cell, Integer>>> toSort = new ArrayList<>();
+        int remainCoolDown = hero.getAbility(dodgeAbility.getName()).getRemCooldown();
+        for (Cell cell : cells) {
+            int cooldown = dodgeAbility.getCooldown();
+            int r = cell.getRow(), c = cell.getColumn();
+            int manhattanDistance = world.manhattanDistance(hero.getCurrentCell(), cell);
+            if (remainCoolDown == 0 && manhattanDistance <= dodgeAbility.getRange()) {
+                toSort.add(new Pair<>(distance[r][c][cooldown - 1], new Pair<>(cell, cooldown)));
+            }
 
+        }
         return null;
     }
 

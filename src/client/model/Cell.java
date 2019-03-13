@@ -9,7 +9,7 @@ public class Cell {
     private int row;
     private int column;
     
-    public Cell(int row, int column) {
+    Cell(int row, int column) {
         this.row = row;
         this.column = column;
         this.isWall = false;
@@ -23,7 +23,7 @@ public class Cell {
         return isWall;
     }
 
-    public void setWall(boolean wall) {
+    void setWall(boolean wall) {
         isWall = wall;
     }
 
@@ -31,7 +31,7 @@ public class Cell {
         return isInMyRespawnZone;
     }
 
-    public void setInMyRespawnZone(boolean inMyRespawnZone) {
+    void setInMyRespawnZone(boolean inMyRespawnZone) {
         isInMyRespawnZone = inMyRespawnZone;
     }
 
@@ -39,7 +39,7 @@ public class Cell {
         return isInOppRespawnZone;
     }
 
-    public void setInOppRespawnZone(boolean inOppRespawnZone) {
+    void setInOppRespawnZone(boolean inOppRespawnZone) {
         isInOppRespawnZone = inOppRespawnZone;
     }
 
@@ -47,7 +47,7 @@ public class Cell {
         return isInObjectiveZone;
     }
 
-    public void setInObjectiveZone(boolean inObjectiveZone) {
+    void setInObjectiveZone(boolean inObjectiveZone) {
         isInObjectiveZone = inObjectiveZone;
     }
 
