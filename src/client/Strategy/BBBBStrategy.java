@@ -25,10 +25,12 @@ public class BBBBStrategy extends Strategy {
     private void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new SecondBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
+            //partOfStrategies.add(new SecondBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
+            partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new SecondLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
+            //partOfStrategies.add(new SecondLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
+            partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         partOfStrategiesInited = true;
     }

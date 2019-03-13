@@ -50,6 +50,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
                 int temp = cooldown - 1;
                 toSort.add(new Pair<>(new Pair<>(distance[r][c][temp], true), new Pair<>(cell, temp)));
             }
+
             if(hero.getCurrentCell().getRow() == -1 || hero.getCurrentCell().getColumn() == -1)
                 System.err.println("FIND");
 
@@ -115,8 +116,12 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     public void moveTurn(World world) throws NotEnoughApException {
         if (movePhase == 0) {
             for (int i = 0; i < 4; i++) {
-                whatToDoArrayList[world.getMyHeroes()[i].getId()] = whatToDo(world,
-                        world.getMyHeroes()[i], targetZoneCells.get(i));
+
+                Hero myHero = world.getMyHeroes()[i];
+                if(myHero.getCurrentCell().getRow()!=-1) {
+                    whatToDoArrayList[myHero.getId()] = whatToDo(world,
+                            myHero, targetZoneCells.get(i));
+                }
             }
             if(world.getCurrentTurn()==5) {
                 int e=213;

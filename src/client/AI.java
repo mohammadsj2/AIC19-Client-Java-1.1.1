@@ -6,7 +6,9 @@ import client.Strategy.PartOfStrategy.NullStrategy;
 import client.model.*;
 
 public class AI {
-    public static Strategy strategy= new NullStrategy();
+
+    public static Strategy strategy= new BBBBStrategy();
+
 
     public void preProcess(World world) {
         //System.out.println("pre process started");
