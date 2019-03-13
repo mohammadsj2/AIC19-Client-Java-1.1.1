@@ -14,10 +14,19 @@ public class BFS {
 
     private Map map;
     private ArrayList<Pair<Cell, Integer>> bfsQueue = new ArrayList<>();
-    private ArrayList<Pair<Pair<Cell, Ability>, int[][][]>> memory;
+    private ArrayList<Pair<Pair<Cell, Ability>, int[][][]>> memory = new ArrayList<>();
+    private int[][][][] normalDistance;
 
     BFS(Map map) {
         this.map = map;
+        int columnNum = map.getColumnNum() + 3;
+        int rowNum = map.getRowNum() + 3;
+        normalDistance = new int[rowNum][columnNum][][];
+        for (Cell[] cells : map.getCells()) {
+            for (Cell cell : cells) {
+                normalDistance[cell.getRow()][cell.getColumn()] = getNormalDistance(cell);
+            }
+        }
     }
 
     //Notebayad too avalin moveTurn seda zade beshe ha !!
@@ -48,18 +57,19 @@ public class BFS {
 
             for (int i = -NUMBER_OF_MOVE_PHASES; i <= NUMBER_OF_MOVE_PHASES; i++) {
                 for (int j = -NUMBER_OF_MOVE_PHASES; j <= NUMBER_OF_MOVE_PHASES; j++) {
-                    if (Math.abs(i) + Math.abs(j) > NUMBER_OF_MOVE_PHASES ) {
-                        continue;
-                    }
                     int nr = r + i, nc = c + j;
-                    if (!map.isInMap(nr, nc)) {
+                    if (Math.abs(i) + Math.abs(j) > NUMBER_OF_MOVE_PHASES) {
                         continue;
                     }
+                    if (!map.isInMap(nr, nc) || normalDistance[r][c][nr][nc] > NUMBER_OF_MOVE_PHASES) {
+                        continue;
+                    }
+                    Cell cell = map.getCell(nr, nc);
+
                     int nv = u.getSecond() + 1;
                     if (nv == coolDownDuration) {
                         continue;
                     }
-                    Cell cell = map.getCell(nr, nc);
                     Pair<Cell, Integer> v = new Pair<>(cell, nv);
                     if (distance[nr][nc][nv] > dis + 1) {
                         distance[nr][nc][nv] = dis + 1;
@@ -122,7 +132,8 @@ public class BFS {
         }
         return distance;
     }
-    public int[][] giveNormalDistance(Cell startCell) {
+
+    public int[][] getNormalDistance(Cell startCell) {
         /*if (startCell == null || endCell == null || startCell == endCell || blockedCells == null ||
                 startCell.isWall() || endCell.isWall()) return new Direction[0];
         HashMap<Cell, Pair<Cell, Direction>> lastMoveInfo = new HashMap<>(); // saves parent cell and direction to go from parent cell to current cell
