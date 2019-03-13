@@ -11,19 +11,19 @@ public class BFS {
     private static final int NUMBER_OF_MOVE_PHASES = 6;
     private static final int MAX_DISTANCE = 1000000000;
     private static final int MAX_COOL_DOWN = 9;
+    private static final int MAXIMUM_MEMORY_SIZE = 20;
 
     private Map map;
-    private int[][][] distance;
     private ArrayList<Pair<Cell, Integer>> bfsQueue = new ArrayList<>();
+    private ArrayList<Pair<Pair<Cell, Ability>, int[][][]>> memory;
 
     BFS(Map map) {
         this.map = map;
-        distance = new int[map.getRowNum()][map.getColumnNum()][MAX_COOL_DOWN + 1];
     }
 
     //Notebayad too avalin moveTurn seda zade beshe ha !!
-    // TODO: 3/10/2019 farz shode ke oon turn i ke ability ro mizanim ham yek turn mahsoob mishe tooye cool down
-    public void setDistance(Cell targetCell, Ability ability) {
+    private int[][][] getDistancesWithBFS(Cell targetCell, Ability ability) {
+        int[][][] distance = new int[map.getRowNum()][map.getColumnNum()][MAX_COOL_DOWN + 1];
         int queueHead = 0;
         int coolDownDuration = ability.getCooldown();
         int range = ability.getRange();
@@ -96,5 +96,32 @@ public class BFS {
                 }
             }
         }
+        return distance;
     }
+
+    public int[][][] getDistance(Cell targetCell, Ability ability) {
+        int[][][] distance = getDistanceFromMemory(targetCell, ability);
+        if (distance != null) {
+            return distance;
+        }
+        distance = getDistancesWithBFS(targetCell, ability);
+        Pair<Pair<Cell, Ability>, int[][][]> ozv = new Pair<>(new Pair<>(targetCell, ability), distance);
+        while (memory.size() >= MAXIMUM_MEMORY_SIZE) {
+            memory.remove(0);
+        }
+        memory.add(ozv);
+        return ozv.getSecond();
+    }
+
+    private int[][][] getDistanceFromMemory(Cell targetCell, Ability ability) {
+        int[][][] distance = null;
+        for (Pair<Pair<Cell, Ability>, int[][][]> p : memory) {
+            if (p.getFirst().getFirst().equals(targetCell) && p.getFirst().getSecond().getName().equals(ability.getName())) {
+                distance = p.getSecond();
+                break;
+            }
+        }
+        return distance;
+    }
+
 }
