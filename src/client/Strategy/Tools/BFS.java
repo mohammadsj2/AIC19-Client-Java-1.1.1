@@ -22,7 +22,6 @@ public class BFS {
     }
 
     //Notebayad too avalin moveTurn seda zade beshe ha !!
-    // TODO: 3/10/2019 farz shode ke oon turn i ke ability ro mizanim ham yek turn mahsoob mishe tooye cool down
     private int[][][] getDistancesWithBFS(Cell targetCell, Ability ability) {
         int[][][] distance = new int[map.getRowNum()][map.getColumnNum()][MAX_COOL_DOWN + 1];
         int queueHead = 0;
