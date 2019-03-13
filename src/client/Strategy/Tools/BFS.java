@@ -123,6 +123,10 @@ public class BFS {
         return ozv.getSecond();
     }
 
+    public int getNormalDistance(Cell firstCell, Cell secondCell) {
+        return normalDistance[firstCell.getRow()][firstCell.getColumn()][secondCell.getRow()][secondCell.getColumn()];
+    }
+
     private int[][][] getDistanceFromMemory(Cell targetCell, Ability ability) {
         int[][][] distance = null;
         for (Pair<Pair<Cell, Ability>, int[][][]> p : memory) {
@@ -134,7 +138,7 @@ public class BFS {
         return distance;
     }
 
-    public int[][] getNormalDistance(Cell startCell) {
+    private int[][] getNormalDistance(Cell startCell) {
 
         if (startCell.isWall()) return null;
 
