@@ -7,11 +7,11 @@ import java.util.*;
 
 public class BFS {
     private static final int NUMBER_OF_MOVE_PHASES = 6;
-    private static final int MAX_DISTANCE = 1000000000;
+    private static final int MAX_DISTANCE = 1000 * 1000 * 1000;
     private static final int MAX_COOL_DOWN = 9;
     private static final int MAXIMUM_MEMORY_SIZE = 20;
-    public static final int NUMBER_OF_NEIGHBOURS = 4;
-    public static final int oo = 1000 * 1000 * 1000;
+    private static final int NUMBER_OF_NEIGHBOURS = 4;
+    private static final int oo = MAX_DISTANCE;
 
     private Map map;
     private ArrayList<Pair<Cell, Integer>> bfsQueue = new ArrayList<>();
@@ -30,7 +30,7 @@ public class BFS {
         }
     }
 
-    //Notebayad too avalin moveTurn seda zade beshe ha !!
+    //Note bayad too avalin moveTurn seda zade beshe ha !!
     private int[][][] getDistancesWithBFS(Cell targetCell, Ability ability) {
         int[][][] distance = new int[map.getRowNum()][map.getColumnNum()][MAX_COOL_DOWN + 1];
         int queueHead = 0;
@@ -136,16 +136,16 @@ public class BFS {
 
     public int[][] getNormalDistance(Cell startCell) {
 
-        if(startCell.isWall()) return null;
+        if (startCell.isWall()) return null;
 
         int[][] distance = new int[map.getRowNum()][map.getColumnNum()];
 
-        for (int r=0; r<map.getRowNum(); r++)
-            for (int c=0; c<map.getColumnNum(); c++)
+        for (int r = 0; r < map.getRowNum(); r++)
+            for (int c = 0; c < map.getColumnNum(); c++)
                 distance[r][c] = oo;
 
         int[] dx = {1, -1, 0, 0};
-        int[] dy =  {0, 0, 1, -1};
+        int[] dy = {0, 0, 1, -1};
 
         ArrayList<Pair<Integer, Integer>> queue = new ArrayList<>();
 
@@ -153,15 +153,15 @@ public class BFS {
         distance[startCell.getRow()][startCell.getColumn()] = 0;
         int st = 0;
 
-        while(queue.size() == st) {
+        while (queue.size() == st) {
             Pair<Integer, Integer> p = queue.get(st);
-            st ++;
+            st++;
             int row = p.getFirst(), col = p.getSecond();
-            for (int i = 0; i< NUMBER_OF_NEIGHBOURS; i++) {
+            for (int i = 0; i < NUMBER_OF_NEIGHBOURS; i++) {
                 int nr = row + dx[i], nc = col + dy[i];
-                if(nr < 0 || nc < 0 || nr >= map.getRowNum() || nc >= map.getColumnNum()) continue ;
-                if(map.getCell(nr, nc).isWall()) continue ;
-                if(distance[nr][nc] > distance[row][col] + 1) {
+                if (nr < 0 || nc < 0 || nr >= map.getRowNum() || nc >= map.getColumnNum()) continue;
+                if (map.getCell(nr, nc).isWall()) continue;
+                if (distance[nr][nc] > distance[row][col] + 1) {
                     distance[nr][nc] = distance[row][col] + 1;
                     queue.add(new Pair<>(nr, nc));
                 }
