@@ -193,6 +193,7 @@ public interface World {
     HeroConstants[] getHeroConstants();
 
     AbilityConstants[] getAbilityConstants();
+    AbilityConstants getAbilityConstants(AbilityName abilityName);
 
     int getAP();
 
@@ -222,8 +223,13 @@ public interface World {
 
     int getMovePhaseNum();
 
-    AbilityConstants getAbilityConstants(AbilityName abilityName);
+    int getMaxOvertime();
 
-    HeroConstants getHeroConstants(HeroName heroName);
+    int getRemainingOvertime();
 
+    int getInitOvertime();
+
+    int getMaxScoreDiff();
+
+    int getTotalMovePhases();
 }
