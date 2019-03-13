@@ -46,7 +46,7 @@ public class BFS {
         }
 
         for (int i = 0; i < coolDownDuration; i++) {
-            bfsQueue.add(new Pair<>(targetCell, 0));
+            bfsQueue.add(new Pair<>(targetCell, i));
             distance[targetCell.getRow()][targetCell.getColumn()][i] = 0;
         }
 

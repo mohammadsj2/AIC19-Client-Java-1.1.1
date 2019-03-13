@@ -28,9 +28,11 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         Ability dodgeAbility = hero.getDodgeAbilities()[0];
         int[][][] distance = bfs.getDistance(targetCell, dodgeAbility);
         int range = Math.max(dodgeAbility.getRange(), NUMBER_OF_MOVE_PHASES);
+
         ArrayList<Cell> cells = getARangeOfCellsThatIsNotWall(world, hero.getCurrentCell(), range);
         ArrayList<Pair<Pair<Integer, Boolean>, Pair<Cell, Integer>>> toSort = new ArrayList<>();
         int remainCoolDown = hero.getAbility(dodgeAbility.getName()).getRemCooldown();
+
         for (Cell cell : cells) {
             int cooldown = dodgeAbility.getCooldown();
             int r = cell.getRow(), c = cell.getColumn();
