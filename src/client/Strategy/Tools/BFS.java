@@ -62,7 +62,7 @@ public class BFS {
                     if (Math.abs(i) + Math.abs(j) > NUMBER_OF_MOVE_PHASES) {
                         continue;
                     }
-                    if (!map.isInMap(nr, nc) || normalDistance[r][c][nr][nc] > NUMBER_OF_MOVE_PHASES) {
+                    if (!map.isInMap(nr, nc) || map.getCell(r, c).isWall() || normalDistance[r][c][nr][nc] > NUMBER_OF_MOVE_PHASES) {
                         continue;
                     }
                     Cell cell = map.getCell(nr, nc);
@@ -157,7 +157,7 @@ public class BFS {
         distance[startCell.getRow()][startCell.getColumn()] = 0;
         int st = 0;
 
-        while (queue.size() == st) {
+        while (queue.size() != st) {
             Pair<Integer, Integer> p = queue.get(st);
             st++;
             int row = p.getFirst(), col = p.getSecond();
@@ -171,6 +171,9 @@ public class BFS {
                 }
             }
         }
+
+        for (Pair<Integer, Integer> p : queue)
+            System.out.println(p.getFirst() + "," + p.getSecond() + "  :  " + distance[p.getFirst()][p.getSecond()]);;
 
         return distance;
     }
