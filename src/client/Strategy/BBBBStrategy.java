@@ -23,7 +23,7 @@ public class BBBBStrategy extends Strategy {
             partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         partOfStrategiesInited = true;
     }
