@@ -90,14 +90,16 @@ public abstract class PartOfStrategy {
         return world.getMap().getCell(r, c);
     }
 
-    protected Cell getCellWithMostJoneKamShodeForNotLinearAbilities(World world, Cell currentCell, AbilityName abilityName) {
+    protected Cell getCellWithMostJoneKamShodeForNotLinearAbilities(World world, Cell currentCell,
+                                                                    AbilityName abilityName, int[] healths) {
         Cell bestCell = currentCell;
         int best = 0;
 
         int range = world.getAbilityConstants(abilityName).getRange(),
                 areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
         for (Cell cellBomb : getARangeOfCells(world, currentCell, range)) {
-            int ans = getJoneKamOfOppHeroesInRange(world, cellBomb, areaOfEffect, abilityName);
+            int ans;
+            ans = getJoneKamOfOppHeroesInRange(world, cellBomb, areaOfEffect, abilityName, healths, null);
             if (ans > best) {
                 best = ans;
                 bestCell = cellBomb;
@@ -108,7 +110,6 @@ public abstract class PartOfStrategy {
         }
         return bestCell;
     }
-
 
     protected Cell getCellWithMostOppHeroesForLinearAbilities(World world, Cell currentCell, AbilityName abilityName) {
         Cell bestCell = currentCell;
@@ -151,14 +152,21 @@ public abstract class PartOfStrategy {
         return bestCell;
     }
 
-    private int getJoneKamOfOppHeroesInRange(World world, Cell cellBomb, int range, AbilityName abilityName) {
+    public int getJoneKamOfOppHeroesInRange(World world, Cell cellBomb, int range, AbilityName abilityName
+    ,int[] healths, ArrayList<Integer> ids) {
         int ans = 0;
         Hero[] oppHeros = world.getOppHeroes();
         for (int i = 0; i < 4; i++) {
-            if (oppHeros[i] == null) // Dide nashe opp hero
+            if (oppHeros[i].getCurrentCell() == null) // Dide nashe opp hero
                 continue;
-            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) < range)
-                ans += Math.min(oppHeros[i].getCurrentHP(), world.getAbilityConstants(abilityName).getPower());
+            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) < range) {
+                if (healths == null)
+                    ans += Math.min(oppHeros[i].getCurrentHP(), world.getAbilityConstants(abilityName).getPower());
+                else ans += Math.min(healths[oppHeros[i].getId()], world.getAbilityConstants(abilityName).getPower());
+
+                if(ids != null) ids.add(oppHeros[i].getId());
+
+            }
         }
 
         return ans;
@@ -215,11 +223,12 @@ public abstract class PartOfStrategy {
         Ability dodgeAbility = hero.getDodgeAbilities()[0];
         castAbility(world, hero, targetCell, dodgeAbility.getName());
     }
+
     protected void dodge(World world, Hero hero, Cell targetCell, Boolean decreaseMoney) throws NotEnoughApException {
         Ability dodgeAbility = hero.getDodgeAbilities()[0];
-        if(decreaseMoney.equals(true)){
-            dodge(world,hero,targetCell);
-        }else{
+        if (decreaseMoney.equals(true)) {
+            dodge(world, hero, targetCell);
+        } else {
             castAbility(world, hero, targetCell, dodgeAbility.getName());
 
         }

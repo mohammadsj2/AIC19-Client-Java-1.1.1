@@ -4,7 +4,7 @@
 		"objectiveZoneScore": 1,
 		"timeout": 500,
 		"maxAP": 100,
-		"maxTurns": 10,
+		"maxTurns": 70,
 		"maxScore": 300,
 		"maxScoreDiff": 30,
 		"initOvertime": 5,
