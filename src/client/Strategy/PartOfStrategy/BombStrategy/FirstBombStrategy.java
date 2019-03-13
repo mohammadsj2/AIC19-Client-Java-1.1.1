@@ -24,7 +24,6 @@ public class FirstBombStrategy extends PartOfStrategy {
     public void actionTurn(World world) throws NotEnoughApException {
         Hero blaster = world.getHero(blasterId);
         Cell bestCell = getCellWithMostOppHeroesForNotLinearAbilities(world, blaster.getCurrentCell(), AbilityName.BLASTER_BOMB);
-        System.out.println(bestCell);
         if (bestCell != null) {
             bombAttack(world, blaster, bestCell);
         }
