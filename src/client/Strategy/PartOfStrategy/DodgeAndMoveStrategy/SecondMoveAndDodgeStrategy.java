@@ -95,8 +95,9 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         if (!moves.get(0).getSecond()) return 0;
         System.out.println("BetterToWait:" + moves.get(0).getFirst());
         boolean decreaseMoney = true;
+        //TODO dg nabayad ta 8 bashe ha !!
         for (Pair<Cell, Boolean> move : moves) {
-            if(move.getSecond()) {
+            if (move.getSecond()) {
                 dodge(world, hero, move.getFirst(), decreaseMoney);
                 decreaseMoney = false;
             }
@@ -154,7 +155,11 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
                         }
                     }
                     swapTargetCells(i, index);
-                    swapWhatToDoArrayLists(myHeroes[index].getId(),hero.getId());
+                    swapWhatToDoArrayLists(myHeroes[index].getId(), hero.getId());
+                    if (betterToWait(world, hero, targetCell)) {
+                        continue;
+                    }
+                    targetCell2 = whatToDoArrayList[hero.getId()].get(0).getFirst();
                     dirs = world.getPathMoveDirections(hero.getCurrentCell(), targetCell2);
                     if (dirs.length != 0) {
                         move(world, hero, dirs[0]);
@@ -194,8 +199,8 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     }
 
     private void swapWhatToDoArrayLists(int i, int j) {
-        ArrayList<Pair<Cell, Boolean>> c =whatToDoArrayList[i];
-        whatToDoArrayList[i]=whatToDoArrayList[j];
-        whatToDoArrayList[j]=c;
+        ArrayList<Pair<Cell, Boolean>> c = whatToDoArrayList[i];
+        whatToDoArrayList[i] = whatToDoArrayList[j];
+        whatToDoArrayList[j] = c;
     }
 }

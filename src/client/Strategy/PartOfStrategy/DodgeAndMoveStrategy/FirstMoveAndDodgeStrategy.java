@@ -93,6 +93,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
                         }
                     }
                     swapTargetCells(i, index);
+                    targetCell = targetCells.get(i);
                     dirs = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
                     if (dirs.length != 0) {
                         move(world, hero, dirs[0]);
