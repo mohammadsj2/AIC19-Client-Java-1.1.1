@@ -18,7 +18,7 @@ public class BFS {
     private ArrayList<Pair<Pair<Cell, Ability>, int[][][]>> memory = new ArrayList<>();
     private int[][][][] normalDistance;
 
-    BFS(Map map) {
+    public BFS(Map map) {
         this.map = map;
         int columnNum = map.getColumnNum() + 3;
         int rowNum = map.getRowNum() + 3;
