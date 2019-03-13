@@ -5,8 +5,6 @@ import client.Strategy.Tools.BFS;
 import client.model.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 
 public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
@@ -90,9 +88,9 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     }
 
     @Override
-    int dodgeAHero(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+    void dodgeAHero(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
         ArrayList<Pair<Cell, Boolean>> moves = whatToDoArrayList[hero.getId()];
-        if (!moves.get(0).getSecond()) return 0;
+        if (!moves.get(0).getSecond()) return;
         System.out.println("BetterToWait:" + moves.get(0).getFirst());
         boolean decreaseMoney = true;
         //TODO dg nabayad ta 8 bashe ha !!
@@ -102,7 +100,6 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
                 decreaseMoney = false;
             }
         }
-        return 0;
     }
 
     @Override
