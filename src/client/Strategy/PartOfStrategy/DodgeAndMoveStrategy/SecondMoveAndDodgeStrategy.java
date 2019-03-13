@@ -21,8 +21,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
         Pair<Cell, Boolean> move = whatToDo(world, hero, targetCell).get(0);
 
-        if(move.getSecond()) return true;
-        return false;
+        return move.getSecond();
     }
 
     private ArrayList<Pair<Cell, Boolean>> whatToDo(World world, Hero hero, Cell targetCell) {
@@ -66,8 +65,8 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         });
 
         ArrayList<Pair<Cell, Boolean>> ans = new ArrayList<>();
-        for(Pair<Pair<Integer, Boolean>, Pair<Cell, Integer>> p:toSort){
-            ans.add(new Pair<>(p.getSecond().getFirst(),p.getFirst().getSecond()));
+        for (Pair<Pair<Integer, Boolean>, Pair<Cell, Integer>> p : toSort) {
+            ans.add(new Pair<>(p.getSecond().getFirst(), p.getFirst().getSecond()));
         }
         return ans;
     }
@@ -75,10 +74,12 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     @Override
     int dodgeAHero(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
         ArrayList<Pair<Cell, Boolean>> moves = whatToDo(world, hero, targetCell);
-        if(!moves.get(0).getSecond()) return 0;
-        boolean decreaseMoney=true;
-        for(Pair<Cell, Boolean> move:moves) {
-            dodge(world, hero, move.getFirst(),decreaseMoney);
+        if (!moves.get(0).getSecond()) return 0;
+        System.out.println("BetterToWait:" + moves.get(0).getFirst());
+        boolean decreaseMoney = true;
+        for (Pair<Cell, Boolean> move : moves) {
+            dodge(world, hero, move.getFirst(), decreaseMoney);
+            decreaseMoney = false;
         }
         return 0;
     }
