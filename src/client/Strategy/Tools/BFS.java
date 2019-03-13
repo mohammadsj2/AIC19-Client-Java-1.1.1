@@ -122,7 +122,7 @@ public class BFS {
         }
         return distance;
     }
-    public int[][] giveNormalDistance(Cell startCell) {
+    public int[][] getNormalDistance(Cell startCell) {
         /*if (startCell == null || endCell == null || startCell == endCell || blockedCells == null ||
                 startCell.isWall() || endCell.isWall()) return new Direction[0];
         HashMap<Cell, Pair<Cell, Direction>> lastMoveInfo = new HashMap<>(); // saves parent cell and direction to go from parent cell to current cell
