@@ -1,6 +1,7 @@
 package client.Strategy;
 
 import client.Exception.NotEnoughApException;
+import client.Strategy.PartOfStrategy.AttackStrategy.FirstLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstNotLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
