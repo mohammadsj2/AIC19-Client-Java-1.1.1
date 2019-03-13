@@ -14,7 +14,7 @@ public class BFS {
     private static final int oo = MAX_DISTANCE;
 
     private Map map;
-    private ArrayList<Pair<Cell, Integer>> bfsQueue = new ArrayList<>();
+
     private ArrayList<Pair<Pair<Cell, Ability>, int[][][]>> memory = new ArrayList<>();
     private int[][][][] normalDistance;
 
@@ -32,6 +32,7 @@ public class BFS {
 
     //Note bayad too avalin moveTurn seda zade beshe ha !!
     private int[][][] getDistancesWithBFS(Cell targetCell, Ability ability) {
+        ArrayList<Pair<Cell, Integer>> bfsQueue = new ArrayList<>();
         int[][][] distance = new int[map.getRowNum()][map.getColumnNum()][MAX_COOL_DOWN + 1];
         int queueHead = 0;
         int coolDownDuration = ability.getCooldown();

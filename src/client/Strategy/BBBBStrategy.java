@@ -3,7 +3,9 @@ package client.Strategy;
 import client.Exception.NotEnoughApException;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstNotLinearAttackStrategy;
+import client.Strategy.PartOfStrategy.AttackStrategy.SecondLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
+import client.Strategy.PartOfStrategy.BombStrategy.SecondBombStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.SecondMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
@@ -13,17 +15,20 @@ import client.model.*;
 import java.util.ArrayList;
 
 public class BBBBStrategy extends Strategy {
+    public static final int NUMBER_OF_HEROES = 8;
     private int cnt = 0;
     private ArrayList<PartOfStrategy> partOfStrategies = new ArrayList<>();
     private Boolean partOfStrategiesInited = false;
 
+    int[] healths = new int[NUMBER_OF_HEROES];
+
     private void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            partOfStrategies.add(new SecondBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
         }
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            partOfStrategies.add(new SecondLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
         }
         partOfStrategiesInited = true;
     }
@@ -72,6 +77,12 @@ public class BBBBStrategy extends Strategy {
 
     @Override
     public void actionTurn(World world) {
+
+        for (int i = 0; i< NUMBER_OF_HEROES; i++)
+            if(world.getHero(i).getCurrentCell() == null)
+                healths[i] = 0;
+            else healths[i] = world.getHero(i).getCurrentHP();
+
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             try {
                 partOfStrategy.actionTurn(world);
