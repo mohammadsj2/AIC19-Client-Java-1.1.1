@@ -70,6 +70,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
         for (Hero hero : world.getMyHeroes()) {
             heroMoved.put(hero.getId(), false);
         }
+
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
             Hero hero = myHeros[i];
