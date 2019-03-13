@@ -46,7 +46,7 @@ public class BFS {
         }
 
         for (int i = 0; i < coolDownDuration; i++) {
-            bfsQueue.add(new Pair<>(targetCell, 0));
+            bfsQueue.add(new Pair<>(targetCell, i));
             distance[targetCell.getRow()][targetCell.getColumn()][i] = 0;
         }
 
@@ -140,13 +140,14 @@ public class BFS {
 
     private int[][] getNormalDistance(Cell startCell) {
 
-        if (startCell.isWall()) return null;
-
         int[][] distance = new int[map.getRowNum()][map.getColumnNum()];
-
         for (int r = 0; r < map.getRowNum(); r++)
             for (int c = 0; c < map.getColumnNum(); c++)
                 distance[r][c] = oo;
+
+        if (startCell.isWall()) {
+            return distance;
+        }
 
         int[] dx = {1, -1, 0, 0};
         int[] dy = {0, 0, 1, -1};
@@ -171,9 +172,6 @@ public class BFS {
                 }
             }
         }
-
-        for (Pair<Integer, Integer> p : queue)
-            System.out.println(p.getFirst() + "," + p.getSecond() + "  :  " + distance[p.getFirst()][p.getSecond()]);;
 
         return distance;
     }
