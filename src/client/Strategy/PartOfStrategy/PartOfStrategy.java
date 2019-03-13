@@ -160,6 +160,15 @@ public abstract class PartOfStrategy {
         Ability dodgeAbility = hero.getDodgeAbilities()[0];
         castAbility(world, hero, targetCell, dodgeAbility.getName());
     }
+    protected void dodge(World world, Hero hero, Cell targetCell, Boolean decreaseMoney) throws NotEnoughApException {
+        Ability dodgeAbility = hero.getDodgeAbilities()[0];
+        if(decreaseMoney.equals(true)){
+            dodge(world,hero,targetCell);
+        }else{
+            castAbility(world, hero, targetCell, dodgeAbility.getName());
+
+        }
+    }
 
     protected void bombAttack(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
         castAbility(world, hero, targetCell, AbilityName.BLASTER_BOMB);

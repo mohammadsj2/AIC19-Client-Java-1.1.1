@@ -19,12 +19,12 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
     @Override
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
-        Pair<Cell, Boolean> move = whatToDo(world, hero, targetCell);
+        Pair<Cell, Boolean> move = whatToDo(world, hero, targetCell).get(0);
         if(move.getSecond()) return true;
         return false;
     }
 
-    private Pair<Cell, Boolean> whatToDo(World world, Hero hero, Cell targetCell) {
+    private ArrayList<Pair<Cell, Boolean>> whatToDo(World world, Hero hero, Cell targetCell) {
         Ability dodgeAbility = hero.getDodgeAbilities()[0];
         int[][][] distance = bfs.getDistance(targetCell, dodgeAbility);
         int range = Math.max(dodgeAbility.getRange(), NUMBER_OF_MOVE_PHASES);
@@ -43,7 +43,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             int normalDistance = bfs.getNormalDistance(hero.getCurrentCell(), cell);
             if (normalDistance <= NUMBER_OF_MOVE_PHASES) {
                 int temp = Math.max(0, remainCoolDown - 1);
-                toSort.add(new Pair<>(new Pair<>(distance[r][c][temp], true), new Pair<>(cell, temp)));
+                toSort.add(new Pair<>(new Pair<>(distance[r][c][temp], false), new Pair<>(cell, temp)));
             }
         }
         toSort.sort((o1, o2) -> {
@@ -62,15 +62,21 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             return 0;
         });
 
-        Pair<Pair<Integer, Boolean>, Pair<Cell, Integer>> ans = toSort.get(0);
-        return new Pair<>(ans.getSecond().getFirst(),ans.getFirst().getSecond());
+        ArrayList<Pair<Cell, Boolean>> ans = new ArrayList<>();
+        for(Pair<Pair<Integer, Boolean>, Pair<Cell, Integer>> p:toSort){
+            ans.add(new Pair<>(p.getSecond().getFirst(),p.getFirst().getSecond()));
+        }
+        return ans;
     }
 
     @Override
     int dodgeAHero(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
-        Pair<Cell, Boolean> move = whatToDo(world, hero, targetCell);
-        if(!move.getSecond()) return 0;
-        dodge(world, hero, move.getFirst());
+        ArrayList<Pair<Cell, Boolean>> moves = whatToDo(world, hero, targetCell);
+        if(!moves.get(0).getSecond()) return 0;
+        boolean decreaseMoney=true;
+        for(Pair<Cell, Boolean> move:moves) {
+            dodge(world, hero, move.getFirst(),decreaseMoney);
+        }
         return 0;
     }
 
