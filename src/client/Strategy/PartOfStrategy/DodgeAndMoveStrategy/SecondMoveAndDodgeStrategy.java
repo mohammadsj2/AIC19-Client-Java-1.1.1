@@ -7,6 +7,7 @@ import client.model.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     public static final int NUMBER_OF_MOVE_PHASES = 6;
@@ -81,6 +82,10 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         for (Pair<Pair<Integer, Boolean>, Pair<Cell, Integer>> p : toSort) {
             ans.add(new Pair<>(p.getSecond().getFirst(), p.getFirst().getSecond()));
         }
+        if(world.getCurrentTurn()==5) {
+            int e=213;
+            System.out.println(e);
+        }
         return ans;
     }
 
@@ -118,8 +123,26 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
                             myHero, targetZoneCells.get(i));
                 }
             }
+            if(world.getCurrentTurn()==5) {
+                int e=213;
+                System.out.println(e);
+            }
         }
-        super.moveTurn(world);
+        Hero myHeros[] = world.getMyHeroes();
+
+        ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
+        for (int i = 0; i < 4; i++) {
+            Hero hero = myHeros[i];
+            Cell targetCell = targetCells.get(i);
+            Cell targetCell2= whatToDoArrayList[hero.getId()].get(0).getFirst();
+            if (betterToWait(world, hero, targetCell)) {
+                continue;
+            }
+            Direction dirs[] = world.getPathMoveDirections(hero.getCurrentCell(), targetCell2);
+            if (dirs.length != 0) {
+                move(world, hero, dirs[0]);
+            }
+        }
         movePhase++;
         movePhase %= 6;
     }
