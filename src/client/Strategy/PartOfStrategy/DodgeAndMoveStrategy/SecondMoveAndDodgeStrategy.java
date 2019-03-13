@@ -20,6 +20,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     @Override
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
         Pair<Cell, Boolean> move = whatToDo(world, hero, targetCell);
+        System.err.println(move.getSecond());
         if(move.getSecond()) return true;
         return false;
     }
@@ -43,7 +44,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             int normalDistance = bfs.getNormalDistance(hero.getCurrentCell(), cell);
             if (normalDistance <= NUMBER_OF_MOVE_PHASES) {
                 int temp = Math.max(0, remainCoolDown - 1);
-                toSort.add(new Pair<>(new Pair<>(distance[r][c][temp], true), new Pair<>(cell, temp)));
+                toSort.add(new Pair<>(new Pair<>(distance[r][c][temp], false), new Pair<>(cell, temp)));
             }
         }
         toSort.sort((o1, o2) -> {
