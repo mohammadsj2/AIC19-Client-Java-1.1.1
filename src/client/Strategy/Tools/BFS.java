@@ -1,11 +1,10 @@
 package client.Strategy.Tools;
 
-import client.model.Ability;
-import client.model.Cell;
-import client.model.Map;
-import client.model.Pair;
+import client.model.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class BFS {
     private static final int NUMBER_OF_MOVE_PHASES = 6;
@@ -49,7 +48,7 @@ public class BFS {
 
             for (int i = -NUMBER_OF_MOVE_PHASES; i <= NUMBER_OF_MOVE_PHASES; i++) {
                 for (int j = -NUMBER_OF_MOVE_PHASES; j <= NUMBER_OF_MOVE_PHASES; j++) {
-                    if (Math.abs(i) + Math.abs(j) > NUMBER_OF_MOVE_PHASES) {
+                    if (Math.abs(i) + Math.abs(j) > NUMBER_OF_MOVE_PHASES ) {
                         continue;
                     }
                     int nr = r + i, nc = c + j;
@@ -123,5 +122,41 @@ public class BFS {
         }
         return distance;
     }
+    public int[][] giveNormalDistance(Cell startCell) {
+        /*if (startCell == null || endCell == null || startCell == endCell || blockedCells == null ||
+                startCell.isWall() || endCell.isWall()) return new Direction[0];
+        HashMap<Cell, Pair<Cell, Direction>> lastMoveInfo = new HashMap<>(); // saves parent cell and direction to go from parent cell to current cell
+        Cell[] bfsQueue = new Cell[map.getRowNum() * map.getColumnNum() + 10];
+        int queueHead = 0;
+        int queueTail = 0;
 
+        lastMoveInfo.put(startCell, new Pair<>(null, null));
+        for (Cell cell : blockedCells) {
+            lastMoveInfo.put(cell, new Pair<>(null, null));
+        }
+
+        bfsQueue[queueTail++] = startCell;
+
+        while (queueHead != queueTail) {
+            Cell currentCell = bfsQueue[queueHead++];
+            if (currentCell.equals(endCell)) {
+                ArrayList<Direction> directions = new ArrayList<>();
+                while (!currentCell.equals(startCell)) {
+                    directions.add(lastMoveInfo.get(currentCell).getSecond());
+                    currentCell = lastMoveInfo.get(currentCell).getFirst();
+                }
+                Collections.reverse(directions);
+                return directions.toArray(new Direction[0]);
+            }
+            for (Direction direction : Direction.values()) {
+                Cell nextCell = getNextCell(currentCell, direction);
+                if (nextCell != null && isAccessible(nextCell) && !lastMoveInfo.containsKey(nextCell)) {
+                    lastMoveInfo.put(nextCell, new Pair<>(currentCell, direction));
+                    bfsQueue[queueTail++] = nextCell;
+                }
+            }
+        }
+        return new Direction[0];*/
+        return null;
+    }
 }
