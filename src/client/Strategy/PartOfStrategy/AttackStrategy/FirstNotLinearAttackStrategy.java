@@ -7,43 +7,20 @@ import client.model.*;
 import java.util.ArrayList;
 
 public class FirstNotLinearAttackStrategy extends PartOfStrategy {
-    private Hero hero;
+    private int heroId;
 
-    public FirstNotLinearAttackStrategy(int maxAp, Hero hero) {
+    public FirstNotLinearAttackStrategy(int maxAp, int hero) {
         super(maxAp);
-        this.hero = hero;
+        this.heroId = hero;
     }
 
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
+        Hero hero = world.getHero(heroId);
         super.actionTurn(world);
         Ability attackAbility = hero.getOffensiveAbilities()[0];
-        ArrayList<Pair<Cell, Integer>> cells = new ArrayList<>();
-        ArrayList<Cell> importantCells = new ArrayList<>(getARangeOfCellsThatIsNotWall(world, hero.getCurrentCell()
-                , world.getAbilityConstants(attackAbility.getName()).getRange()));
-        for (Cell cell : importantCells) {
-            int score = 0;
-            for (Cell cell1 : getARangeOfCellsThatIsNotWall(world, cell, attackAbility.getAreaOfEffect())) {
-                if (world.getOppHero(cell1) != null) {
-                    score++;
-                }
-            }
-            Pair<Cell, Integer> target = new Pair<>(cell, score);
-            cells.add(target);
-        }
-
-        cells.sort((t1, t2) -> t2.getSecond() - t1.getSecond());
-
-        int range = world.getAbilityConstants(attackAbility.getName()).getRange();
-
-        for (Pair<Cell, Integer> target : cells) {
-            Cell targetCell = target.getFirst();
-            if (target.getSecond() > 0 && world.manhattanDistance(hero.getCurrentCell(), targetCell) <= range) {
-                if (world.isInVision(hero.getCurrentCell(), targetCell)) {
-                    world.castAbility(hero, attackAbility.getName(), targetCell);
-                    break;
-                }
-            }
-        }
+        Cell targetCell1 = getCellWithMostOppHeroesForNotLinearAbilities(world, hero.getCurrentCell(), attackAbility.getName());
+        if (targetCell1 != null)
+            castAbility(world, hero, targetCell1, attackAbility.getName());
     }
 }

@@ -93,7 +93,7 @@ public class Controller
 
     /**
      * Handles incoming message. This method will be called from
-     * {@link client.Network} when a new message is received.
+     * {@link Network} when a new message is received.
      *
      * @param msg incoming message
      */
@@ -154,7 +154,7 @@ public class Controller
             moveTurn(newGame, endEvent);
         } else
         {
-            endEvent = new Event("actionTurn-end", new Object[]{newGame.getCurrentTurn()});
+            endEvent = new Event("action-end", new Object[]{newGame.getCurrentTurn()});
             actionTurn(newGame, endEvent);
         }
     }
