@@ -20,6 +20,8 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     @Override
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
 
+        if(hero.getCurrentCell().getRow() == -1) return true;
+
         ArrayList<Pair<Cell, Boolean>> moves = whatToDo(world, hero, targetCell);
         Pair<Cell,Boolean> move=moves.get(0);
         System.err.println("Turn is : " + world.getCurrentTurn() + "\n" + hero.getId() + "\n" +
@@ -46,6 +48,11 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
                 int temp = cooldown - 1;
                 toSort.add(new Pair<>(new Pair<>(distance[r][c][temp], true), new Pair<>(cell, temp)));
             }
+            if(hero.getCurrentCell().getRow() == -1 || hero.getCurrentCell().getColumn() == -1)
+                System.err.println("FIND");
+
+            if(cell.getRow() == -1 || cell.getColumn() == -1) System.err.println("GUB FOUND");
+
             int normalDistance = bfs.getNormalDistance(hero.getCurrentCell(), cell);
             if (normalDistance <= NUMBER_OF_MOVE_PHASES) {
                 int temp = Math.max(0, remainCoolDown - 1);
@@ -93,7 +100,8 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         Hero[] heroes = world.getMyHeroes();
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
-            dodgeAHero(world, heroes[i], targetCells.get(i));
+            if(heroes[i].getCurrentCell().getRow() != -1)
+                dodgeAHero(world, heroes[i], targetCells.get(i));
         }
     }
 
