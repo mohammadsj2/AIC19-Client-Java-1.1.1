@@ -161,7 +161,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
             toSortPairs.sort(Comparator.comparingInt(Pair::getSecond));
             if (action) {
                 for (int i = 0; i < Math.min(8, toSortPairs.size()); i++) {
-                    dodge(world, hero, toSortPairs.get(i).getFirst());
+                    dodge(world, hero, toSortPairs.get(i).getFirst(),i==0);
                 }
             }
             return dir.length - world.getPathMoveDirections(toSortPairs.get(0).getFirst(), targetCell).length;
