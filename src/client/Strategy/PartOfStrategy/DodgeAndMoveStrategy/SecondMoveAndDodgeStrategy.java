@@ -19,7 +19,9 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
     @Override
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
-        return super.betterToWait(world, hero, targetCell);
+        Pair<Cell, Boolean> move = whatToDo(world, hero, targetCell);
+        if(move.getSecond()) return true;
+        return false;
     }
 
     private Pair<Cell, Boolean> whatToDo(World world, Hero hero, Cell targetCell) {
@@ -66,12 +68,14 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
     @Override
     int dodgeAHero(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
-        return super.dodgeAHero(world, hero, targetCell);
+        Pair<Cell, Boolean> move = whatToDo(world, hero, targetCell);
+        if(!move.getSecond()) return 0;
+        dodge(world, hero, move.getFirst());
+        return 0;
     }
 
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
-        super.actionTurn(world);
         Hero[] heroes = world.getMyHeroes();
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
