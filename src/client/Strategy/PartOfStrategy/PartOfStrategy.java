@@ -170,9 +170,7 @@ public abstract class PartOfStrategy {
     }
 
     protected void castAbility(World world, Hero hero, Cell targetCell, AbilityName blasterBomb) throws NotEnoughApException {
-        System.out.println("NOOOOOO pokhte :" + blasterBomb);
         decreaseAp(hero.getAbility(blasterBomb).getAPCost());
-        System.out.println("shalghame pokhte :" + blasterBomb);
         world.castAbility(hero.getId(), blasterBomb, targetCell);
     }
 

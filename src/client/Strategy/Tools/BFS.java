@@ -1,16 +1,17 @@
 package client.Strategy.Tools;
 
 import client.model.*;
+import client.model.Map;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class BFS {
     private static final int NUMBER_OF_MOVE_PHASES = 6;
     private static final int MAX_DISTANCE = 1000000000;
     private static final int MAX_COOL_DOWN = 9;
     private static final int MAXIMUM_MEMORY_SIZE = 20;
+    public static final int NUMBER_OF_NEIGHBOURS = 4;
+    public static final int oo = 1000 * 1000 * 1000;
 
     private Map map;
     private ArrayList<Pair<Cell, Integer>> bfsQueue = new ArrayList<>();
@@ -134,40 +135,39 @@ public class BFS {
     }
 
     public int[][] getNormalDistance(Cell startCell) {
-        /*if (startCell == null || endCell == null || startCell == endCell || blockedCells == null ||
-                startCell.isWall() || endCell.isWall()) return new Direction[0];
-        HashMap<Cell, Pair<Cell, Direction>> lastMoveInfo = new HashMap<>(); // saves parent cell and direction to go from parent cell to current cell
-        Cell[] bfsQueue = new Cell[map.getRowNum() * map.getColumnNum() + 10];
-        int queueHead = 0;
-        int queueTail = 0;
 
-        lastMoveInfo.put(startCell, new Pair<>(null, null));
-        for (Cell cell : blockedCells) {
-            lastMoveInfo.put(cell, new Pair<>(null, null));
+        if(startCell.isWall()) return null;
+
+        int[][] distance = new int[map.getRowNum()][map.getColumnNum()];
+
+        for (int r=0; r<map.getRowNum(); r++)
+            for (int c=0; c<map.getColumnNum(); c++)
+                distance[r][c] = oo;
+
+        int[] dx = {1, -1, 0, 0};
+        int[] dy =  {0, 0, 1, -1};
+
+        ArrayList<Pair<Integer, Integer>> queue = new ArrayList<>();
+
+        queue.add(new Pair<>(startCell.getRow(), startCell.getColumn()));
+        distance[startCell.getRow()][startCell.getColumn()] = 0;
+        int st = 0;
+
+        while(queue.size() == st) {
+            Pair<Integer, Integer> p = queue.get(st);
+            st ++;
+            int row = p.getFirst(), col = p.getSecond();
+            for (int i = 0; i< NUMBER_OF_NEIGHBOURS; i++) {
+                int nr = row + dx[i], nc = col + dy[i];
+                if(nr < 0 || nc < 0 || nr >= map.getRowNum() || nc >= map.getColumnNum()) continue ;
+                if(map.getCell(nr, nc).isWall()) continue ;
+                if(distance[nr][nc] > distance[row][col] + 1) {
+                    distance[nr][nc] = distance[row][col] + 1;
+                    queue.add(new Pair<>(nr, nc));
+                }
+            }
         }
 
-        bfsQueue[queueTail++] = startCell;
-
-        while (queueHead != queueTail) {
-            Cell currentCell = bfsQueue[queueHead++];
-            if (currentCell.equals(endCell)) {
-                ArrayList<Direction> directions = new ArrayList<>();
-                while (!currentCell.equals(startCell)) {
-                    directions.add(lastMoveInfo.get(currentCell).getSecond());
-                    currentCell = lastMoveInfo.get(currentCell).getFirst();
-                }
-                Collections.reverse(directions);
-                return directions.toArray(new Direction[0]);
-            }
-            for (Direction direction : Direction.values()) {
-                Cell nextCell = getNextCell(currentCell, direction);
-                if (nextCell != null && isAccessible(nextCell) && !lastMoveInfo.containsKey(nextCell)) {
-                    lastMoveInfo.put(nextCell, new Pair<>(currentCell, direction));
-                    bfsQueue[queueTail++] = nextCell;
-                }
-            }
-        }
-        return new Direction[0];*/
-        return null;
+        return distance;
     }
 }
