@@ -164,7 +164,7 @@ public class BFS {
             int row = p.getFirst(), col = p.getSecond();
             for (int i = 0; i < NUMBER_OF_NEIGHBOURS; i++) {
                 int nr = row + dx[i], nc = col + dy[i];
-                if (nr < 0 || nc < 0 || nr >= map.getRowNum() || nc >= map.getColumnNum()) continue;
+                if (!map.isInMap(nr,nc)) continue;
                 if (map.getCell(nr, nc).isWall()) continue;
                 if (distance[nr][nc] > distance[row][col] + 1) {
                     distance[nr][nc] = distance[row][col] + 1;
