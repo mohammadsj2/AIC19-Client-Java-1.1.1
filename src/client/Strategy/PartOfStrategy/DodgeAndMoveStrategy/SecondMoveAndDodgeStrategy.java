@@ -20,6 +20,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     @Override
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
         Pair<Cell, Boolean> move = whatToDo(world, hero, targetCell).get(0);
+
         if(move.getSecond()) return true;
         return false;
     }
