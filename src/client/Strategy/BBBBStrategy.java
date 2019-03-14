@@ -29,11 +29,13 @@ public class BBBBStrategy extends Strategy {
     private void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new ThirdBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
+
+            partOfStrategies.add(new ThirdBombStrategy(hero.getId(), null));
             //partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new ThirdLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
+            partOfStrategies.add(new ThirdLinearAttackStrategy(hero.getId(), null));
+
             //partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         partOfStrategiesInited = true;
@@ -61,7 +63,7 @@ public class BBBBStrategy extends Strategy {
     @Override
     public void preProcess(World world) {
         BFS bfs = new BFS(world.getMap());
-        partOfStrategies.add(new ThirdMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP, bfs));
+        partOfStrategies.add(new ThirdMoveAndDodgeStrategy(bfs));
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             partOfStrategy.preProcess(world);
         }
