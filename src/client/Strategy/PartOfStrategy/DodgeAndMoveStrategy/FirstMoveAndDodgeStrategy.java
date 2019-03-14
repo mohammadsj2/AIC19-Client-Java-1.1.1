@@ -42,7 +42,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
         return targetZoneCells;
     }
 
-    private ArrayList<Cell> getRandomHeroTargetZonesByMinimumDistance(World world, int minimumDistance) throws CantFindRandomTargetZone {
+    protected ArrayList<Cell> getRandomHeroTargetZonesByMinimumDistance(World world, int minimumDistance) throws CantFindRandomTargetZone {
         Cell[] objectiveZone = world.getMap().getObjectiveZone();
         ArrayList<Cell> choices = new ArrayList<>(Arrays.asList(objectiveZone));
         ArrayList<Cell> tmp = new ArrayList<>();

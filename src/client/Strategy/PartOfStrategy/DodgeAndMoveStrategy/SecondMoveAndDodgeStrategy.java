@@ -1,5 +1,6 @@
 package client.Strategy.PartOfStrategy.DodgeAndMoveStrategy;
 
+import client.Exception.CantFindRandomTargetZone;
 import client.Exception.NotEnoughApException;
 import client.Strategy.Tools.BFS;
 import client.model.*;
@@ -16,6 +17,63 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     public SecondMoveAndDodgeStrategy(int maxAp, BFS bfs) {
         super(maxAp);
         this.bfs = bfs;
+    }
+
+    @Override
+    ArrayList<Cell> getHeroTargetCellsZone(World world) {
+        if (targetZoneCells.size() != 0)
+            return targetZoneCells;
+
+        int rangeOfBomb = world.getAbilityConstants(AbilityName.BLASTER_BOMB).getAreaOfEffect();
+        ArrayList<Pair<Pair<Integer,Boolean>, ArrayList<Cell>>> toSort = new ArrayList();
+        for (int minimumDistance = rangeOfBomb * 2 + 1; minimumDistance >= 2; minimumDistance--) {
+            boolean flag = false;
+            for (int t = 0; t < 30; t++) {
+                try {
+                    ArrayList<Cell> rndTargetZonesByMinimumDistance =
+                            getRandomHeroTargetZonesByMinimumDistance(world, minimumDistance);
+                    int maximumDistance = getMaximumDistance(world, rndTargetZonesByMinimumDistance);
+                    boolean twoOfThemIsInALine = isTwoOfThemIsInALine(rndTargetZonesByMinimumDistance);
+                    toSort.add(new Pair<>(new Pair<>(maximumDistance, twoOfThemIsInALine), rndTargetZonesByMinimumDistance));
+                    flag = true;
+                } catch (CantFindRandomTargetZone ignored) {
+
+                }
+            }
+            if (flag) {
+                break;
+            }
+        }
+        toSort.sort((o1, o2) -> {
+            if(o1.getFirst().getSecond()!=o2.getFirst().getSecond()){
+                if(!o1.getFirst().getSecond()){
+                    return -1;
+                }
+                return 1;
+            }
+            return o1.getFirst().getFirst()-o2.getFirst().getFirst();
+        });
+        targetZoneCells = toSort.get(0).getSecond();
+        return targetZoneCells;
+    }
+
+    private int getMaximumDistance(World world, ArrayList<Cell> targetZones) {
+        int ans = 0;
+        for (Cell cell : targetZones) {
+            for (Cell cell1 : targetZones) {
+                ans = Math.max(ans, world.manhattanDistance(cell, cell1));
+            }
+        }
+        return ans;
+    }
+    private boolean isTwoOfThemIsInALine(ArrayList<Cell> targetZones){
+        for (Cell cell : targetZones) {
+            for (Cell cell1 : targetZones) {
+                if(cell.getRow()==cell1.getRow() || cell.getColumn()==cell1.getColumn())
+                    return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -102,7 +160,9 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         //TODO dg nabayad ta 8 bashe ha !!
         for (Pair<Cell, Boolean> move : moves) {
             if (move.getSecond()) {
-                dodge(world, hero, move.getFirst(), decreaseMoney);
+                int manhattanDistance = world.manhattanDistance(move.getFirst(), hero.getCurrentCell());
+                if (manhattanDistance <= hero.getDodgeAbilities()[0].getRange())
+                    dodge(world, hero, move.getFirst(), decreaseMoney);
                 decreaseMoney = false;
             }
         }
@@ -128,7 +188,6 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             }
         }
         Hero[] myHeroes = world.getMyHeroes();
-        Hero myHeros[] = myHeroes;
 
         HashMap<Integer, Boolean> heroMoved = new HashMap<>();
         for (Hero hero : myHeroes) {
@@ -137,7 +196,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
-            Hero hero = myHeros[i];
+            Hero hero = myHeroes[i];
             Cell targetCell = targetCells.get(i);
             Cell targetCell2 = whatToDoArrayList[hero.getId()].get(0).getFirst();
             if (betterToWait(world, hero, targetCell)) {
@@ -172,7 +231,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             }
         }
         for (int i = 0; i < 4; i++) {
-            Hero hero = myHeros[i];
+            Hero hero = myHeroes[i];
             if (heroMoved.get(hero.getId())) {
                 continue;
             }
