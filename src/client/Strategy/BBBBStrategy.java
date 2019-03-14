@@ -10,6 +10,7 @@ import client.Strategy.PartOfStrategy.BombStrategy.SecondBombStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.ThirdBombStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.SecondMoveAndDodgeStrategy;
+import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.ThirdMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.Strategy.Tools.BFS;
 import client.model.*;
@@ -59,7 +60,7 @@ public class BBBBStrategy extends Strategy {
     @Override
     public void preProcess(World world) {
         BFS bfs = new BFS(world.getMap());
-        partOfStrategies.add(new SecondMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP, bfs));
+        partOfStrategies.add(new ThirdMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP, bfs));
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             partOfStrategy.preProcess(world);
         }

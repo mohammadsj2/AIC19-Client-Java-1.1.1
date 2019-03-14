@@ -1,5 +1,6 @@
 package client.Strategy.PartOfStrategy.DodgeAndMoveStrategy;
 
+import client.Exception.CantFindRandomTargetZone;
 import client.Exception.NotEnoughApException;
 import client.Strategy.Tools.BFS;
 import client.model.*;
@@ -17,6 +18,8 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         super(maxAp);
         this.bfs = bfs;
     }
+
+
 
     @Override
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
@@ -98,7 +101,9 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         //TODO dg nabayad ta 8 bashe ha !!
         for (Pair<Cell, Boolean> move : moves) {
             if (move.getSecond()) {
-                dodge(world, hero, move.getFirst(), decreaseMoney);
+                int manhattanDistance = world.manhattanDistance(move.getFirst(), hero.getCurrentCell());
+                if (manhattanDistance <= hero.getDodgeAbilities()[0].getRange())
+                    dodge(world, hero, move.getFirst(), decreaseMoney);
                 decreaseMoney = false;
             }
         }
@@ -124,7 +129,6 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             }
         }
         Hero[] myHeroes = world.getMyHeroes();
-        Hero myHeros[] = myHeroes;
 
         HashMap<Integer, Boolean> heroMoved = new HashMap<>();
         for (Hero hero : myHeroes) {
@@ -133,7 +137,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
-            Hero hero = myHeros[i];
+            Hero hero = myHeroes[i];
             Cell targetCell = targetCells.get(i);
             Cell targetCell2 = whatToDoArrayList[hero.getId()].get(0).getFirst();
             if (betterToWait(world, hero, targetCell)) {
@@ -168,7 +172,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             }
         }
         for (int i = 0; i < 4; i++) {
-            Hero hero = myHeros[i];
+            Hero hero = myHeroes[i];
             if (heroMoved.get(hero.getId())) {
                 continue;
             }
