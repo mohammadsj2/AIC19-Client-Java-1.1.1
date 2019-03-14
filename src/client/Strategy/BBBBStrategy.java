@@ -29,11 +29,13 @@ public class BBBBStrategy extends Strategy {
     private void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
+
             partOfStrategies.add(new ThirdBombStrategy(hero.getId(), null));
             //partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         for (Hero hero : myHeroes) {
             partOfStrategies.add(new ThirdLinearAttackStrategy(hero.getId(), null));
+
             //partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         partOfStrategiesInited = true;
@@ -84,10 +86,16 @@ public class BBBBStrategy extends Strategy {
     @Override
     public void actionTurn(World world) {
 
-        for (int i = 0; i < NUMBER_OF_HEROES; i++)
-            if (world.getHero(i).getCurrentCell() == null)
+        for (int i = 0; i< NUMBER_OF_HEROES; i++)
+            if(world.getHero(i).getCurrentCell().getRow() == -1)
+
                 healths[i] = 0;
             else healths[i] = world.getHero(i).getCurrentHP();
+
+        System.err.println("HEY ///////////");
+        for (int i=0; i<NUMBER_OF_HEROES; i++)
+            System.err.print(healths[i] + " ");
+        System.err.println();
 
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             try {
