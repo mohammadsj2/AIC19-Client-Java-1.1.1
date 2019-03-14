@@ -36,7 +36,6 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
                     boolean twoOfThemIsInALine = isTwoOfThemIsInALine(rndTargetZonesByMinimumDistance);
                     toSort.add(new Pair<>(new Pair<>(maximumDistance, twoOfThemIsInALine), rndTargetZonesByMinimumDistance));
                     flag = true;
-                    return targetZoneCells;
                 } catch (CantFindRandomTargetZone ignored) {
 
                 }
@@ -189,7 +188,6 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             }
         }
         Hero[] myHeroes = world.getMyHeroes();
-        Hero myHeros[] = myHeroes;
 
         HashMap<Integer, Boolean> heroMoved = new HashMap<>();
         for (Hero hero : myHeroes) {
@@ -198,7 +196,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
-            Hero hero = myHeros[i];
+            Hero hero = myHeroes[i];
             Cell targetCell = targetCells.get(i);
             Cell targetCell2 = whatToDoArrayList[hero.getId()].get(0).getFirst();
             if (betterToWait(world, hero, targetCell)) {
@@ -233,7 +231,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             }
         }
         for (int i = 0; i < 4; i++) {
-            Hero hero = myHeros[i];
+            Hero hero = myHeroes[i];
             if (heroMoved.get(hero.getId())) {
                 continue;
             }
