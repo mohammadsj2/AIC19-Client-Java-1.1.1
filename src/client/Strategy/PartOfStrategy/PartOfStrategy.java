@@ -128,6 +128,7 @@ public abstract class PartOfStrategy {
                 continue;
             Pair<Integer, Integer> thisOne;
             thisOne = getKillsOfOppHeroesInRange(world, targetCell, areaOfEffect, abilityName, healths, null);
+
             if (thisOne.getFirst() > best.getFirst() ||
                     (thisOne.getFirst().equals(best.getFirst()) && thisOne.getSecond() > best.getSecond())) {
                 best = thisOne;
@@ -136,6 +137,12 @@ public abstract class PartOfStrategy {
         }
         if (best.getSecond() == 0) {
             return null;
+        }
+        System.err.println(best.getFirst());
+        if(best.getFirst() == 1) {
+            System.err.println("Turn is " + world.getCurrentTurn());
+            System.err.println("Linear = " + Linear);
+            System.err.println("Target Cell : " + bestCell.getRow() + " " + bestCell.getColumn());
         }
         return bestCell;
     }
