@@ -29,12 +29,12 @@ public class BBBBStrategy extends Strategy {
     private void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new ThirdBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
-            //partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            //partOfStrategies.add(new ThirdBombStrategy(hero.getId(), healths));
+            partOfStrategies.add(new FirstBombStrategy(hero.getId()));
         }
         for (Hero hero : myHeroes) {
-            partOfStrategies.add(new ThirdLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
-            //partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            //partOfStrategies.add(new ThirdLinearAttackStrategy(hero.getId(), healths));
+            partOfStrategies.add(new FirstLinearAttackStrategy(hero.getId()));
         }
         partOfStrategiesInited = true;
     }
@@ -86,20 +86,19 @@ public class BBBBStrategy extends Strategy {
 
         for (int i = 0; i< NUMBER_OF_HEROES; i++)
             if(world.getHero(i).getCurrentCell().getRow() == -1)
-
                 healths[i] = 0;
             else healths[i] = world.getHero(i).getCurrentHP();
 
-        System.err.println("HEY ///////////");
-        for (int i=0; i<NUMBER_OF_HEROES; i++)
-            System.err.print(healths[i] + " ");
-        System.err.println();
+        //System.err.println("HEY ///////////");
+        //for (int i=0; i<NUMBER_OF_HEROES; i++)
+          //  System.err.print(healths[i] + " ");
+        //System.err.println();
 
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             try {
                 partOfStrategy.actionTurn(world);
             } catch (NotEnoughApException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }

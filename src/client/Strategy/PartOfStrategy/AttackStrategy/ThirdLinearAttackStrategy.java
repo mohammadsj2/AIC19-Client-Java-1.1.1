@@ -42,7 +42,7 @@ public class ThirdLinearAttackStrategy extends PartOfStrategy {
                     healths[id] = Math.max(0, healths[id] - attackAbility.getPower());
 
             }catch (Exception ignored) {
-                System.err.println("Cannnot Attack because of AP");
+                //System.err.println("Cannnot Attack because of AP");
             }
         }
     }
