@@ -23,7 +23,7 @@ public class FirstBombStrategy extends PartOfStrategy {
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
         Hero blaster = world.getHero(blasterId);
-        Cell bestCell = getCellWithMostJoneKamShode(world, blaster.getCurrentCell(), AbilityName.BLASTER_BOMB, null, false);
+        Cell bestCell = getCellWithMostOppHeroes(world, blaster.getCurrentCell(), AbilityName.BLASTER_BOMB, false);
         if (bestCell != null) {
             bombAttack(world, blaster, bestCell);
         }
