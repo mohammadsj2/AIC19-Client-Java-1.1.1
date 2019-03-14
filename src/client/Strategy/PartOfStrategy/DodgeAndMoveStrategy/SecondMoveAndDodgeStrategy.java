@@ -27,8 +27,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         ArrayList<Pair<Cell, Boolean>> moves = whatToDoArrayList[hero.getId()];
         Pair<Cell, Boolean> move = moves.get(0);
 
-        System.err.println("Turn is : " + world.getCurrentTurn() + "\n" + hero.getId() + "\n" +
-                move.getSecond());
+
 
         return move.getSecond();
     }
@@ -52,10 +51,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
                 toSort.add(new Pair<>(new Pair<>(distance[r][c][temp], true), new Pair<>(cell, temp)));
             }
 
-            if (hero.getCurrentCell().getRow() == -1 || hero.getCurrentCell().getColumn() == -1)
-                System.err.println("FIND");
 
-            if (cell.getRow() == -1 || cell.getColumn() == -1) System.err.println("GUB FOUND");
 
             int normalDistance = bfs.getNormalDistance(hero.getCurrentCell(), cell);
             if (normalDistance <= NUMBER_OF_MOVE_PHASES) {
