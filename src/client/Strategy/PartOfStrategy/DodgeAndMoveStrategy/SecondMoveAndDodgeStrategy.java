@@ -28,7 +28,6 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         Pair<Cell, Boolean> move = moves.get(0);
 
 
-
         return move.getSecond();
     }
 
