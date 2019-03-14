@@ -129,7 +129,7 @@ public abstract class PartOfStrategy {
             Pair<Integer, Integer> thisOne;
             thisOne = getKillsOfOppHeroesInRange(world, targetCell, areaOfEffect, abilityName, healths, null);
             if (thisOne.getFirst() > best.getFirst() ||
-                    (thisOne.getFirst() == best.getFirst() && thisOne.getSecond() > best.getSecond())) { // TODO == ?
+                    (thisOne.getFirst().equals(best.getFirst()) && thisOne.getSecond() > best.getSecond())) {
                 best = thisOne;
                 bestCell = targetCell;
             }
@@ -165,14 +165,14 @@ public abstract class PartOfStrategy {
 
     public Pair<Integer, Integer> getKillsOfOppHeroesInRange(World world, Cell cellBomb, int range, AbilityName abilityName
             , int[] healths, ArrayList<Integer> ids) {
-        Integer kills = 0,
-                hpCost = 0; // TODO ina ke ziresh khat keshide chian
+        int kills = 0,
+                hpCost = 0;
 
         Hero[] oppHeros = world.getOppHeroes();
         for (int i = 0; i < 4; i++) {
             if (oppHeros[i].getCurrentCell() == null) // Dide nashe opp hero
                 continue;
-            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) < range) { // TODO <= ?
+            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) <= range) {
                 if (healths == null) {
                     if (oppHeros[i].getCurrentHP() <= world.getAbilityConstants(abilityName).getPower() &&
                             oppHeros[i].getCurrentHP() > 0)
@@ -201,7 +201,7 @@ public abstract class PartOfStrategy {
         for (int i = 0; i < 4; i++) {
             if (oppHeros[i].getCurrentCell() == null) // Dide nashe opp hero
                 continue;
-            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) < range) { // TODO <= ?
+            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) <= range) {
                 if (healths == null)
                     ans += Math.min(oppHeros[i].getCurrentHP(), world.getAbilityConstants(abilityName).getPower());
                 else ans += Math.min(healths[oppHeros[i].getId()], world.getAbilityConstants(abilityName).getPower());
