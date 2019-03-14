@@ -27,6 +27,9 @@ public abstract class PartOfStrategy {
         lastTurn = world.getCurrentTurn();
         remainAp = maxAp;
         hasAction = new boolean[8];
+        for (int i = 0; i < 8; i++) {
+            hasAction[i] = false;
+        }
     }
 
     public void actionTurn(World world) throws NotEnoughApException {
@@ -211,8 +214,7 @@ public abstract class PartOfStrategy {
 
             }
         }
-        Pair<Integer, Integer> ans = new Pair<>(kills, hpCost);
-        return ans;
+        return new Pair<>(kills, hpCost);
     } // aval mibine koja bezane bishtarin koshte ro darim badesh bar hasbe bishtarin jone kam shode sort mikone
 
 
