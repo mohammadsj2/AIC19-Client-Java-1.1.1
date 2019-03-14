@@ -90,19 +90,23 @@ public abstract class PartOfStrategy {
         return world.getMap().getCell(r, c);
     }
 
-    protected Cell getCellWithMostJoneKamShodeForNotLinearAbilities(World world, Cell currentCell,
-                                                                    AbilityName abilityName, int[] healths) {
+    // TODO check other files for Boolean Linear
+
+    protected Cell getCellWithMostJoneKamShode(World world, Cell currentCell,
+                                               AbilityName abilityName, int[] healths, boolean Linear) {
         Cell bestCell = currentCell;
         int best = 0;
 
         int range = world.getAbilityConstants(abilityName).getRange(),
                 areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
-        for (Cell cellBomb : getARangeOfCells(world, currentCell, range)) {
+        for (Cell targetCell : getARangeOfCells(world, currentCell, range)) {
+            if (!world.isInVision(targetCell, currentCell) && Linear)
+                continue;
             int ans;
-            ans = getJoneKamOfOppHeroesInRange(world, cellBomb, areaOfEffect, abilityName, healths, null);
+            ans = getJoneKamOfOppHeroesInRange(world, targetCell, areaOfEffect, abilityName, healths, null);
             if (ans > best) {
                 best = ans;
-                bestCell = cellBomb;
+                bestCell = targetCell;
             }
         }
         if (best == 0) {
@@ -111,13 +115,40 @@ public abstract class PartOfStrategy {
         return bestCell;
     }
 
-    protected Cell getCellWithMostOppHeroesForLinearAbilities(World world, Cell currentCell, AbilityName abilityName) {
+
+    protected Cell getCellWithMostKills(World world, Cell currentCell,
+                                        AbilityName abilityName, int[] healths, boolean Linear) {
+        Cell bestCell = currentCell;
+        Pair<Integer, Integer> best = new Pair<>(0, 0);
+
+        int range = world.getAbilityConstants(abilityName).getRange(),
+                areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
+        for (Cell targetCell : getARangeOfCells(world, currentCell, range)) {
+            if (!world.isInVision(targetCell, currentCell) && Linear)
+                continue;
+            Pair<Integer, Integer> thisOne;
+            thisOne = getKillsOfOppHeroesInRange(world, targetCell, areaOfEffect, abilityName, healths, null);
+            if (thisOne.getFirst() > best.getFirst() ||
+                    (thisOne.getFirst().equals(best.getFirst()) && thisOne.getSecond() > best.getSecond())) {
+                best = thisOne;
+                bestCell = targetCell;
+            }
+        }
+        if (best.getSecond() == 0) {
+            return null;
+        }
+        return bestCell;
+    }
+
+
+    protected Cell getCellWithMostOppHeroes(World world, Cell currentCell, AbilityName abilityName,
+                                            boolean Linear) {
         Cell bestCell = currentCell;
         int best = 0;
 
         int range = world.getAbilityConstants(abilityName).getRange();
         for (Cell cell : getARangeOfCells(world, currentCell, range)) {
-            if (!world.isInVision(cell, currentCell))
+            if (!world.isInVision(cell, currentCell) && Linear)
                 continue;
             int areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
             int ans = getNumberOfOppHeroesInRange(world, cell, areaOfEffect);
@@ -132,39 +163,50 @@ public abstract class PartOfStrategy {
         return bestCell;
     }
 
+    public Pair<Integer, Integer> getKillsOfOppHeroesInRange(World world, Cell cellBomb, int range, AbilityName abilityName
+            , int[] healths, ArrayList<Integer> ids) {
+        int kills = 0,
+                hpCost = 0;
 
-    protected Cell getCellWithMostOppHeroesForNotLinearAbilities(World world, Cell currentCell, AbilityName abilityName) {
-        Cell bestCell = currentCell;
-        int best = 0;
+        Hero[] oppHeros = world.getOppHeroes();
+        for (int i = 0; i < 4; i++) {
+            if (oppHeros[i].getCurrentCell() == null) // Dide nashe opp hero
+                continue;
+            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) <= range) {
+                if (healths == null) {
+                    if (oppHeros[i].getCurrentHP() <= world.getAbilityConstants(abilityName).getPower() &&
+                            oppHeros[i].getCurrentHP() > 0)
+                        kills++;
+                    hpCost += Math.min(oppHeros[i].getCurrentHP(), world.getAbilityConstants(abilityName).getPower());
+                } else {
+                    if (healths[oppHeros[i].getId()] <= world.getAbilityConstants(abilityName).getPower() &&
+                            healths[oppHeros[i].getId()] > 0)
+                        kills++;
+                    hpCost += Math.min(healths[oppHeros[i].getId()], world.getAbilityConstants(abilityName).getPower());
+                }
 
-        int range = world.getAbilityConstants(abilityName).getRange();
-        for (Cell cell : getARangeOfCells(world, currentCell, range)) {
-            int areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
-            int ans = getNumberOfOppHeroesInRange(world, cell, areaOfEffect);
-            if (ans > best) {
-                best = ans;
-                bestCell = cell;
+                if (ids != null) ids.add(oppHeros[i].getId());
+
             }
         }
-        if (best == 0) {
-            return null;
-        }
-        return bestCell;
-    }
+        Pair<Integer, Integer> ans = new Pair<>(kills, hpCost);
+        return ans;
+    } // aval mibine koja bezane bishtarin koshte ro darim badesh bar hasbe bishtarin jone kam shode sort mikone
+
 
     public int getJoneKamOfOppHeroesInRange(World world, Cell cellBomb, int range, AbilityName abilityName
-    ,int[] healths, ArrayList<Integer> ids) {
+            , int[] healths, ArrayList<Integer> ids) {
         int ans = 0;
         Hero[] oppHeros = world.getOppHeroes();
         for (int i = 0; i < 4; i++) {
             if (oppHeros[i].getCurrentCell() == null) // Dide nashe opp hero
                 continue;
-            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) < range) {
+            if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) <= range) {
                 if (healths == null)
                     ans += Math.min(oppHeros[i].getCurrentHP(), world.getAbilityConstants(abilityName).getPower());
                 else ans += Math.min(healths[oppHeros[i].getId()], world.getAbilityConstants(abilityName).getPower());
 
-                if(ids != null) ids.add(oppHeros[i].getId());
+                if (ids != null) ids.add(oppHeros[i].getId());
 
             }
         }

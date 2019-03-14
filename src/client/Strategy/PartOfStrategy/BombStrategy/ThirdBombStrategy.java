@@ -9,7 +9,7 @@ import client.model.World;
 
 import java.util.ArrayList;
 
-public class SecondBombStrategy extends PartOfStrategy {
+public class ThirdBombStrategy extends PartOfStrategy {
     int[] healths;
     int blasterId;
 
@@ -17,7 +17,7 @@ public class SecondBombStrategy extends PartOfStrategy {
         return healths;
     }
 
-    public SecondBombStrategy(int maxAp, int blaster, int[] healths) {
+    public ThirdBombStrategy(int maxAp, int blaster, int[] healths) {
         super(maxAp);
         this.blasterId = blaster;
         this.healths = healths;
@@ -26,19 +26,16 @@ public class SecondBombStrategy extends PartOfStrategy {
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
         Hero blaster = world.getHero(blasterId);
-        Cell bestCell = getCellWithMostJoneKamShode(
+        Cell bestCell = getCellWithMostKills(
                 world, blaster.getCurrentCell(), AbilityName.BLASTER_BOMB, healths, false);
         if (bestCell != null) {
             try {
                 bombAttack(world, blaster, bestCell);
                 ArrayList<Integer> ids = new ArrayList<>();
-                getJoneKamOfOppHeroesInRange(world, bestCell, blaster.getAbility(AbilityName.BLASTER_BOMB).getRange()
-                ,AbilityName.BLASTER_BOMB,healths, ids);
-                System.out.println("Hero : " + blaster.getId());
-                for (Integer id : ids) {
+                getKillsOfOppHeroesInRange(world, bestCell, blaster.getAbility(AbilityName.BLASTER_BOMB).getRange()
+                        ,AbilityName.BLASTER_BOMB,healths, ids);
+                for (Integer id : ids)
                     healths[id] = Math.max(0, healths[id] - blaster.getAbility(AbilityName.BLASTER_BOMB).getPower());
-                    System.out.println("id : " + id);
-                }
             } catch(Exception ignored) {
             }
         }
