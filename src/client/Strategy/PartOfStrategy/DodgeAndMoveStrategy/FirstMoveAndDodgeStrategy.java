@@ -93,6 +93,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
                         }
                     }
                     swapTargetCells(i, index);
+                    targetCell = targetCells.get(i);
                     dirs = world.getPathMoveDirections(hero.getCurrentCell(), targetCell);
                     if (dirs.length != 0) {
                         move(world, hero, dirs[0]);
@@ -145,7 +146,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
             dodgeAHero(world, heroes[i], targetCells.get(i), true, true);
     }
 
-    int dodgeAHero(World world, Hero hero, Cell targetCell, boolean action, boolean force) throws NotEnoughApException {
+    private int dodgeAHero(World world, Hero hero, Cell targetCell, boolean action, boolean force) throws NotEnoughApException {
         if (hero.getCurrentCell().equals(targetCell)) {
             return 0;
         }
@@ -169,7 +170,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
         return 0;
     }
 
-    int dodgeAHero(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
-        return dodgeAHero(world, hero, targetCell, true, false);
+    void dodgeAHero(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+        dodgeAHero(world, hero, targetCell, true, false);
     }
 }

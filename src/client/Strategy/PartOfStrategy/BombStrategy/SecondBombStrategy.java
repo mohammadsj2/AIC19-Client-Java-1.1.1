@@ -34,8 +34,11 @@ public class SecondBombStrategy extends PartOfStrategy {
                 ArrayList<Integer> ids = new ArrayList<>();
                 getJoneKamOfOppHeroesInRange(world, bestCell, blaster.getAbility(AbilityName.BLASTER_BOMB).getRange()
                 ,AbilityName.BLASTER_BOMB,healths, ids);
-                for (Integer id : ids)
+                System.out.println("Hero : " + blaster.getId());
+                for (Integer id : ids) {
                     healths[id] = Math.max(0, healths[id] - blaster.getAbility(AbilityName.BLASTER_BOMB).getPower());
+                    System.out.println("id : " + id);
+                }
             } catch(Exception ignored) {
             }
         }
