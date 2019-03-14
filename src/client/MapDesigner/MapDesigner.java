@@ -127,7 +127,10 @@ public class MapDesigner extends Application {
                 "\t\t\"timeout\": 500,\n" +
                 "\t\t\"maxAP\": 100,\n" +
                 "\t\t\"maxTurns\": 100,\n" +
-                "\t\t\"maxScore\": 300\n" +
+                "\t\t\"maxScore\": 300,\n" +
+                "\t\t\"maxScoreDiff\": 30,\n" +
+                "\t\t\"initOvertime\": 5,\n" +
+                "\t\t\"totalMovePhases\": 6\n" +
                 "\t},\n" +
                 "\t\"map\": {\n" +
                 "\t\t\"cells\": [\n");
@@ -149,8 +152,8 @@ public class MapDesigner extends Application {
             }
         }
         stringBuilder.append("\t\t],\n" +
-                "\t\t\"rowNum\": " + map.getRowNum() + ",\n" +
-                "\t\t\"columnNum\": " + map.getColumnNum() + "\n" +
+                "\t\t\"rowNum\": 31,\n" +
+                "\t\t\"columnNum\": 31\n" +
                 "\t},\n" +
                 "\t\"heroConstants\": [\n" +
                 "\t\t{\n" +
@@ -196,6 +199,17 @@ public class MapDesigner extends Application {
                 "\t\t\t\"maxHP\": 400,\n" +
                 "\t\t\t\"moveAPCost\": 8,\n" +
                 "\t\t\t\"respawnTime\": 5\n" +
+                "\t\t},\n" +
+                "\t\t{\n" +
+                "\t\t\t\"name\": \"SHADOW\",\n" +
+                "\t\t\t\"abilityNames\": [\n" +
+                "\t\t\t\t\"SHADOW_ATTACK\",\n" +
+                "\t\t\t\t\"SHADOW_DODGE\",\n" +
+                "\t\t\t\t\"SHADOW_SLASH\"\n" +
+                "\t\t\t],\n" +
+                "\t\t\t\"maxHP\": 90,\n" +
+                "\t\t\t\"moveAPCost\": 3,\n" +
+                "\t\t\t\"respawnTime\": 5\n" +
                 "\t\t}\n" +
                 "\t],\n" +
                 "\t\"abilityConstants\": [\n" +
@@ -204,40 +218,44 @@ public class MapDesigner extends Application {
                 "\t\t\t\"type\": \"OFFENSIVE\",\n" +
                 "\t\t\t\"range\": 7,\n" +
                 "\t\t\t\"APCost\": 15,\n" +
-                "\t\t\t\"cooldown\": 0,\n" +
+                "\t\t\t\"cooldown\": 1,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 30,\n" +
-                "\t\t\t\"isLobbing\": false\n" +
+                "\t\t\t\"isLobbing\": false,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"SENTRY_DODGE\",\n" +
                 "\t\t\t\"type\": \"DODGE\",\n" +
                 "\t\t\t\"range\": 3,\n" +
                 "\t\t\t\"APCost\": 25,\n" +
-                "\t\t\t\"cooldown\": 6,\n" +
+                "\t\t\t\"cooldown\": 7,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 0,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"HEALER_ATTACK\",\n" +
                 "\t\t\t\"type\": \"OFFENSIVE\",\n" +
                 "\t\t\t\"range\": 4,\n" +
                 "\t\t\t\"APCost\": 15,\n" +
-                "\t\t\t\"cooldown\": 0,\n" +
+                "\t\t\t\"cooldown\": 1,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 25,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"BLASTER_ATTACK\",\n" +
                 "\t\t\t\"type\": \"OFFENSIVE\",\n" +
                 "\t\t\t\"range\": 3,\n" +
                 "\t\t\t\"APCost\": 15,\n" +
-                "\t\t\t\"cooldown\": 0,\n" +
+                "\t\t\t\"cooldown\": 1,\n" +
                 "\t\t\t\"areaOfEffect\": 1,\n" +
                 "\t\t\t\"power\": 20,\n" +
-                "\t\t\t\"isLobbing\": false\n" +
+                "\t\t\t\"isLobbing\": false,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"GUARDIAN_DODGE\",\n" +
@@ -247,7 +265,8 @@ public class MapDesigner extends Application {
                 "\t\t\t\"cooldown\": 8,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 0,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"GUARDIAN_FORTIFY\",\n" +
@@ -257,27 +276,30 @@ public class MapDesigner extends Application {
                 "\t\t\t\"cooldown\": 7,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 0,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"HEALER_DODGE\",\n" +
                 "\t\t\t\"type\": \"DODGE\",\n" +
                 "\t\t\t\"range\": 4,\n" +
                 "\t\t\t\"APCost\": 25,\n" +
-                "\t\t\t\"cooldown\": 5,\n" +
+                "\t\t\t\"cooldown\": 6,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 0,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"BLASTER_DODGE\",\n" +
                 "\t\t\t\"type\": \"DODGE\",\n" +
                 "\t\t\t\"range\": 4,\n" +
                 "\t\t\t\"APCost\": 25,\n" +
-                "\t\t\t\"cooldown\": 5,\n" +
+                "\t\t\t\"cooldown\": 6,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 0,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"BLASTER_BOMB\",\n" +
@@ -287,17 +309,19 @@ public class MapDesigner extends Application {
                 "\t\t\t\"cooldown\": 4,\n" +
                 "\t\t\t\"areaOfEffect\": 2,\n" +
                 "\t\t\t\"power\": 35,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"GUARDIAN_ATTACK\",\n" +
                 "\t\t\t\"type\": \"OFFENSIVE\",\n" +
                 "\t\t\t\"range\": 1,\n" +
                 "\t\t\t\"APCost\": 15,\n" +
-                "\t\t\t\"cooldown\": 0,\n" +
+                "\t\t\t\"cooldown\": 1,\n" +
                 "\t\t\t\"areaOfEffect\": 1,\n" +
                 "\t\t\t\"power\": 40,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"SENTRY_RAY\",\n" +
@@ -307,7 +331,8 @@ public class MapDesigner extends Application {
                 "\t\t\t\"cooldown\": 5,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 50,\n" +
-                "\t\t\t\"isLobbing\": false\n" +
+                "\t\t\t\"isLobbing\": false,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
                 "\t\t},\n" +
                 "\t\t{\n" +
                 "\t\t\t\"name\": \"HEALER_HEAL\",\n" +
@@ -317,7 +342,41 @@ public class MapDesigner extends Application {
                 "\t\t\t\"cooldown\": 2,\n" +
                 "\t\t\t\"areaOfEffect\": 0,\n" +
                 "\t\t\t\"power\": 30,\n" +
-                "\t\t\t\"isLobbing\": true\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
+                "\t\t},\n" +
+                "\t\t{\n" +
+                "\t\t\t\"name\": \"SHADOW_ATTACK\",\n" +
+                "\t\t\t\"type\": \"OFFENSIVE\",\n" +
+                "\t\t\t\"range\": 1,\n" +
+                "\t\t\t\"APCost\": 15,\n" +
+                "\t\t\t\"cooldown\": 1,\n" +
+                "\t\t\t\"areaOfEffect\": 0,\n" +
+                "\t\t\t\"power\": 40,\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
+                "\t\t},\n" +
+                "\t\t{\n" +
+                "\t\t\t\"name\": \"SHADOW_DODGE\",\n" +
+                "\t\t\t\"type\": \"DODGE\",\n" +
+                "\t\t\t\"range\": 4,\n" +
+                "\t\t\t\"APCost\": 25,\n" +
+                "\t\t\t\"cooldown\": 5,\n" +
+                "\t\t\t\"areaOfEffect\": 0,\n" +
+                "\t\t\t\"power\": 0,\n" +
+                "\t\t\t\"isLobbing\": true,\n" +
+                "\t\t\t\"isPiercing\": false\n" +
+                "\t\t},\n" +
+                "\t\t{\n" +
+                "\t\t\t\"name\": \"SHADOW_SLASH\",\n" +
+                "\t\t\t\"type\": \"DODGE\",\n" +
+                "\t\t\t\"range\": 6,\n" +
+                "\t\t\t\"APCost\": 20,\n" +
+                "\t\t\t\"cooldown\": 2,\n" +
+                "\t\t\t\"areaOfEffect\": 0,\n" +
+                "\t\t\t\"power\": 25,\n" +
+                "\t\t\t\"isLobbing\": false,\n" +
+                "\t\t\t\"isPiercing\": true\n" +
                 "\t\t}\n" +
                 "\t]\n" +
                 "}");
