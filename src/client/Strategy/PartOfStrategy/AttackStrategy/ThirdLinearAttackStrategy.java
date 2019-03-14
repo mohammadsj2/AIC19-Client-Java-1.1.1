@@ -24,17 +24,27 @@ public class ThirdLinearAttackStrategy extends PartOfStrategy {
         Hero hero = world.getHero(heroId);
         //super.actionTurn(world);
         Ability attackAbility = hero.getOffensiveAbilities()[0];
+
         Cell targetCell1 = getCellWithMostKills(world, hero.getCurrentCell(), attackAbility.getName(), healths, true);
+
+
         if (targetCell1 != null)
         {
+
             try{
                 castAbility(world, hero, targetCell1, attackAbility.getName());
+
+                //could attack
+
                 ArrayList<Integer> ids = new ArrayList<>();
-                getKillsOfOppHeroesInRange(world, targetCell1, attackAbility.getRange(),
+                getKillsOfOppHeroesInRange(world, targetCell1, attackAbility.getAreaOfEffect(),
                         attackAbility.getName(),healths, ids);
                 for (Integer id : ids)
                     healths[id] = Math.max(0, healths[id] - attackAbility.getPower());
-            }catch (Exception ignored) {}
+
+            }catch (Exception ignored) {
+                System.err.println("Cannnot Attack because of AP");
+            }
         }
     }
 }

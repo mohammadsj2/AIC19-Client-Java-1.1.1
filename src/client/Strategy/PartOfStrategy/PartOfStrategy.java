@@ -123,6 +123,7 @@ public abstract class PartOfStrategy {
 
         int range = world.getAbilityConstants(abilityName).getRange(),
                 areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
+
         for (Cell targetCell : getARangeOfCells(world, currentCell, range)) {
             if (!world.isInVision(targetCell, currentCell) && Linear)
                 continue;
@@ -134,6 +135,15 @@ public abstract class PartOfStrategy {
                 bestCell = targetCell;
             }
         }
+
+        //System.err.println("Best Cell Found : " + bestCell.getRow() + "," + bestCell.getColumn());
+        /*System.err.println("Turn is : " + world.getCurrentTurn() + "\n" + "Hero Cuurent Cell is : "
+                + currentCell.getRow() + "," + currentCell.getColumn() + "\n" +
+                "Linear : " + Linear + "\n" +
+                "Number Of Kills : " + best.getFirst() + "\n" +
+                "HP earned : " + best.getSecond());
+        */
+
         if (best.getSecond() == 0) {
             return null;
         }
@@ -175,13 +185,24 @@ public abstract class PartOfStrategy {
             if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) <= range) {
                 if (healths == null) {
                     if (oppHeros[i].getCurrentHP() <= world.getAbilityConstants(abilityName).getPower() &&
-                            oppHeros[i].getCurrentHP() > 0)
+                            oppHeros[i].getCurrentHP() > 0) {
+
+                        /*
+                        System.err.println("Id = " + oppHeros[i].getId() + "\n" + "Health = " + oppHeros[i].getCurrentHP());
+                        System.err.println("Pos = " + oppHeros[i].getCurrentCell().getRow() + "," + oppHeros[i].getCurrentCell().getColumn());
+                        System.err.println("Attack Pos is = " + cellBomb.getRow() + "," + cellBomb.getColumn());
+                        System.err.println("Power is " + world.getAbilityConstants(abilityName).getPower());
+                        */
+
                         kills++;
+                    }
                     hpCost += Math.min(oppHeros[i].getCurrentHP(), world.getAbilityConstants(abilityName).getPower());
                 } else {
+                    //System.err.println("/////////BUG FOUND");
                     if (healths[oppHeros[i].getId()] <= world.getAbilityConstants(abilityName).getPower() &&
-                            healths[oppHeros[i].getId()] > 0)
+                            healths[oppHeros[i].getId()] > 0) {
                         kills++;
+                    }
                     hpCost += Math.min(healths[oppHeros[i].getId()], world.getAbilityConstants(abilityName).getPower());
                 }
 

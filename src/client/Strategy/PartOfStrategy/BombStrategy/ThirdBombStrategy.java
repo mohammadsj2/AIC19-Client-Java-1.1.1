@@ -26,17 +26,25 @@ public class ThirdBombStrategy extends PartOfStrategy {
     @Override
     public void actionTurn(World world) throws NotEnoughApException {
         Hero blaster = world.getHero(blasterId);
+
         Cell bestCell = getCellWithMostKills(
                 world, blaster.getCurrentCell(), AbilityName.BLASTER_BOMB, healths, false);
+
+
         if (bestCell != null) {
+
             try {
                 bombAttack(world, blaster, bestCell);
+
+                //you could attack.
+
                 ArrayList<Integer> ids = new ArrayList<>();
-                getKillsOfOppHeroesInRange(world, bestCell, blaster.getAbility(AbilityName.BLASTER_BOMB).getRange()
+                getKillsOfOppHeroesInRange(world, bestCell, blaster.getAbility(AbilityName.BLASTER_BOMB).getAreaOfEffect()
                         ,AbilityName.BLASTER_BOMB,healths, ids);
                 for (Integer id : ids)
                     healths[id] = Math.max(0, healths[id] - blaster.getAbility(AbilityName.BLASTER_BOMB).getPower());
             } catch(Exception ignored) {
+                System.err.println("Cannot Attack Because of AP");
             }
         }
     }

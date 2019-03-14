@@ -4,8 +4,10 @@ import client.Exception.NotEnoughApException;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstNotLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.AttackStrategy.SecondLinearAttackStrategy;
+import client.Strategy.PartOfStrategy.AttackStrategy.ThirdLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.SecondBombStrategy;
+import client.Strategy.PartOfStrategy.BombStrategy.ThirdBombStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.SecondMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
@@ -25,12 +27,12 @@ public class BBBBStrategy extends Strategy {
     private void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
-            //partOfStrategies.add(new SecondBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
-            partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            partOfStrategies.add(new ThirdBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
+            //partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         for (Hero hero : myHeroes) {
-            //partOfStrategies.add(new SecondLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
-            partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            partOfStrategies.add(new ThirdLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
+            //partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
         }
         partOfStrategiesInited = true;
     }
@@ -57,7 +59,7 @@ public class BBBBStrategy extends Strategy {
     @Override
     public void preProcess(World world) {
         BFS bfs = new BFS(world.getMap());
-        partOfStrategies.add(new SecondMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP, bfs));
+        partOfStrategies.add(new FirstMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP));
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             partOfStrategy.preProcess(world);
         }
@@ -81,9 +83,14 @@ public class BBBBStrategy extends Strategy {
     public void actionTurn(World world) {
 
         for (int i = 0; i< NUMBER_OF_HEROES; i++)
-            if(world.getHero(i).getCurrentCell() == null)
+            if(world.getHero(i).getCurrentCell().getRow() == -1)
                 healths[i] = 0;
             else healths[i] = world.getHero(i).getCurrentHP();
+
+        System.err.println("HEY ///////////");
+        for (int i=0; i<NUMBER_OF_HEROES; i++)
+            System.err.print(healths[i] + " ");
+        System.err.println();
 
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             try {

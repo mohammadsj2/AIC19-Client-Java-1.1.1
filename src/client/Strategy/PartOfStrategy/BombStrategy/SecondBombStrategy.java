@@ -32,7 +32,7 @@ public class SecondBombStrategy extends PartOfStrategy {
             try {
                 bombAttack(world, blaster, bestCell);
                 ArrayList<Integer> ids = new ArrayList<>();
-                getJoneKamOfOppHeroesInRange(world, bestCell, blaster.getAbility(AbilityName.BLASTER_BOMB).getRange()
+                getJoneKamOfOppHeroesInRange(world, bestCell, blaster.getAbility(AbilityName.BLASTER_BOMB).getAreaOfEffect()
                 ,AbilityName.BLASTER_BOMB,healths, ids);
                 System.out.println("Hero : " + blaster.getId());
                 for (Integer id : ids) {
