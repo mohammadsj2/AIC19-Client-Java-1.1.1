@@ -1,6 +1,7 @@
 package client.Strategy.PartOfStrategy.AttackStrategy;
 
 import client.Exception.NotEnoughApException;
+import client.Exception.TwoActionInOneTurnByAHeroException;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.*;
 
@@ -9,8 +10,7 @@ import java.util.ArrayList;
 public class FirstLinearAttackStrategy extends PartOfStrategy {
     private int heroId;
 
-    public FirstLinearAttackStrategy(int maxAp, int hero) {
-        super(maxAp);
+    public FirstLinearAttackStrategy(int hero) {
         this.heroId = hero;
     }
 
@@ -20,7 +20,12 @@ public class FirstLinearAttackStrategy extends PartOfStrategy {
         super.actionTurn(world);
         Ability attackAbility = hero.getOffensiveAbilities()[0];
         Cell targetCell1 = getCellWithMostOppHeroes(world, hero.getCurrentCell(), attackAbility.getName(), true);
-        if (targetCell1 != null)
-            castAbility(world, hero, targetCell1, attackAbility.getName());
+        if (targetCell1 != null) {
+            try {
+                castAbility(world, hero, targetCell1, attackAbility.getName());
+            } catch (TwoActionInOneTurnByAHeroException ignored) {
+
+            }
+        }
     }
 }

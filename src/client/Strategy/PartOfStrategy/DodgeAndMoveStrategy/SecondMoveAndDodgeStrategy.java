@@ -2,6 +2,7 @@ package client.Strategy.PartOfStrategy.DodgeAndMoveStrategy;
 
 import client.Exception.CantFindRandomTargetZone;
 import client.Exception.NotEnoughApException;
+import client.Exception.TwoActionInOneTurnByAHeroException;
 import client.Strategy.Tools.BFS;
 import client.model.*;
 
@@ -14,8 +15,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     private ArrayList<Pair<Cell, Boolean>>[] whatToDoArrayList = new ArrayList[8];
     private BFS bfs;
 
-    public SecondMoveAndDodgeStrategy(int maxAp, BFS bfs) {
-        super(maxAp);
+    public SecondMoveAndDodgeStrategy(BFS bfs) {
         this.bfs = bfs;
     }
 
@@ -102,8 +102,13 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         for (Pair<Cell, Boolean> move : moves) {
             if (move.getSecond()) {
                 int manhattanDistance = world.manhattanDistance(move.getFirst(), hero.getCurrentCell());
-                if (manhattanDistance <= hero.getDodgeAbilities()[0].getRange())
-                    dodge(world, hero, move.getFirst(), decreaseMoney);
+                if (manhattanDistance <= hero.getDodgeAbilities()[0].getRange()) {
+                    try {
+                        dodge(world, hero, move.getFirst(), decreaseMoney);
+                    } catch (TwoActionInOneTurnByAHeroException ignored) {
+
+                    }
+                }
                 decreaseMoney = false;
             }
         }

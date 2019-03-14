@@ -2,6 +2,7 @@ package client.Strategy.PartOfStrategy.DodgeAndMoveStrategy;
 
 import client.Exception.CantFindRandomTargetZone;
 import client.Exception.NotEnoughApException;
+import client.Exception.TwoActionInOneTurnByAHeroException;
 import client.MyMath;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.*;
@@ -15,9 +16,7 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
     private static final int NUMBER_OF_ACTION_PHASES = 6;
     ArrayList<Cell> targetZoneCells = new ArrayList<>();
 
-    public FirstMoveAndDodgeStrategy(int maxAp) {
-        super(maxAp);
-    }
+
 
     @Override
     public void preProcess(World world) {
@@ -162,7 +161,11 @@ public class FirstMoveAndDodgeStrategy extends PartOfStrategy {
             toSortPairs.sort(Comparator.comparingInt(Pair::getSecond));
             if (action) {
                 for (int i = 0; i < Math.min(8, toSortPairs.size()); i++) {
-                    dodge(world, hero, toSortPairs.get(i).getFirst(),i==0);
+                    try {
+                        dodge(world, hero, toSortPairs.get(i).getFirst(),i==0);
+                    } catch (TwoActionInOneTurnByAHeroException ignored) {
+
+                    }
                 }
             }
             return dir.length - world.getPathMoveDirections(toSortPairs.get(0).getFirst(), targetCell).length;

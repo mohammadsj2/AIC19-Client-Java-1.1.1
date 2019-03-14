@@ -2,6 +2,7 @@ package client.Strategy.PartOfStrategy.HealStrategy;
 
 
 import client.Exception.NotEnoughApException;
+import client.Exception.TwoActionInOneTurnByAHeroException;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.AbilityConstants;
 import client.model.AbilityName;
@@ -17,8 +18,7 @@ import java.util.Comparator;
 public class FirstHealStrategy extends PartOfStrategy {
     private int healerId;
 
-    public FirstHealStrategy(int maxAp, int healer) {
-        super(maxAp);
+    public FirstHealStrategy(int healer) {
         this.healerId = healer;
     }
 
@@ -37,11 +37,20 @@ public class FirstHealStrategy extends PartOfStrategy {
         inArea.sort(Comparator.comparingInt(Hero::getCurrentHP));
         for (Hero hero : inArea) {
             if (hero.getCurrentHP() + power <= hero.getMaxHP()) {
-                heal(world, healer, hero.getCurrentCell());
+                try {
+                    heal(world, healer, hero.getCurrentCell());
+                } catch (TwoActionInOneTurnByAHeroException ignored) {
+
+                }
                 return;
             }
         }
-        if (inArea.size() != 0)
-            heal(world, healer, inArea.get(0).getCurrentCell());
+        if (inArea.size() != 0) {
+            try {
+                heal(world, healer, inArea.get(0).getCurrentCell());
+            } catch (TwoActionInOneTurnByAHeroException ignored) {
+
+            }
+        }
     }
 }

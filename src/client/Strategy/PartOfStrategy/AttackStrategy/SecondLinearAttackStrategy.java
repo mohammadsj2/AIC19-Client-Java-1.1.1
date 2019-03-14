@@ -13,8 +13,7 @@ public class SecondLinearAttackStrategy extends PartOfStrategy {
     private int heroId;
     int[] healths;
 
-    public SecondLinearAttackStrategy(int maxAp, int hero, int[] healths) {
-        super(maxAp);
+    public SecondLinearAttackStrategy(int hero, int[] healths) {
         this.heroId = hero;
         this.healths = healths;
     }

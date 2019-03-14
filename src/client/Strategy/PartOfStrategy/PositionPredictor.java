@@ -13,8 +13,7 @@ public class PositionPredictor extends PartOfStrategy {
     ArrayList<Cell> seenBefore = new ArrayList<>();
     int numberOfTurnThatWeDontSeeHim = 0;
 
-    protected PositionPredictor(int maxAp, Hero oppHero) {
-        super(maxAp);
+    protected PositionPredictor(Hero oppHero) {
         this.oppHero = oppHero;
     }
 
