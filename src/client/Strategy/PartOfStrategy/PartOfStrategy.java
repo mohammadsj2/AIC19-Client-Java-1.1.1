@@ -205,7 +205,7 @@ public abstract class PartOfStrategy {
 
         Hero[] oppHeros = world.getOppHeroes();
         for (int i = 0; i < 4; i++) {
-            if (oppHeros[i].getCurrentCell() == null) // Dide nashe opp hero
+            if (oppHeros[i].getCurrentCell().getRow() == -1) // Dide nashe opp hero
                 continue;
             if (world.manhattanDistance(cellBomb, oppHeros[i].getCurrentCell()) <= range) {
                 if (healths == null) {
