@@ -102,7 +102,9 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         //TODO dg nabayad ta 8 bashe ha !!
         for (Pair<Cell, Boolean> move : moves) {
             if (move.getSecond()) {
-                dodge(world, hero, move.getFirst(), decreaseMoney);
+                int manhattanDistance = world.manhattanDistance(move.getFirst(), hero.getCurrentCell());
+                if (manhattanDistance <= hero.getDodgeAbilities()[0].getRange())
+                    dodge(world, hero, move.getFirst(), decreaseMoney);
                 decreaseMoney = false;
             }
         }
