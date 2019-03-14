@@ -77,7 +77,13 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         });
 
         ArrayList<Pair<Cell, Boolean>> ans = new ArrayList<>();
+        int initialTime = toSort.get(0).getFirst().getFirst();
         for (Pair<Pair<Integer, Boolean>, Pair<Cell, Integer>> p : toSort) {
+            int time = p.getFirst().getFirst();
+            double rate = (double) (time - initialTime) / (double) (BFS.ONE_TURN_IN_BFS);
+            if (rate > 1.0) {
+                break;
+            }
             ans.add(new Pair<>(p.getSecond().getFirst(), p.getFirst().getSecond()));
         }
         if (world.getCurrentTurn() == 5) {

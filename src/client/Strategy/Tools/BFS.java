@@ -33,11 +33,9 @@ public class BFS {
         }
     }
 
-    //Note bayad too avalin moveTurn seda zade beshe ha !!
-    private int[][][] getDistancesWithBFS(Cell targetCell, Ability ability) {
-        ArrayList<Pair<Cell, Integer>> bfsQueue = new ArrayList<>();
+    private int[][][] getDistancesWithDijkstra(Cell targetCell, Ability ability) {
+        PriorityQueue<Pair<Integer, Pair<Cell, Integer>>> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Pair::getFirst));
         int[][][] distance = new int[map.getRowNum()][map.getColumnNum()][MAX_COOL_DOWN + 1];
-        int queueHead = 0;
         int coolDownDuration = ability.getCooldown();
         int range = ability.getRange();
 
@@ -50,15 +48,19 @@ public class BFS {
         }
 
         for (int i = 0; i < coolDownDuration; i++) {
-            bfsQueue.add(new Pair<>(targetCell, i));
+            priorityQueue.add(new Pair<>(5 * i, new Pair<>(targetCell, i)));
             distance[targetCell.getRow()][targetCell.getColumn()][i] = 5 * i;
         }
 
-        while (queueHead != bfsQueue.size()) {
-            Pair<Cell, Integer> u = bfsQueue.get(queueHead++);
+        while (!priorityQueue.isEmpty()) {
+
+            Pair<Integer, Pair<Cell, Integer>> poll = priorityQueue.poll();
+            Pair<Cell, Integer> u = poll.getSecond();
             int r = u.getFirst().getRow(), c = u.getFirst().getColumn();
             int dis = distance[r][c][u.getSecond()];
-
+            if (dis < poll.getFirst()) {
+                continue;
+            }
 
             for (int i = -NUMBER_OF_MOVE_PHASES; i <= NUMBER_OF_MOVE_PHASES; i++) {
                 for (int j = -NUMBER_OF_MOVE_PHASES; j <= NUMBER_OF_MOVE_PHASES; j++) {
@@ -82,7 +84,7 @@ public class BFS {
                             (v.getFirst().isInObjectiveZone() ? BFS_INOBJECTIVE_ZONE_TOADD : 0);
                     if (distance[nr][nc][nv] > turnDistance) {
                         distance[nr][nc][nv] = turnDistance;
-                        bfsQueue.add(v);
+                        priorityQueue.add(new Pair<>(turnDistance,v));
                     }
                     if (u.getSecond() == 0) {
                         nv = 0;
@@ -91,7 +93,7 @@ public class BFS {
                                 (v.getFirst().isInObjectiveZone() ? BFS_INOBJECTIVE_ZONE_TOADD : 0);
                         if (distance[nr][nc][nv] > turnDistance2) {
                             distance[nr][nc][nv] = turnDistance2;
-                            bfsQueue.add(v);
+                            priorityQueue.add(new Pair<>(turnDistance2,v));
                         }
                     }
                 }
@@ -108,9 +110,10 @@ public class BFS {
                         }
                         Cell cell = map.getCell(nr, nc);
                         Pair<Cell, Integer> v = new Pair<>(cell, 0);
-                        if (distance[nr][nc][0] > dis + ONE_TURN_IN_BFS + BFS_DODGE_TOADD) {
-                            distance[nr][nc][0] = dis + ONE_TURN_IN_BFS + BFS_DODGE_TOADD;
-                            bfsQueue.add(v);
+                        int weight = dis + ONE_TURN_IN_BFS + BFS_DODGE_TOADD;
+                        if (distance[nr][nc][0] > weight) {
+                            distance[nr][nc][0] = weight;
+                            priorityQueue.add(new Pair<>(weight,v));
                         }
                     }
                 }
@@ -124,7 +127,7 @@ public class BFS {
         if (distance != null) {
             return distance;
         }
-        distance = getDistancesWithBFS(targetCell, ability);
+        distance = getDistancesWithDijkstra(targetCell, ability);
         Pair<Pair<Cell, Ability>, int[][][]> ozv = new Pair<>(new Pair<>(targetCell, ability), distance);
         while (memory.size() >= MAXIMUM_MEMORY_SIZE) {
             memory.remove(0);
