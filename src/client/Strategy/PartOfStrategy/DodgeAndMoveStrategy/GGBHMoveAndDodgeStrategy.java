@@ -5,10 +5,6 @@ import client.model.*;
 import java.util.ArrayList;
 
 public class GGBHMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
-    public GGBHMoveAndDodgeStrategy(int maxAp) {
-        super(maxAp);
-    }
-
     @Override
     ArrayList<Cell> getHeroTargetCellsZone(World world) {
         int mod = world.getAbilityConstants(AbilityName.GUARDIAN_FORTIFY).getCooldown();

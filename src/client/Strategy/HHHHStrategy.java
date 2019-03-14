@@ -11,7 +11,7 @@ import client.model.*;
 public class HHHHStrategy extends Strategy {
     private FirstHealStrategy[] firstHealStrategies = new FirstHealStrategy[4];
     private FirstNotLinearAttackStrategy[] firstNotLinearAttackStrategies = new FirstNotLinearAttackStrategy[4];
-    private FirstMoveAndDodgeStrategy firstMoveAndDodgeStrategy = new FirstMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP);
+    private FirstMoveAndDodgeStrategy firstMoveAndDodgeStrategy = new FirstMoveAndDodgeStrategy();
 
     @Override
     public void preProcess(World world) {
@@ -23,8 +23,8 @@ public class HHHHStrategy extends Strategy {
     public void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
         for (int i = 0; i < 4; i++) {
-            firstHealStrategies[i] = new FirstHealStrategy(PartOfStrategy.INFINIT_AP, myHeroes[i].getId());
-            firstNotLinearAttackStrategies[i] = new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, myHeroes[i].getId());
+            firstHealStrategies[i] = new FirstHealStrategy(myHeroes[i].getId());
+            firstNotLinearAttackStrategies[i] = new FirstNotLinearAttackStrategy(myHeroes[i].getId());
         }
         partOfStrategiesInited = true;
     }

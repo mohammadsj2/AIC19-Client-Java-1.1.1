@@ -2,6 +2,7 @@ package client.Strategy.PartOfStrategy.BombStrategy;
 
 
 import client.Exception.NotEnoughApException;
+import client.Exception.TwoActionInOneTurnByAHeroException;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.AbilityName;
 import client.model.Cell;
@@ -15,8 +16,7 @@ import client.model.World;
 public class FirstBombStrategy extends PartOfStrategy {
     int blasterId;
 
-    public FirstBombStrategy(int maxAp, int blaster) {
-        super(maxAp);
+    public FirstBombStrategy(int blaster) {
         this.blasterId = blaster;
     }
 
@@ -25,7 +25,11 @@ public class FirstBombStrategy extends PartOfStrategy {
         Hero blaster = world.getHero(blasterId);
         Cell bestCell = getCellWithMostOppHeroes(world, blaster.getCurrentCell(), AbilityName.BLASTER_BOMB, false);
         if (bestCell != null) {
-            bombAttack(world, blaster, bestCell);
+            try {
+                bombAttack(world, blaster, bestCell);
+            } catch (TwoActionInOneTurnByAHeroException ignored) {
+
+            }
         }
     }
 

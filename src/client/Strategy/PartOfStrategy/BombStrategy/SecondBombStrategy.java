@@ -17,8 +17,7 @@ public class SecondBombStrategy extends PartOfStrategy {
         return healths;
     }
 
-    public SecondBombStrategy(int maxAp, int blaster, int[] healths) {
-        super(maxAp);
+    public SecondBombStrategy(int blaster, int[] healths) {
         this.blasterId = blaster;
         this.healths = healths;
     }

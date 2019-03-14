@@ -10,7 +10,7 @@ import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.*;
 
 public class GGBHStrategy extends Strategy {
-    private GGBHMoveAndDodgeStrategy ggbhMoveAndDodgeStrategy = new GGBHMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP);
+    private GGBHMoveAndDodgeStrategy ggbhMoveAndDodgeStrategy = new GGBHMoveAndDodgeStrategy();
     private FirstGuardStrategy firstGuardStrategy;
     private FirstHealStrategy firstHealStrategy;
     private FirstNotLinearAttackStrategy[] firstNotLinearAttackStrategies = new FirstNotLinearAttackStrategy[4];
@@ -24,10 +24,10 @@ public class GGBHStrategy extends Strategy {
 
     public void initStrategy(World world) {
         Hero[] myHeroes = world.getMyHeroes();
-        firstGuardStrategy = new FirstGuardStrategy(PartOfStrategy.INFINIT_AP, myHeroes[0].getId(), myHeroes[1].getId());
-        firstHealStrategy = new FirstHealStrategy(PartOfStrategy.INFINIT_AP, myHeroes[3].getId());
+        firstGuardStrategy = new FirstGuardStrategy(myHeroes[0].getId(), myHeroes[1].getId());
+        firstHealStrategy = new FirstHealStrategy(myHeroes[3].getId());
         for (int i = 0; i < 4; i++) {
-            firstNotLinearAttackStrategies[i] = new FirstNotLinearAttackStrategy(PartOfStrategy.INFINIT_AP, myHeroes[i].getId());
+            firstNotLinearAttackStrategies[i] = new FirstNotLinearAttackStrategy(myHeroes[i].getId());
         }
         partOfStrategiesInited = true;
     }

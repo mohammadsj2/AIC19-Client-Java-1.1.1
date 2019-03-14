@@ -2,12 +2,7 @@ package client.Strategy;
 
 import client.Exception.NotEnoughApException;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstLinearAttackStrategy;
-import client.Strategy.PartOfStrategy.AttackStrategy.FirstNotLinearAttackStrategy;
-import client.Strategy.PartOfStrategy.AttackStrategy.SecondLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
-import client.Strategy.PartOfStrategy.BombStrategy.SecondBombStrategy;
-import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
-import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.SecondMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.ThirdMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.Strategy.Tools.BFS;
@@ -27,11 +22,11 @@ public class BBBBStrategy extends Strategy {
         Hero[] myHeroes = world.getMyHeroes();
         for (Hero hero : myHeroes) {
             //partOfStrategies.add(new SecondBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
-            partOfStrategies.add(new FirstBombStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            partOfStrategies.add(new FirstBombStrategy(hero.getId()));
         }
         for (Hero hero : myHeroes) {
             //partOfStrategies.add(new SecondLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId(), healths));
-            partOfStrategies.add(new FirstLinearAttackStrategy(PartOfStrategy.INFINIT_AP, hero.getId()));
+            partOfStrategies.add(new FirstLinearAttackStrategy(hero.getId()));
         }
         partOfStrategiesInited = true;
     }
