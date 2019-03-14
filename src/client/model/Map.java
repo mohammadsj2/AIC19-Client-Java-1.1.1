@@ -40,7 +40,7 @@ public class Map {
         return cells;
     }
 
-    void setCells(Cell[][] cells) {
+    public void setCells(Cell[][] cells) {
         this.cells = cells;
     }
 
@@ -48,7 +48,7 @@ public class Map {
         return rowNum;
     }
 
-    void setRowNum(int rowNum) {
+    public void setRowNum(int rowNum) {
         this.rowNum = rowNum;
     }
 
@@ -56,7 +56,7 @@ public class Map {
         return columnNum;
     }
 
-    void setColumnNum(int columnNum) {
+    public void setColumnNum(int columnNum) {
         this.columnNum = columnNum;
     }
 
