@@ -1,25 +1,32 @@
 package client.Strategy.PartOfStrategy;
 
 import client.Exception.NotEnoughApException;
+import client.Exception.TwoActionInOneTurnByAHeroException;
 import client.model.*;
 
 import java.util.ArrayList;
 
 public abstract class PartOfStrategy {
     public static final int INFINIT_AP = 1000000000;
-    protected int maxAp = INFINIT_AP;
-    protected int remainAp = INFINIT_AP;
+    protected static int maxAp = 100;
+    protected static int remainAp = 100;
+    private static int lastTurn = -1;
+    private static boolean[] hasAction = new boolean[8];
 
-    protected PartOfStrategy(int maxAp) {
-        this.maxAp = maxAp;
-        remainAp = maxAp;
-    }
-
-    public void decreaseAp(int x) throws NotEnoughApException {
+    public static void decreaseAp(World world, int x) throws NotEnoughApException {
+        if (world.getCurrentTurn() != lastTurn) {
+            resetAps(world);
+        }
         if (x > remainAp) {
             throw new NotEnoughApException();
         }
         remainAp -= x;
+    }
+
+    private static void resetAps(World world) {
+        lastTurn = world.getCurrentTurn();
+        remainAp = maxAp;
+        hasAction = new boolean[8];
     }
 
     public void actionTurn(World world) throws NotEnoughApException {
@@ -90,8 +97,6 @@ public abstract class PartOfStrategy {
         return world.getMap().getCell(r, c);
     }
 
-    // TODO check other files for Boolean Linear
-
     protected Cell getCellWithMostJoneKamShode(World world, Cell currentCell,
                                                AbilityName abilityName, int[] healths, boolean Linear) {
         Cell bestCell = currentCell;
@@ -100,7 +105,7 @@ public abstract class PartOfStrategy {
         int range = world.getAbilityConstants(abilityName).getRange(),
                 areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
         for (Cell targetCell : getARangeOfCells(world, currentCell, range)) {
-            if (!world.isInVision(targetCell, currentCell) && Linear)
+            if ((!world.isInVision(targetCell, currentCell) || !canLinear(world, targetCell, currentCell)) && Linear)
                 continue;
             int ans;
             ans = getJoneKamOfOppHeroesInRange(world, targetCell, areaOfEffect, abilityName, healths, null);
@@ -125,10 +130,12 @@ public abstract class PartOfStrategy {
                 areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
 
         for (Cell targetCell : getARangeOfCells(world, currentCell, range)) {
-            if (!world.isInVision(targetCell, currentCell) && Linear)
+
+            if ((!world.isInVision(targetCell, currentCell) || !canLinear(world, targetCell, currentCell)) && Linear)
                 continue;
             Pair<Integer, Integer> thisOne;
             thisOne = getKillsOfOppHeroesInRange(world, targetCell, areaOfEffect, abilityName, healths, null);
+
             if (thisOne.getFirst() > best.getFirst() ||
                     (thisOne.getFirst().equals(best.getFirst()) && thisOne.getSecond() > best.getSecond())) {
                 best = thisOne;
@@ -147,9 +154,24 @@ public abstract class PartOfStrategy {
         if (best.getSecond() == 0) {
             return null;
         }
+
+
         return bestCell;
     }
 
+    protected boolean canLinear(World world, Cell currentCell, Cell targetCell) {
+        Cell[] cells = world.getRayCells(currentCell, targetCell, false);
+        Hero[] oppHeros = world.getOppHeroes();
+
+        for (Cell cell : cells) {
+            if (cell.equals(currentCell) || cell.equals(targetCell))
+                continue;
+            for (int i = 0; i < 4; i++)
+                if (oppHeros[i].getCurrentCell().equals(cell))
+                    return false;
+        }
+        return true;
+    }
 
     protected Cell getCellWithMostOppHeroes(World world, Cell currentCell, AbilityName abilityName,
                                             boolean Linear) {
@@ -158,7 +180,7 @@ public abstract class PartOfStrategy {
 
         int range = world.getAbilityConstants(abilityName).getRange();
         for (Cell cell : getARangeOfCells(world, currentCell, range)) {
-            if (!world.isInVision(cell, currentCell) && Linear)
+            if ((!world.isInVision(cell, currentCell) || !canLinear(world, cell, currentCell)) && Linear)
                 continue;
             int areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
             int ans = getNumberOfOppHeroesInRange(world, cell, areaOfEffect);
@@ -273,21 +295,21 @@ public abstract class PartOfStrategy {
         return ans;
     }
 
-    protected void heal(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+    protected void heal(World world, Hero hero, Cell targetCell) throws NotEnoughApException, TwoActionInOneTurnByAHeroException {
         castAbility(world, hero, targetCell, AbilityName.HEALER_HEAL);
     }
 
     protected void move(World world, Hero hero, Direction direction) throws NotEnoughApException {
-        decreaseAp(hero.getMoveAPCost());
+        decreaseAp(world, hero.getMoveAPCost());
         world.moveHero(hero, direction);
     }
 
-    protected void dodge(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+    protected void dodge(World world, Hero hero, Cell targetCell) throws NotEnoughApException, TwoActionInOneTurnByAHeroException {
         Ability dodgeAbility = hero.getDodgeAbilities()[0];
         castAbility(world, hero, targetCell, dodgeAbility.getName());
     }
 
-    protected void dodge(World world, Hero hero, Cell targetCell, Boolean decreaseMoney) throws NotEnoughApException {
+    protected void dodge(World world, Hero hero, Cell targetCell, Boolean decreaseMoney) throws NotEnoughApException, TwoActionInOneTurnByAHeroException {
         Ability dodgeAbility = hero.getDodgeAbilities()[0];
         if (decreaseMoney.equals(true)) {
             dodge(world, hero, targetCell);
@@ -297,16 +319,22 @@ public abstract class PartOfStrategy {
         }
     }
 
-    protected void bombAttack(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+    protected void bombAttack(World world, Hero hero, Cell targetCell) throws NotEnoughApException, TwoActionInOneTurnByAHeroException {
         castAbility(world, hero, targetCell, AbilityName.BLASTER_BOMB);
     }
 
-    protected void guard(World world, Hero hero, Cell targetCell) throws NotEnoughApException {
+    protected void guard(World world, Hero hero, Cell targetCell) throws NotEnoughApException, TwoActionInOneTurnByAHeroException {
         castAbility(world, hero, targetCell, AbilityName.GUARDIAN_FORTIFY);
     }
 
-    protected void castAbility(World world, Hero hero, Cell targetCell, AbilityName blasterBomb) throws NotEnoughApException {
-        decreaseAp(hero.getAbility(blasterBomb).getAPCost());
+    protected void castAbility(World world, Hero hero, Cell targetCell, AbilityName blasterBomb) throws NotEnoughApException, TwoActionInOneTurnByAHeroException {
+        if (world.getCurrentTurn() != lastTurn) {
+            resetAps(world);
+        }
+        if (hasAction[hero.getId()])
+            throw new TwoActionInOneTurnByAHeroException();
+        decreaseAp(world, hero.getAbility(blasterBomb).getAPCost());
+        hasAction[hero.getId()] = true;
         world.castAbility(hero.getId(), blasterBomb, targetCell);
     }
 

@@ -171,7 +171,7 @@ public interface World {
      * @return
      */
     boolean isInVision(Cell startCell, Cell endCell);
-
+    Cell[] getRayCells(Cell startCell, Cell targetCell, boolean wallPiercing) ;
     boolean isInVision(int startCellRow, int startCellColumn, int endCellRow, int endCellColumn);
 
     Hero[] getMyHeroes();

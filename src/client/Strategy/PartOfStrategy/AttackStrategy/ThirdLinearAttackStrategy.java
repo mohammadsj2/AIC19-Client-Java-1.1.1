@@ -13,8 +13,7 @@ public class ThirdLinearAttackStrategy extends PartOfStrategy {
     private int heroId;
     int[] healths;
 
-    public ThirdLinearAttackStrategy(int maxAp, int hero, int[] healths) {
-        super(maxAp);
+    public ThirdLinearAttackStrategy(int hero, int[] healths) {
         this.heroId = hero;
         this.healths = healths;
     }

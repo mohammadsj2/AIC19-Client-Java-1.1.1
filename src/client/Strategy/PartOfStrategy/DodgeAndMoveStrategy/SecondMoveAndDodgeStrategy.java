@@ -1,6 +1,8 @@
 package client.Strategy.PartOfStrategy.DodgeAndMoveStrategy;
 
+import client.Exception.CantFindRandomTargetZone;
 import client.Exception.NotEnoughApException;
+import client.Exception.TwoActionInOneTurnByAHeroException;
 import client.Strategy.Tools.BFS;
 import client.model.*;
 
@@ -13,16 +15,18 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
     private ArrayList<Pair<Cell, Boolean>>[] whatToDoArrayList = new ArrayList[8];
     private BFS bfs;
 
-    public SecondMoveAndDodgeStrategy(int maxAp, BFS bfs) {
-        super(maxAp);
+    public SecondMoveAndDodgeStrategy(BFS bfs) {
         this.bfs = bfs;
     }
+
+
 
     @Override
     boolean betterToWait(World world, Hero hero, Cell targetCell) {
         if (hero.getCurrentCell().getRow() == -1) return true;
         ArrayList<Pair<Cell, Boolean>> moves = whatToDoArrayList[hero.getId()];
         Pair<Cell, Boolean> move = moves.get(0);
+
 
         return move.getSecond();
     }
@@ -46,10 +50,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
                 toSort.add(new Pair<>(new Pair<>(distance[r][c][temp], true), new Pair<>(cell, temp)));
             }
 
-            //if (hero.getCurrentCell().getRow() == -1 || hero.getCurrentCell().getColumn() == -1)
-            //System.err.println("FIND");
 
-            //if (cell.getRow() == -1 || cell.getColumn() == -1) System.err.println("GUB FOUND");
 
             int normalDistance = bfs.getNormalDistance(hero.getCurrentCell(), cell);
             if (normalDistance <= NUMBER_OF_MOVE_PHASES) {
@@ -99,7 +100,14 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
         //TODO dg nabayad ta 8 bashe ha !!
         for (Pair<Cell, Boolean> move : moves) {
             if (move.getSecond()) {
-                dodge(world, hero, move.getFirst(), decreaseMoney);
+                int manhattanDistance = world.manhattanDistance(move.getFirst(), hero.getCurrentCell());
+                if (manhattanDistance <= hero.getDodgeAbilities()[0].getRange()) {
+                    try {
+                        dodge(world, hero, move.getFirst(), decreaseMoney);
+                    } catch (TwoActionInOneTurnByAHeroException ignored) {
+
+                    }
+                }
                 decreaseMoney = false;
             }
         }
@@ -125,7 +133,6 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             }
         }
         Hero[] myHeroes = world.getMyHeroes();
-        Hero myHeros[] = myHeroes;
 
         HashMap<Integer, Boolean> heroMoved = new HashMap<>();
         for (Hero hero : myHeroes) {
@@ -134,7 +141,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
 
         ArrayList<Cell> targetCells = getHeroTargetCellsZone(world);
         for (int i = 0; i < 4; i++) {
-            Hero hero = myHeros[i];
+            Hero hero = myHeroes[i];
             Cell targetCell = targetCells.get(i);
             Cell targetCell2 = whatToDoArrayList[hero.getId()].get(0).getFirst();
             if (betterToWait(world, hero, targetCell)) {
@@ -169,7 +176,7 @@ public class SecondMoveAndDodgeStrategy extends FirstMoveAndDodgeStrategy {
             }
         }
         for (int i = 0; i < 4; i++) {
-            Hero hero = myHeros[i];
+            Hero hero = myHeroes[i];
             if (heroMoved.get(hero.getId())) {
                 continue;
             }

@@ -2,6 +2,7 @@ package client.Strategy;
 
 import client.Exception.NotEnoughApException;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstLinearAttackStrategy;
+import client.Strategy.PartOfStrategy.BombStrategy.FirstBombStrategy;
 import client.Strategy.PartOfStrategy.AttackStrategy.FirstNotLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.AttackStrategy.SecondLinearAttackStrategy;
 import client.Strategy.PartOfStrategy.AttackStrategy.ThirdLinearAttackStrategy;
@@ -10,6 +11,7 @@ import client.Strategy.PartOfStrategy.BombStrategy.SecondBombStrategy;
 import client.Strategy.PartOfStrategy.BombStrategy.ThirdBombStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.FirstMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.SecondMoveAndDodgeStrategy;
+import client.Strategy.PartOfStrategy.DodgeAndMoveStrategy.ThirdMoveAndDodgeStrategy;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.Strategy.Tools.BFS;
 import client.model.*;
@@ -59,7 +61,7 @@ public class BBBBStrategy extends Strategy {
     @Override
     public void preProcess(World world) {
         BFS bfs = new BFS(world.getMap());
-        partOfStrategies.add(new FirstMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP));
+        partOfStrategies.add(new ThirdMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP, bfs));
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             partOfStrategy.preProcess(world);
         }
@@ -84,6 +86,7 @@ public class BBBBStrategy extends Strategy {
 
         for (int i = 0; i< NUMBER_OF_HEROES; i++)
             if(world.getHero(i).getCurrentCell().getRow() == -1)
+
                 healths[i] = 0;
             else healths[i] = world.getHero(i).getCurrentHP();
 

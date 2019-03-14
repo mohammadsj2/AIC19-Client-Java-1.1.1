@@ -1,6 +1,7 @@
 package client.Strategy.PartOfStrategy.GuardStrategy;
 
 import client.Exception.NotEnoughApException;
+import client.Exception.TwoActionInOneTurnByAHeroException;
 import client.Strategy.PartOfStrategy.PartOfStrategy;
 import client.model.AbilityName;
 import client.model.Cell;
@@ -10,8 +11,7 @@ import client.model.World;
 public class FirstGuardStrategy extends PartOfStrategy {
     private int[] guardiansId = new int[2];
 
-    public FirstGuardStrategy(int maxAp, int firstGuardian, int secondGuardian) {
-        super(maxAp);
+    public FirstGuardStrategy(int firstGuardian, int secondGuardian) {
         guardiansId[0] = firstGuardian;
         guardiansId[1] = secondGuardian;
     }
@@ -27,6 +27,10 @@ public class FirstGuardStrategy extends PartOfStrategy {
         }
         Hero guardian = world.getHero(guardiansId[turn]);
         Cell targetCell = getCellWithMostOwnHeroesForNotLinearAbilities(world, guardian.getCurrentCell(), fortify);
-        guard(world, guardian, targetCell);
+        try {
+            guard(world, guardian, targetCell);
+        } catch (TwoActionInOneTurnByAHeroException ignored) {
+
+        }
     }
 }
