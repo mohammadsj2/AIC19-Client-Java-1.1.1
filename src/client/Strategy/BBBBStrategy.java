@@ -53,7 +53,7 @@ public class BBBBStrategy extends Strategy {
     @Override
     public void preProcess(World world) {
         BFS bfs = new BFS(world.getMap());
-        partOfStrategies.add(new ThirdMoveAndDodgeStrategy(PartOfStrategy.INFINIT_AP, bfs));
+        partOfStrategies.add(new ThirdMoveAndDodgeStrategy(bfs));
         for (PartOfStrategy partOfStrategy : partOfStrategies) {
             partOfStrategy.preProcess(world);
         }

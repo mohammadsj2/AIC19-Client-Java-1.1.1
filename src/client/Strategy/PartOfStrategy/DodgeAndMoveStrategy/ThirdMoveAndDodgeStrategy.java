@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class ThirdMoveAndDodgeStrategy extends SecondMoveAndDodgeStrategy {
 
-    public ThirdMoveAndDodgeStrategy(int maxAp, BFS bfs) {
+    public ThirdMoveAndDodgeStrategy(BFS bfs) {
         super(bfs);
     }
 
