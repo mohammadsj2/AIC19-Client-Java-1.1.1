@@ -30,7 +30,7 @@ public class SecondLinearAttackStrategy extends PartOfStrategy {
             try{
                 castAbility(world, hero, targetCell1, attackAbility.getName());
                 ArrayList<Integer> ids = new ArrayList<>();
-                getJoneKamOfOppHeroesInRange(world, targetCell1, offensiveAbility.getRange(),
+                getJoneKamOfOppHeroesInRange(world, targetCell1, offensiveAbility.getAreaOfEffect(),
                         offensiveAbility.getName(),healths, ids);
                 for (Integer id : ids)
                     healths[id] = Math.max(0, healths[id] - offensiveAbility.getPower());

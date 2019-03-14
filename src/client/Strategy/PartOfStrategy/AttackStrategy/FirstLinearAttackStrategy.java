@@ -20,6 +20,7 @@ public class FirstLinearAttackStrategy extends PartOfStrategy {
         super.actionTurn(world);
         Ability attackAbility = hero.getOffensiveAbilities()[0];
         Cell targetCell1 = getCellWithMostOppHeroes(world, hero.getCurrentCell(), attackAbility.getName(), true);
+
         if (targetCell1 != null) {
             try {
                 castAbility(world, hero, targetCell1, attackAbility.getName());
@@ -27,5 +28,6 @@ public class FirstLinearAttackStrategy extends PartOfStrategy {
 
             }
         }
+
     }
 }
