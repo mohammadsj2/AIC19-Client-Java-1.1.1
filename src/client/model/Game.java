@@ -673,7 +673,7 @@ public class Game implements World {
      * @param targetCell
      * @return
      */
-    private Cell[] getRayCells(Cell startCell, Cell targetCell, boolean wallPiercing) {
+    public Cell[] getRayCells(Cell startCell, Cell targetCell, boolean wallPiercing) {
         if (startCell == null || targetCell == null) {
             return new Cell[0];
         }

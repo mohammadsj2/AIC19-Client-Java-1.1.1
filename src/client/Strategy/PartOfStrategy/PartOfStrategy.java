@@ -90,8 +90,6 @@ public abstract class PartOfStrategy {
         return world.getMap().getCell(r, c);
     }
 
-    // TODO check other files for Boolean Linear
-
     protected Cell getCellWithMostJoneKamShode(World world, Cell currentCell,
                                                AbilityName abilityName, int[] healths, boolean Linear) {
         Cell bestCell = currentCell;
@@ -100,7 +98,7 @@ public abstract class PartOfStrategy {
         int range = world.getAbilityConstants(abilityName).getRange(),
                 areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
         for (Cell targetCell : getARangeOfCells(world, currentCell, range)) {
-            if (!world.isInVision(targetCell, currentCell) && Linear)
+            if ((!world.isInVision(targetCell, currentCell) || !canLinear(world, targetCell, currentCell)) && Linear)
                 continue;
             int ans;
             ans = getJoneKamOfOppHeroesInRange(world, targetCell, areaOfEffect, abilityName, healths, null);
@@ -124,10 +122,12 @@ public abstract class PartOfStrategy {
         int range = world.getAbilityConstants(abilityName).getRange(),
                 areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
         for (Cell targetCell : getARangeOfCells(world, currentCell, range)) {
-            if (!world.isInVision(targetCell, currentCell) && Linear)
+
+            if ((!world.isInVision(targetCell, currentCell) || !canLinear(world, targetCell, currentCell)) && Linear)
                 continue;
             Pair<Integer, Integer> thisOne;
             thisOne = getKillsOfOppHeroesInRange(world, targetCell, areaOfEffect, abilityName, healths, null);
+
             if (thisOne.getFirst() > best.getFirst() ||
                     (thisOne.getFirst().equals(best.getFirst()) && thisOne.getSecond() > best.getSecond())) {
                 best = thisOne;
@@ -137,9 +137,24 @@ public abstract class PartOfStrategy {
         if (best.getSecond() == 0) {
             return null;
         }
+
+
         return bestCell;
     }
 
+    protected boolean canLinear(World world, Cell currentCell, Cell targetCell) {
+        Cell[] cells = world.getRayCells(currentCell, targetCell, false);
+        Hero[] oppHeros = world.getOppHeroes();
+
+        for (Cell cell : cells) {
+            if (cell.equals(currentCell) || cell.equals(targetCell))
+                continue;
+            for (int i = 0; i < 4; i++)
+                if (oppHeros[i].getCurrentCell().equals(cell))
+                    return false;
+        }
+        return true;
+    }
 
     protected Cell getCellWithMostOppHeroes(World world, Cell currentCell, AbilityName abilityName,
                                             boolean Linear) {
@@ -148,7 +163,7 @@ public abstract class PartOfStrategy {
 
         int range = world.getAbilityConstants(abilityName).getRange();
         for (Cell cell : getARangeOfCells(world, currentCell, range)) {
-            if (!world.isInVision(cell, currentCell) && Linear)
+            if ((!world.isInVision(cell, currentCell) || !canLinear(world, cell, currentCell)) && Linear)
                 continue;
             int areaOfEffect = world.getAbilityConstants(abilityName).getAreaOfEffect();
             int ans = getNumberOfOppHeroesInRange(world, cell, areaOfEffect);
